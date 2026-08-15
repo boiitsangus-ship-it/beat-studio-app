@@ -45,3 +45,4 @@
     function project(){return state.projects.find(p=>p.id===state.current)}
     function save(){project().modified=Date.now();localStorage.setItem(key,JSON.stringify(state));renderHome()}
     function snap(){history.push(JSON.stringify(state));if(history.length>40)history
+                    
