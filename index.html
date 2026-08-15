@@ -130,4 +130,1319 @@ textarea.field{resize:none;min-height:78px}
 .ai-card h4{margin:0 0 4px;font-size:13.5px;color:#d8b8ff;font-weight:800}
 .ai-card p{margin:0 0 11px;font-size:12px;color:#bbb;line-height:1.4}
 .ai-actions{display:flex;gap:8px}
-.ai-actions 
+.ai-actions button{flex:1;padding:10px;border-radius:11px;font-size:12px;font-weight:800}
+.ai-actions .apply{background:#7d2fbf;color:#fff}
+.ai-actions .dismiss{background:#2e2e2e}
+.export-row{display:flex;gap:8px}
+.export-row button{flex:1}
+.mixgoal-chip-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.mixgoal-chip{padding:8px 13px;border-radius:20px;background:#1e1e1e;border:1px solid #333;font-size:11.5px;font-weight:700;color:#ccc}
+.mixgoal-chip.active{background:#7d2fbf;border-color:#7d2fbf;color:#fff}
+.ai-result{padding:13px;margin-top:10px;border-radius:13px;background:#12241a;border:1px solid #2f6b47}
+.ai-result h4{margin:0 0 6px;color:#7fe3ab;font-size:13px}
+.ai-result ul{margin:0;padding-left:18px;color:#bbb;font-size:12px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <div class="screen active" id="screen-home">
+    <div class="header">
+      <div><div class="brand">BEAT<span>STUDIO</span></div></div>
+      <button class="icon-btn ghost" id="homeSettingsBtn">⚙️</button>
+    </div>
+    <h1>Your sessions</h1>
+    <p class="lead">Record, mix, and master anywhere.</p>
+    <button class="primary" id="newSessionBtn">+ New session</button>
+    <div class="project-list" id="projectList"></div>
+  </div>
+
+  <div class="screen" id="screen-studio">
+    <div class="header">
+      <div style="display:flex;align-items:center;gap:8px;min-width:0">
+        <button class="icon-btn" id="backBtn">←</button>
+        <div style="min-width:0">
+          <div class="brand" style="font-size:16px" id="studioProjectName">Session</div>
+          <span class="subtitle" id="studioProjectMeta">Saved just now</span>
+        </div>
+      </div>
+      <button class="icon-btn ghost" id="renameBtn">✏️</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="tracks">Tracks</button>
+      <button class="tab" data-tab="plugins">Plugins</button>
+      <button class="tab" data-tab="mix">Mix</button>
+      <button class="tab" data-tab="master">Master</button>
+    </div>
+
+    <div class="tab-page active" id="tab-tracks">
+      <div id="trackList"></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="secondary" id="addTrackBtn" style="flex:1">+ Add track</button>
+        <button class="secondary" id="uploadTrackBtn" style="flex:1">⬆ Upload audio</button>
+      </div>
+    </div>
+
+    <div class="tab-page" id="tab-plugins">
+      <div class="panel">
+        <h3>Effect chain by track</h3>
+        <p>Pick a track, then add studio-style presets.</p>
+        <select class="field" id="pluginTrackSelect"></select>
+      </div>
+      <div id="pluginTrackChain"></div>
+      <button class="secondary" id="openPluginPickerBtn" style="width:100%">+ Add plugin</button>
+    </div>
+
+    <div class="tab-page" id="tab-mix">
+      <div class="panel">
+        <h3>🤖 AI Producer Mix</h3>
+        <p>Describe the sound you want. The AI producer builds a custom balance, EQ, and plugin chain to match — not just volume and pan.</p>
+        <div class="mixgoal-chip-row" id="mixGoalChips"></div>
+        <textarea class="field" id="mixGoalInput" placeholder="e.g. 'make the vocals sit on top, warm punchy 808s, radio-ready loud master'"></textarea>
+        <button class="primary" id="aiMixBtn">✨ Generate AI Mix</button>
+        <div id="aiMixResult"></div>
+      </div>
+      <div class="panel">
+        <h3>Automix</h3>
+        <p>Quick one-tap level balance only (volume + pan).</p>
+        <button class="secondary" id="automixBtn" style="width:100%">⚡ Run Automix</button>
+      </div>
+      <div id="mixList"></div>
+    </div>
+
+    <div class="tab-page" id="tab-master">
+      <div class="panel">
+        <h3>Master output</h3>
+        <div class="meter"><div class="meter-bar" id="meterL"></div><div class="meter-bar" id="meterR"></div></div>
+        <div class="preset-grid" id="masterPresets"></div>
+      </div>
+    </div>
+
+    <div class="rec-badge" id="recBadge">● REC</div>
+  </div>
+</div>
+
+<div class="dock" id="dock" style="display:none">
+  <div class="time" id="transportTime">00:00 / 00:00</div>
+  <div class="transport">
+    <button id="micBtn" title="Record source">🎤</button>
+    <button id="fxBtn" title="Quick add Fx">+Fx</button>
+    <button id="autoPitchBtn" title="AutoPitch">AP</button>
+    <button class="rec-btn" id="recBtn">● REC</button>
+    <button class="play-btn" id="playBtn">▶</button>
+    <button id="undoBtn" title="Undo">↶</button>
+    <button id="redoBtn" title="Redo">↷</button>
+    <button class="ai-btn" id="aiBtn" title="AI Suggestions">✨</button>
+    <button id="exportBtn" title="Export">⇩</button>
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
+<input type="file" id="audioFileInput" accept="audio/*,.wav,.mp3,.m4a,.aac,.aif,.aiff,.caf" hidden>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const storageKey = 'beat-studio-v3';
+
+  const makeTrack = name => ({
+    id: String(Date.now()) + Math.random(),
+    name, volume:.82, pan:0, muted:false, solo:false, armed:false,
+    plugins:[], audioKey:null, duration:0, waveform:null, eq:{low:0,mid:0,high:0}
+  });
+
+  let state = JSON.parse(localStorage.getItem(storageKey) || 'null') || {
+    projects:[{id:'demo', name:'Trap Beat Demo', modified:Date.now(), mixGoal:'',
+      tracks:[makeTrack('808 Bass'), makeTrack('Kick Drum'), makeTrack('Hi-Hats'), makeTrack('Lead Vocal')]}],
+    current:'demo', master:'Balanced'
+  };
+
+  let undoStack = [], redoStack = [];
+  let audioContext = null, masterGain = null;
+  let audioBuffers = {};
+  let activeSources = {};
+  let isPlayingMix = false, mixStartTime = 0, mixElapsed = 0, mixRAF = null;
+  let soloPlayingTrackId = null, soloStartTime = 0, soloElapsed = 0, soloRAF = null;
+  let mediaRecorder = null, recordChunks = [], recordingTrackId = null, micStream = null;
+  let pendingUploadTrackId = null;
+  let autoPitchOn = false;
+  let zoomLevels = {};
+  let panOffsets = {};
+
+  const PLUGIN_PRESETS = [
+    {id:'vocal-chain', name:'Vocal Chain', tag:'Vocal', desc:'EQ + compressor + de-esser + reverb glue.', build:buildVocalChain},
+    {id:'808-drive', name:'808 Drive', tag:'Bass', desc:'Saturated low-end with harmonic drive & sub boost.', build:build808Drive},
+    {id:'dynamics-proc', name:'Dynamics Processor', tag:'Dynamics', desc:'Multiband-style compression for punch & consistency.', build:buildDynamics},
+    {id:'tape-sat', name:'Tape Saturation', tag:'Color', desc:'Warm analog-style tape saturation & wow/flutter.', build:buildTapeSat},
+    {id:'trap-hats', name:'Trap Hi-Hat Shaper', tag:'Drums', desc:'Bright transient shaping for rolled hi-hats.', build:buildTrapHats},
+    {id:'pitch-fx', name:'Pitch Correct FX', tag:'Vocal', desc:'Robotic pitch-snap character, open-source style.', build:buildPitchFx},
+    {id:'hall-reverb', name:'Hall Reverb', tag:'Space', desc:'Big ambient hall reverb via synthetic IR convolution.', build:buildHallReverb},
+    {id:'stereo-widener', name:'Stereo Widener', tag:'Space', desc:'Mid-side style widening for leads & chords.', build:buildWidener},
+    {id:'lofi-crush', name:'Lo-Fi Crush', tag:'Color', desc:'Bitcrush + sample-rate reduction, boombap texture.', build:buildLofiCrush}
+  ];
+
+  const MASTER_PRESETS = [
+    {id:'Balanced', name:'Balanced', desc:'Neutral, transparent loudness.', gain:1.0, eq:{low:0,mid:0,high:0}},
+    {id:'Loud & Punchy', name:'Loud & Punchy', desc:'Aggressive limiting, club/playlist impact.', gain:1.18, eq:{low:2,mid:1,high:1.5}},
+    {id:'Warm Vintage', name:'Warm Vintage', desc:'Rolled-off highs, boosted low-mids, tape glue.', gain:1.05, eq:{low:2.5,mid:1.5,high:-1.5}},
+    {id:'Bright Streaming', name:'Bright Streaming', desc:'Streaming-loudness target, airy top end.', gain:1.1, eq:{low:0.5,mid:0,high:2.5}}
+  ];
+
+  const MIX_GOAL_CHIPS = ['Vocals up front','Warm punchy 808s','Radio-ready loud','Warm vintage vibe','Bright & airy','Lo-fi boombap','Wide & spacious'];
+
+  function buildVocalChain(ctx){
+    const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=90;
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-18; comp.ratio.value=4; comp.attack.value=0.003; comp.release.value=0.25;
+    const presence = ctx.createBiquadFilter(); presence.type='peaking'; presence.frequency.value=4000; presence.gain.value=3; presence.Q.value=0.8;
+    const conv = makeSyntheticReverb(ctx, 0.9, 2.0);
+    const wet = ctx.createGain(); wet.gain.value=0.14;
+    const dry = ctx.createGain(); dry.gain.value=0.9;
+    const out = ctx.createGain();
+    hp.connect(comp); comp.connect(presence);
+    presence.connect(dry); dry.connect(out);
+    presence.connect(conv); conv.connect(wet); wet.connect(out);
+    return {input:hp, output:out};
+  }
+  function build808Drive(ctx){
+    const shelf = ctx.createBiquadFilter(); shelf.type='lowshelf'; shelf.frequency.value=80; shelf.gain.value=4;
+    const shaper = ctx.createWaveShaper(); shaper.curve = makeSoftClipCurve(0.35);
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-12; comp.ratio.value=6; comp.attack.value=0.01; comp.release.value=0.2;
+    shelf.connect(shaper); shaper.connect(comp);
+    return {input:shelf, output:comp};
+  }
+  function buildDynamics(ctx){
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-20; comp.ratio.value=4; comp.attack.value=0.002; comp.release.value=0.15;
+    const makeup = ctx.createGain(); makeup.gain.value=1.15;
+    comp.connect(makeup);
+    return {input:comp, output:makeup};
+  }
+  function buildTapeSat(ctx){
+    const shaper = ctx.createWaveShaper(); shaper.curve = makeTapeCurve(0.25);
+    const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=12000;
+    const gain = ctx.createGain(); gain.gain.value=0.97;
+    shaper.connect(lp); lp.connect(gain);
+    return {input:shaper, output:gain};
+  }
+  function buildTrapHats(ctx){
+    const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=3000;
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-24; comp.ratio.value=3; comp.attack.value=0.001; comp.release.value=0.08;
+    const shelf = ctx.createBiquadFilter(); shelf.type='highshelf'; shelf.frequency.value=8000; shelf.gain.value=3;
+    hp.connect(comp); comp.connect(shelf);
+    return {input:hp, output:shelf};
+  }
+  function buildPitchFx(ctx){
+    const shaper = ctx.createWaveShaper(); shaper.curve = makeQuantizeCurve();
+    const notch = ctx.createBiquadFilter(); notch.type='notch'; notch.frequency.value=1200; notch.Q.value=6;
+    shaper.connect(notch);
+    return {input:shaper, output:notch};
+  }
+  function buildHallReverb(ctx){
+    const conv = makeSyntheticReverb(ctx, 2.6, 3.2);
+    const wet = ctx.createGain(); wet.gain.value=0.45;
+    const dry = ctx.createGain(); dry.gain.value=0.7;
+    const input = ctx.createGain();
+    const out = ctx.createGain();
+    input.connect(dry); dry.connect(out);
+    input.connect(conv); conv.connect(wet); wet.connect(out);
+    return {input, output:out};
+  }
+  function buildWidener(ctx){
+    const splitter = ctx.createChannelSplitter(2);
+    const merger = ctx.createChannelMerger(2);
+    const delay = ctx.createDelay(0.05); delay.delayTime.value=0.012;
+    const input = ctx.createGain();
+    input.connect(splitter);
+    splitter.connect(merger, 0, 0);
+    splitter.connect(delay, 1);
+    delay.connect(merger, 0, 1);
+    return {input, output:merger};
+  }
+  function buildLofiCrush(ctx){
+    const shaper = ctx.createWaveShaper(); shaper.curve = makeBitCrushCurve(16);
+    const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=5000;
+    const gain = ctx.createGain(); gain.gain.value=0.92;
+    shaper.connect(lp); lp.connect(gain);
+    return {input:shaper, output:gain};
+  }
+
+  function makeSoftClipCurve(amount){
+    const n=1024, curve=new Float32Array(n);
+    for(let i=0;i<n;i++){ const x=i*2/n-1; curve[i]=Math.tanh(x*(1+amount*4)); }
+    return curve;
+  }
+  function makeTapeCurve(amount){
+    const n=1024, curve=new Float32Array(n);
+    for(let i=0;i<n;i++){ const x=i*2/n-1; curve[i]=Math.tanh(x*1.5)*(1-amount)+x*amount; }
+    return curve;
+  }
+  function makeQuantizeCurve(){
+    const n=1024, curve=new Float32Array(n), steps=10;
+    for(let i=0;i<n;i++){ const x=i*2/n-1; curve[i]=Math.round(x*steps)/steps; }
+    return curve;
+  }
+  function makeBitCrushCurve(levels){
+    const n=1024, curve=new Float32Array(n);
+    for(let i=0;i<n;i++){ const x=i*2/n-1; curve[i]=Math.round(x*levels)/levels; }
+    return curve;
+  }
+  function makeSyntheticReverb(ctx, decay, duration){
+    const rate = ctx.sampleRate;
+    const length = Math.floor(rate*duration);
+    const impulse = ctx.createBuffer(2, length, rate);
+    for(let c=0;c<2;c++){
+      const data = impulse.getChannelData(c);
+      for(let i=0;i<length;i++){ data[i] = (Math.random()*2-1) * Math.pow(1-i/length, decay*3); }
+    }
+    const conv = ctx.createConvolver(); conv.buffer = impulse;
+    return conv;
+  }
+
+  const AI_TIPS = [
+    {id:'tip-vocal-comp', title:'Tighten the lead vocal', body:'Your lead vocal has wide dynamic range — add a Vocal Chain to even it out and bring it forward.', action:s=>applyPluginToFirstMatching(s,/vocal|lead/i,'vocal-chain')},
+    {id:'tip-808-drive', title:'Warm up the 808', body:'The low end sounds thin. Try 808 Drive for more harmonic weight and sub presence.', action:s=>applyPluginToFirstMatching(s,/808|bass|sub/i,'808-drive')},
+    {id:'tip-automix', title:'Balance your mix', body:'A few tracks are clipping past each other in level. Run Automix to rebalance volumes automatically.', action:s=>{autoMix(s);}},
+    {id:'tip-master-loud', title:'Try Loud & Punchy master', body:'This sounds like a beat meant for playlists — a punchier master style will add impact.', action:s=>{s.master='Loud & Punchy';}},
+    {id:'tip-tape', title:'Add analog warmth', body:'Add Tape Saturation across your drums for a cohesive, vintage glue.', action:s=>applyPluginToFirstMatching(s,/kick|drum|hat/i,'tape-sat')},
+    {id:'tip-dynamics', title:'Control peaks', body:'Add a Dynamics Processor to your loudest track to keep transients from overwhelming the mix.', action:s=>applyPluginToLoudest(s,'dynamics-proc')},
+    {id:'tip-hats', title:'Shape the hi-hats', body:'Add a Trap Hi-Hat Shaper for brighter, punchier rolls.', action:s=>applyPluginToFirstMatching(s,/hat/i,'trap-hats')},
+    {id:'tip-widen', title:'Widen your lead', body:'A Stereo Widener will make your lead sit bigger without changing levels.', action:s=>applyPluginToFirstMatching(s,/lead|vocal|synth/i,'stereo-widener')}
+  ];
+
+  function applyPluginToFirstMatching(session, regex, pluginId){
+    const t = session.tracks.find(tr => regex.test(tr.name) && !tr.plugins.includes(pluginId));
+    if(t){ t.plugins.push(pluginId); return true; }
+    const any = session.tracks.find(tr=>!tr.plugins.includes(pluginId));
+    if(any){ any.plugins.push(pluginId); return true; }
+    return false;
+  }
+  function applyPluginToLoudest(session, pluginId){
+    const t = [...session.tracks].sort((a,b)=>b.volume-a.volume)[0];
+    if(t && !t.plugins.includes(pluginId)){ t.plugins.push(pluginId); return true; }
+    return false;
+  }
+
+  function currentProject(){ return state.projects.find(p => p.id === state.current); }
+  function save(){ localStorage.setItem(storageKey, JSON.stringify(state)); }
+
+  function snapshot(){
+    undoStack.push(JSON.stringify(currentProject()));
+    if(undoStack.length > 30) undoStack.shift();
+    redoStack = [];
+  }
+  function undo(){
+    const proj = currentProject();
+    if(!proj || !undoStack.length) return toast('Nothing to undo');
+    redoStack.push(JSON.stringify(proj));
+    const prev = JSON.parse(undoStack.pop());
+    Object.assign(proj, prev);
+    save(); renderStudio(); toast('Undid last change');
+  }
+  function redo(){
+    const proj = currentProject();
+    if(!proj || !redoStack.length) return toast('Nothing to redo');
+    undoStack.push(JSON.stringify(proj));
+    const next = JSON.parse(redoStack.pop());
+    Object.assign(proj, next);
+    save(); renderStudio(); toast('Redid change');
+  }
+
+  function toast(msg){
+    const el = $('toast'); el.textContent = msg; el.classList.add('show');
+    clearTimeout(el._t); el._t = setTimeout(()=>el.classList.remove('show'), 2200);
+  }
+
+  function ensureAudioContext(){
+    if(!audioContext){
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioContext.createGain();
+      masterGain.connect(audioContext.destination);
+      applyMasterPreset(state.master);
+      unlockIOSAudio();
+    }
+    if(audioContext.state === 'suspended') audioContext.resume();
+    return audioContext;
+  }
+
+  function unlockIOSAudio(){
+    try{
+      const buffer = audioContext.createBuffer(1,1,22050);
+      const src = audioContext.createBufferSource();
+      src.buffer = buffer; src.connect(audioContext.destination); src.start(0);
+    }catch(e){}
+  }
+
+  function applyMasterPreset(id){
+    const preset = MASTER_PRESETS.find(p=>p.id===id) || MASTER_PRESETS[0];
+    if(masterGain) masterGain.gain.value = preset.gain;
+  }
+
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    $(id).classList.add('active');
+    $('dock').style.display = id === 'screen-studio' ? 'block' : 'none';
+  }
+
+  function fmtTime(sec){
+    if(!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec/60), s = Math.floor(sec%60);
+    return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  function fmtRelative(ts){
+    const diff = Date.now() - ts;
+    const mins = Math.floor(diff/60000);
+    if(mins < 1) return 'Saved just now';
+    if(mins < 60) return `Saved ${mins}m ago`;
+    const hrs = Math.floor(mins/60);
+    if(hrs < 24) return `Saved ${hrs}h ago`;
+    return `Saved ${Math.floor(hrs/24)}d ago`;
+  }
+
+  function renderHome(){
+    const list = $('projectList');
+    list.innerHTML = '';
+    if(!state.projects.length){
+      list.innerHTML = '<div class="empty">No sessions yet. Create one to get started.</div>';
+      return;
+    }
+    state.projects.slice().sort((a,b)=>b.modified-a.modified).forEach(p=>{
+      const div = document.createElement('div');
+      div.className = 'project';
+      const bars = Array.from({length:12}, ()=> `<i style="height:${6+Math.random()*16}px"></i>`).join('');
+      div.innerHTML = `
+        <div class="project-art"><div class="bars">${bars}</div></div>
+        <div class="project-info">
+          <div class="project-name">${escapeHtml(p.name)}</div>
+          <div class="project-meta">${p.tracks.length} tracks · ${fmtRelative(p.modified)}</div>
+        </div>
+        <button class="delete" data-del="${p.id}">✕</button>`;
+      div.addEventListener('click', e => {
+        if(e.target.closest('[data-del]')) return;
+        openProject(p.id);
+      });
+      list.appendChild(div);
+    });
+  }
+
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function openProject(id){
+    state.current = id;
+    save();
+    showScreen('screen-studio');
+    renderStudio();
+  }
+
+  function newSession(){
+    const id = String(Date.now());
+    state.projects.push({id, name:'New Session', modified:Date.now(), mixGoal:'', tracks:[]});
+    save();
+    openProject(id);
+  }
+
+  function deleteProject(id){
+    state.projects = state.projects.filter(p=>p.id!==id);
+    if(state.current === id) state.current = state.projects[0]?.id || null;
+    save(); renderHome();
+    toast('Session deleted');
+  }
+
+  let activeTab = 'tracks';
+  let selectedMixGoalChips = new Set();
+
+  function renderStudio(){
+    const proj = currentProject();
+    if(!proj) { showScreen('screen-home'); renderHome(); return; }
+    $('studioProjectName').textContent = proj.name;
+    $('studioProjectMeta').textContent = fmtRelative(proj.modified);
+    renderTracks();
+    renderPluginsTab();
+    renderMixTab();
+    renderMasterTab();
+    updateUndoRedoButtons();
+  }
+
+  function updateUndoRedoButtons(){
+    $('undoBtn').disabled = undoStack.length === 0;
+    $('redoBtn').disabled = redoStack.length === 0;
+  }
+
+  function renderTracks(){
+    const proj = currentProject();
+    const list = $('trackList');
+    list.innerHTML = '';
+    if(!proj.tracks.length){
+      list.innerHTML = '<div class="empty">No tracks yet. Add a track to record or upload audio.</div>';
+      return;
+    }
+    proj.tracks.forEach(t=>{
+      const div = document.createElement('div');
+      div.className = 'track' + (t.armed ? ' armed' : '');
+      const hasAudio = !!audioBuffers[t.id] || !!t.audioKey;
+      div.innerHTML = `
+        <div class="track-top">
+          <button class="small-btn ${t.armed?'active':''}" data-arm="${t.id}" title="Arm for recording">${t.armed?'●ARM':'ARM'}</button>
+          <input class="track-title" value="${escapeHtml(t.name)}" data-rename="${t.id}">
+          <button class="small-btn ${t.muted?'active':''}" data-mute="${t.id}">M</button>
+          <button class="small-btn ${t.solo?'solo-active':''}" data-solo="${t.id}">S</button>
+          <button class="small-btn" data-remove="${t.id}">✕</button>
+        </div>
+        <div class="wave-scroll" data-scroll="${t.id}">
+          <button class="play-fab" data-play="${t.id}" ${hasAudio?'':'disabled'}>▶</button>
+          <canvas data-canvas="${t.id}" style="padding-left:38px"></canvas>
+          <div class="zoom-hint">pinch to zoom</div>
+        </div>
+        <div class="plugin-chip-row" data-chips="${t.id}"></div>
+      `;
+      list.appendChild(div);
+      const canvas = div.querySelector(`[data-canvas="${t.id}"]`);
+      drawTrackWaveform(canvas, t);
+      renderPluginChips(div.querySelector(`[data-chips="${t.id}"]`), t);
+    });
+    bindTrackEvents();
+  }
+
+  function renderPluginChips(container, track){
+    container.innerHTML = '';
+    track.plugins.forEach((pid, idx)=>{
+      const preset = PLUGIN_PRESETS.find(p=>p.id===pid);
+      if(!preset) return;
+      const chip = document.createElement('div');
+      chip.className = 'plugin-chip';
+      chip.innerHTML = `${escapeHtml(preset.name)} <button data-rmplugin="${track.id}|${idx}">✕</button>`;
+      container.appendChild(chip);
+    });
+  }
+
+  function bindTrackEvents(){
+    const proj = currentProject();
+    document.querySelectorAll('[data-arm]').forEach(b=>b.onclick = () => {
+      const t = proj.tracks.find(x=>x.id===b.dataset.arm);
+      snapshot();
+      proj.tracks.forEach(x=>x.armed=false);
+      t.armed = true;
+      proj.modified = Date.now(); save(); renderTracks();
+    });
+    document.querySelectorAll('[data-rename]').forEach(inp=>inp.onchange = () => {
+      const t = proj.tracks.find(x=>x.id===inp.dataset.rename);
+      snapshot(); t.name = inp.value || 'Track'; proj.modified = Date.now(); save();
+      renderPluginsTab(); renderMixTab();
+    });
+    document.querySelectorAll('[data-mute]').forEach(b=>b.onclick = () => {
+      const t = proj.tracks.find(x=>x.id===b.dataset.mute);
+      snapshot(); t.muted = !t.muted; proj.modified=Date.now(); save(); renderTracks(); renderMixTab(); applyLiveMixState();
+    });
+    document.querySelectorAll('[data-solo]').forEach(b=>b.onclick = () => {
+      const t = proj.tracks.find(x=>x.id===b.dataset.solo);
+      snapshot(); t.solo = !t.solo; proj.modified=Date.now(); save(); renderTracks(); renderMixTab(); applyLiveMixState();
+    });
+    document.querySelectorAll('[data-remove]').forEach(b=>b.onclick = () => {
+      snapshot();
+      proj.tracks = proj.tracks.filter(x=>x.id!==b.dataset.remove);
+      delete audioBuffers[b.dataset.remove];
+      proj.modified=Date.now(); save(); renderTracks(); renderPluginsTab(); renderMixTab();
+    });
+    document.querySelectorAll('[data-play]').forEach(b=>b.onclick = () => toggleSoloPlayback(b.dataset.play));
+    document.querySelectorAll('[data-rmplugin]').forEach(b=>b.onclick = () => {
+      const [tid, idx] = b.dataset.rmplugin.split('|');
+      const t = proj.tracks.find(x=>x.id===tid);
+      snapshot(); t.plugins.splice(+idx,1); proj.modified=Date.now(); save(); renderTracks(); renderPluginsTab();
+    });
+    document.querySelectorAll('[data-canvas]').forEach(c => bindScrub(c));
+    document.querySelectorAll('[data-scroll]').forEach(el => bindPinchZoom(el));
+  }
+
+  function computePeaks(buffer, targetPoints){
+    const data = buffer.getChannelData(0);
+    const blockSize = Math.floor(data.length / targetPoints) || 1;
+    const peaks = [];
+    for(let i=0;i<targetPoints;i++){
+      const start = i*blockSize;
+      let max = 0;
+      for(let j=0;j<blockSize && start+j<data.length;j++){
+        const v = Math.abs(data[start+j]);
+        if(v>max) max=v;
+      }
+      peaks.push(max);
+    }
+    return peaks;
+  }
+
+  function drawTrackWaveform(canvas, track, playheadRatio){
+    const dpr = window.devicePixelRatio || 1;
+    const wrap = canvas.closest('.wave-scroll');
+    const rectW = Math.max(wrap ? wrap.getBoundingClientRect().width : 260, 260);
+    const zoom = zoomLevels[track.id] || 1;
+    const w = rectW * zoom, h = 64;
+    canvas.style.width = w + 'px';
+    canvas.width = w*dpr; canvas.height = h*dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr,dpr);
+    ctx.clearRect(0,0,w,h);
+    const buffer = audioBuffers[track.id];
+    const mid = h/2;
+    if(buffer){
+      const pointCount = Math.floor(140*zoom);
+      if(!track.waveform || track.waveform.length !== pointCount) track.waveform = computePeaks(buffer, pointCount);
+      const peaks = track.waveform;
+      const barW = w/peaks.length;
+      ctx.fillStyle = '#ff3737';
+      peaks.forEach((p, i)=>{
+        const barH = Math.max(2, p*h*0.85);
+        ctx.fillRect(i*barW, mid-barH/2, Math.max(1,barW-1), barH);
+      });
+      if(playheadRatio != null){
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(playheadRatio*w-1, 0, 2, h);
+      }
+    } else {
+      ctx.strokeStyle = '#3a3a3a';
+      ctx.setLineDash([4,5]);
+      ctx.beginPath(); ctx.moveTo(0,mid); ctx.lineTo(w,mid); ctx.stroke();
+      ctx.fillStyle = '#666'; ctx.font = '11px sans-serif';
+      ctx.fillText('No audio — record or upload', 44, mid+4);
+    }
+  }
+
+  function bindPinchZoom(scrollEl){
+    const trackId = scrollEl.dataset.scroll;
+    let startDist = 0, startZoom = 1;
+    scrollEl.addEventListener('touchstart', e => {
+      if(e.touches.length === 2){
+        startDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+        startZoom = zoomLevels[trackId] || 1;
+      }
+    }, {passive:true});
+    scrollEl.addEventListener('touchmove', e => {
+      if(e.touches.length === 2){
+        e.preventDefault();
+        const dist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+        const scale = dist / (startDist || 1);
+        const newZoom = Math.min(8, Math.max(1, startZoom * scale));
+        zoomLevels[trackId] = newZoom;
+        const proj = currentProject();
+        const t = proj.tracks.find(x=>x.id===trackId);
+        const canvas = scrollEl.querySelector('[data-canvas]');
+        t.waveform = null;
+        drawTrackWaveform(canvas, t);
+      }
+    }, {passive:false});
+  }
+
+  function bindScrub(canvas){
+    const trackId = canvas.dataset.canvas;
+    const seek = (clientX) => {
+      const buffer = audioBuffers[trackId];
+      if(!buffer) return;
+      const rect = canvas.getBoundingClientRect();
+      const ratio = Math.min(1, Math.max(0, (clientX-rect.left)/rect.width));
+      const proj = currentProject();
+      const t = proj.tracks.find(x=>x.id===trackId);
+      stopSoloPlayback();
+      soloElapsed = ratio * buffer.duration;
+      drawTrackWaveform(canvas, t, ratio);
+    };
+    let dragging = false;
+    canvas.addEventListener('pointerdown', e => { dragging = true; seek(e.clientX); });
+    canvas.addEventListener('pointermove', e => { if(dragging) seek(e.clientX); });
+    window.addEventListener('pointerup', () => dragging = false);
+  }
+
+  function buildTrackChain(t){
+    ensureAudioContext();
+    const gainNode = audioContext.createGain();
+    let lastOutput = gainNode;
+    t.plugins.forEach(pid=>{
+      const preset = PLUGIN_PRESETS.find(p=>p.id===pid);
+      if(!preset) return;
+      const {input, output} = preset.build(audioContext);
+      lastOutput.connect(input);
+      lastOutput = output;
+    });
+    const panNode = audioContext.createStereoPanner ? audioContext.createStereoPanner() : null;
+    if(panNode){ lastOutput.connect(panNode); lastOutput = panNode; }
+    return {gainNode, panNode, finalOutput:lastOutput};
+  }
+
+  function toggleSoloPlayback(trackId){
+    if(soloPlayingTrackId === trackId){ stopSoloPlayback(); return; }
+    stopSoloPlayback();
+    stopMixPlayback();
+    const buffer = audioBuffers[trackId];
+    if(!buffer) return;
+    ensureAudioContext();
+    const proj = currentProject();
+    const t = proj.tracks.find(x=>x.id===trackId);
+    const source = audioContext.createBufferSource();
+    source.buffer = buffer;
+    const chain = buildTrackChain(t);
+    chain.gainNode.gain.value = t.volume;
+    if(chain.panNode) chain.panNode.pan.value = t.pan;
+    source.connect(chain.gainNode);
+    chain.finalOutput.connect(masterGain);
+    source.start(0, soloElapsed || 0);
+    soloStartTime = audioContext.currentTime - (soloElapsed || 0);
+    soloPlayingTrackId = trackId;
+    activeSources[trackId] = {source, ...chain};
+    source.onended = () => { if(soloPlayingTrackId === trackId){ soloElapsed = 0; stopSoloPlayback(); } };
+    updatePlayIcons();
+    soloRAF = requestAnimationFrame(tickSoloPlayback);
+  }
+
+  function tickSoloPlayback(){
+    if(!soloPlayingTrackId) return;
+    const proj = currentProject();
+    const t = proj.tracks.find(x=>x.id===soloPlayingTrackId);
+    const buffer = audioBuffers[soloPlayingTrackId];
+    const elapsed = audioContext.currentTime - soloStartTime;
+    const ratio = buffer ? Math.min(1, elapsed/buffer.duration) : 0;
+    const canvas = document.querySelector(`[data-canvas="${soloPlayingTrackId}"]`);
+    if(canvas) drawTrackWaveform(canvas, t, ratio);
+    soloRAF = requestAnimationFrame(tickSoloPlayback);
+  }
+
+  function stopSoloPlayback(){
+    if(soloPlayingTrackId && activeSources[soloPlayingTrackId]){
+      try{ activeSources[soloPlayingTrackId].source.stop(); }catch(e){}
+      delete activeSources[soloPlayingTrackId];
+    }
+    if(soloRAF) cancelAnimationFrame(soloRAF);
+    soloPlayingTrackId = null;
+    updatePlayIcons();
+  }
+
+  function updatePlayIcons(){
+    document.querySelectorAll('[data-play]').forEach(b=>{
+      b.textContent = (b.dataset.play === soloPlayingTrackId) ? '⏸' : '▶';
+    });
+    $('playBtn').textContent = isPlayingMix ? '⏸' : '▶';
+  }
+
+  function toggleMixPlayback(){
+    if(isPlayingMix){ stopMixPlayback(); return; }
+    stopSoloPlayback();
+    const proj = currentProject();
+    const playable = proj.tracks.filter(t=>audioBuffers[t.id]);
+    if(!playable.length) return toast('No audio to play yet');
+    ensureAudioContext();
+    const soloed = proj.tracks.filter(t=>t.solo).map(t=>t.id);
+    playable.forEach(t=>{
+      const buffer = audioBuffers[t.id];
+      const source = audioContext.createBufferSource();
+      source.buffer = buffer;
+      const chain = buildTrackChain(t);
+      const audible = !t.muted && (soloed.length === 0 || soloed.includes(t.id));
+      chain.gainNode.gain.value = audible ? t.volume : 0;
+      if(chain.panNode) chain.panNode.pan.value = t.pan;
+      source.connect(chain.gainNode);
+      chain.finalOutput.connect(masterGain);
+      source.start(0, mixElapsed || 0);
+      activeSources[t.id] = {source, ...chain};
+    });
+    mixStartTime = audioContext.currentTime - (mixElapsed || 0);
+    isPlayingMix = true;
+    updatePlayIcons();
+    mixRAF = requestAnimationFrame(tickMixPlayback);
+  }
+
+  function tickMixPlayback(){
+    if(!isPlayingMix) return;
+    const proj = currentProject();
+    const maxDur = Math.max(1, ...proj.tracks.map(t=>audioBuffers[t.id]?.duration || 0));
+    const elapsed = audioContext.currentTime - mixStartTime;
+    $('transportTime').textContent = `${fmtTime(elapsed)} / ${fmtTime(maxDur)}`;
+    animateMeters();
+    if(elapsed >= maxDur){ mixElapsed = 0; stopMixPlayback(); return; }
+    mixRAF = requestAnimationFrame(tickMixPlayback);
+  }
+
+  function stopMixPlayback(){
+    Object.keys(activeSources).forEach(id=>{
+      try{ activeSources[id].source.stop(); }catch(e){}
+      delete activeSources[id];
+    });
+    if(mixRAF) cancelAnimationFrame(mixRAF);
+    isPlayingMix = false;
+    resetMeters();
+    updatePlayIcons();
+  }
+
+  function applyLiveMixState(){
+    if(!isPlayingMix) return;
+    const proj = currentProject();
+    const soloed = proj.tracks.filter(t=>t.solo).map(t=>t.id);
+    proj.tracks.forEach(t=>{
+      const node = activeSources[t.id];
+      if(!node) return;
+      const audible = !t.muted && (soloed.length === 0 || soloed.includes(t.id));
+      node.gainNode.gain.value = audible ? t.volume : 0;
+      if(node.panNode) node.panNode.pan.value = t.pan;
+    });
+  }
+
+  function animateMeters(){
+    const l = 20 + Math.random()*70, r = 20 + Math.random()*70;
+    $('meterL').style.height = l+'%'; $('meterR').style.height = r+'%';
+  }
+  function resetMeters(){ $('meterL').style.height='16%'; $('meterR').style.height='16%'; }
+
+  async function startRecording(){
+    const proj = currentProject();
+    let track = proj.tracks.find(t=>t.armed);
+    if(!track){
+      if(!proj.tracks.length) { snapshot(); proj.tracks.push(makeTrack('Recording ' + (proj.tracks.length+1))); }
+      track = proj.tracks[proj.tracks.length-1];
+      track.armed = true;
+    }
+    try{
+      micStream = await navigator.mediaDevices.getUserMedia({audio:true});
+    }catch(err){
+      toast('Microphone permission denied'); return;
+    }
+    recordingTrackId = track.id;
+    recordChunks = [];
+    mediaRecorder = new MediaRecorder(micStream);
+    mediaRecorder.ondataavailable = e => { if(e.data.size>0) recordChunks.push(e.data); };
+    mediaRecorder.onstop = async () => {
+      const blob = new Blob(recordChunks, {type: mediaRecorder.mimeType || 'audio/webm'});
+      await loadBlobIntoTrack(blob, recordingTrackId);
+      micStream.getTracks().forEach(tr=>tr.stop());
+      $('recBadge').classList.remove('show');
+      $('recBtn').classList.remove('recording');
+      toast('Recording added to ' + track.name);
+    };
+    mediaRecorder.start();
+    $('recBadge').classList.add('show');
+    $('recBtn').classList.add('recording');
+  }
+
+  function stopRecording(){
+    if(mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  }
+
+  function toggleRecording(){
+    if(mediaRecorder && mediaRecorder.state === 'recording') stopRecording();
+    else startRecording();
+  }
+
+  async function loadBlobIntoTrack(blob, trackId){
+    ensureAudioContext();
+    const arrayBuffer = await blob.arrayBuffer();
+    const decoded = await audioContext.decodeAudioData(arrayBuffer.slice(0));
+    const proj = currentProject();
+    const track = proj.tracks.find(t=>t.id===trackId);
+    snapshot();
+    audioBuffers[trackId] = decoded;
+    track.duration = decoded.duration;
+    track.waveform = null;
+    track.audioKey = 'mem:' + trackId;
+    proj.modified = Date.now();
+    save(); renderTracks();
+  }
+
+  function requestUpload(trackId){
+    pendingUploadTrackId = trackId;
+    $('audioFileInput').click();
+  }
+
+  $('audioFileInput').addEventListener('change', async e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    ensureAudioContext();
+    try{
+      const arrayBuffer = await file.arrayBuffer();
+      const decoded = await audioContext.decodeAudioData(arrayBuffer.slice(0));
+      const proj = currentProject();
+      let track;
+      if(pendingUploadTrackId) track = proj.tracks.find(t=>t.id===pendingUploadTrackId);
+      if(!track){
+        snapshot();
+        track = makeTrack(file.name.replace(/\.[^.]+$/,''));
+        proj.tracks.push(track);
+      } else {
+        snapshot();
+      }
+      audioBuffers[track.id] = decoded;
+      track.duration = decoded.duration;
+      track.waveform = null;
+      track.audioKey = 'mem:' + track.id;
+      proj.modified = Date.now();
+      save(); renderTracks(); renderPluginsTab(); renderMixTab();
+      toast('Loaded ' + file.name);
+    }catch(err){
+      toast('Could not decode that audio file');
+    }
+    pendingUploadTrackId = null;
+    e.target.value = '';
+  });
+
+  function renderPluginsTab(){
+    const proj = currentProject();
+    const select = $('pluginTrackSelect');
+    select.innerHTML = proj.tracks.map(t=>`<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('') || '<option disabled>No tracks</option>';
+    renderPluginTrackChain();
+    select.onchange = renderPluginTrackChain;
+  }
+
+  function renderPluginTrackChain(){
+    const proj = currentProject();
+    const select = $('pluginTrackSelect');
+    const track = proj.tracks.find(t=>t.id===select.value) || proj.tracks[0];
+    const container = $('pluginTrackChain');
+    container.innerHTML = '';
+    if(!track){ container.innerHTML = '<div class="empty">Add a track first.</div>'; return; }
+    if(!track.plugins.length){ container.innerHTML = '<div class="empty">No plugins on this track yet.</div>'; return; }
+    track.plugins.forEach((pid, idx)=>{
+      const preset = PLUGIN_PRESETS.find(p=>p.id===pid);
+      if(!preset) return;
+      const row = document.createElement('div');
+      row.className = 'plugin-row';
+      row.innerHTML = `<div><strong>${escapeHtml(preset.name)}</strong><span class="plugin-tag">${escapeHtml(preset.tag)}</span><br><small style="color:#999">${escapeHtml(preset.desc)}</small></div>
+        <button class="small-btn" data-chainremove="${idx}">✕</button>`;
+      container.appendChild(row);
+    });
+    container.querySelectorAll('[data-chainremove]').forEach(b=>b.onclick = () => {
+      snapshot();
+      track.plugins.splice(+b.dataset.chainremove, 1);
+      currentProject().modified = Date.now();
+      save(); renderPluginsTab(); renderTracks();
+    });
+  }
+
+  function openPluginPicker(){
+    const proj = currentProject();
+    const select = $('pluginTrackSelect');
+    const track = proj.tracks.find(t=>t.id===select.value) || proj.tracks[0];
+    if(!track) return toast('Add a track first');
+    openModal(`
+      <div class="handle"></div>
+      <h2>Add plugin</h2>
+      <p class="sub">To ${escapeHtml(track.name)}</p>
+      <div class="preset-grid">
+        ${PLUGIN_PRESETS.map(p=>`
+          <button class="option" data-pickplugin="${p.id}" style="grid-column:span 1">
+            <b style="font-size:12.5px">${escapeHtml(p.name)}</b>
+            <span class="plugin-tag">${escapeHtml(p.tag)}</span>
+            <small style="display:block;margin-top:5px">${escapeHtml(p.desc)}</small>
+          </button>
+        `).join('')}
+      </div>
+      <div class="modal-actions"><button data-close style="flex:1">Cancel</button></div>
+    `);
+    document.querySelectorAll('[data-pickplugin]').forEach(b=>b.onclick = () => {
+      snapshot();
+      track.plugins.push(b.dataset.pickplugin);
+      proj.modified = Date.now();
+      save(); closeModal(); renderPluginsTab(); renderTracks();
+      toast(PLUGIN_PRESETS.find(p=>p.id===b.dataset.pickplugin).name + ' added');
+    });
+  }
+
+  function renderMixGoalChips(){
+    const container = $('mixGoalChips');
+    container.innerHTML = MIX_GOAL_CHIPS.map(c=>`<button class="mixgoal-chip ${selectedMixGoalChips.has(c)?'active':''}" data-chip="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
+    container.querySelectorAll('[data-chip]').forEach(b=>b.onclick = () => {
+      const c = b.dataset.chip;
+      if(selectedMixGoalChips.has(c)) selectedMixGoalChips.delete(c); else selectedMixGoalChips.add(c);
+      renderMixGoalChips();
+      const textarea = $('mixGoalInput');
+      textarea.value = Array.from(selectedMixGoalChips).join(', ');
+    });
+  }
+
+  function renderMixTab(){
+    renderMixGoalChips();
+    const proj = currentProject();
+    $('mixGoalInput').value = proj.mixGoal || '';
+    $('aiMixResult').innerHTML = '';
+    const list = $('mixList');
+    list.innerHTML = '';
+    if(!proj.tracks.length){ list.innerHTML = '<div class="empty">No tracks to mix yet.</div>'; return; }
+    proj.tracks.forEach(t=>{
+      const div = document.createElement('div');
+      div.className = 'panel';
+      div.innerHTML = `
+        <h3>${escapeHtml(t.name)}</h3>
+        <div class="control-row">
+          <label>Volume <input type="range" min="0" max="1" step="0.01" value="${t.volume}" data-vol="${t.id}"></label>
+          <label>Pan <input type="range" min="-1" max="1" step="0.01" value="${t.pan}" data-pan="${t.id}"></label>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="small-btn ${t.muted?'active':''}" data-mixmute="${t.id}" style="flex:1">Mute</button>
+          <button class="small-btn ${t.solo?'solo-active':''}" data-mixsolo="${t.id}" style="flex:1">Solo</button>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+    document.querySelectorAll('[data-vol]').forEach(inp=>inp.oninput = () => {
+      const t = proj.tracks.find(x=>x.id===inp.dataset.vol);
+      t.volume = +inp.value; proj.modified=Date.now(); save(); applyLiveMixState();
+    });
+    document.querySelectorAll('[data-pan]').forEach(inp=>inp.oninput = () => {
+      const t = proj.tracks.find(x=>x.id===inp.dataset.pan);
+      t.pan = +inp.value; proj.modified=Date.now(); save(); applyLiveMixState();
+    });
+    document.querySelectorAll('[data-mixmute]').forEach(b=>b.onclick = () => {
+      const t = proj.tracks.find(x=>x.id===b.dataset.mixmute);
+      snapshot(); t.muted = !t.muted; proj.modified=Date.now(); save(); renderMixTab(); renderTracks(); applyLiveMixState();
+    });
+    document.querySelectorAll('[data-mixsolo]').forEach(b=>b.onclick = () => {
+      const t = proj.tracks.find(x=>x.id===b.dataset.mixsolo);
+      snapshot(); t.solo = !t.solo; proj.modified=Date.now(); save(); renderMixTab(); renderTracks(); applyLiveMixState();
+    });
+  }
+
+  function autoMix(session){
+    const proj = session || currentProject();
+    if(!proj.tracks.length) return;
+    proj.tracks.forEach(t=>{
+      const buffer = audioBuffers[t.id];
+      let target = 0.78;
+      if(/vocal|lead/i.test(t.name)) target = 0.88;
+      else if(/808|bass|kick|drum/i.test(t.name)) target = 0.72;
+      if(buffer){
+        const peaks = t.waveform || computePeaks(buffer, 140);
+        const avgPeak = peaks.reduce((a,b)=>a+b,0)/peaks.length;
+        const correction = avgPeak > 0 ? Math.min(1.3, Math.max(0.6, 0.5/avgPeak)) : 1;
+        target = Math.min(0.95, target * correction);
+      }
+      t.volume = Math.round(target*100)/100;
+      t.pan = /hi-hat|hat/i.test(t.name) ? 0.15 : (/808|bass|kick/i.test(t.name) ? 0 : t.pan);
+    });
+    proj.modified = Date.now();
+  }
+
+  function runAutomix(){
+    snapshot();
+    autoMix();
+    save(); renderMixTab(); applyLiveMixState();
+    toast('Automix balanced your levels');
+  }
+
+  function generateAiMixFromGoal(){
+    const proj = currentProject();
+    const goalText = ($('mixGoalInput').value || '').toLowerCase();
+    if(!goalText.trim()) return toast('Describe the sound you want first');
+    snapshot();
+    proj.mixGoal = goalText;
+
+    const actions = [];
+    const wantsVocalsUp = /vocal|lead up|forward|front/.test(goalText);
+    const wants808 = /808|bass|punch/.test(goalText);
+    const wantsWarm = /warm|vintage|analog|tape/.test(goalText);
+    const wantsLoud = /loud|radio|playlist|punchy/.test(goalText);
+    const wantsBright = /bright|airy|streaming|crisp/.test(goalText);
+    const wantsLofi = /lo-fi|lofi|boombap|dusty|crush/.test(goalText);
+    const wantsWide = /wide|spacious|stereo|big/.test(goalText);
+
+    proj.tracks.forEach(t=>{
+      const isVocal = /vocal|lead/i.test(t.name);
+      const isBass = /808|bass/i.test(t.name);
+      const isDrum = /kick|drum|hat/i.test(t.name);
+
+      if(wantsVocalsUp && isVocal){
+        t.volume = Math.min(0.95, 0.9);
+        if(!t.plugins.includes('vocal-chain')){ t.plugins.push('vocal-chain'); actions.push(`Added Vocal Chain to ${t.name} and raised it in the mix`); }
+      }
+      if(wants808 && isBass){
+        t.volume = Math.max(t.volume, 0.8);
+        if(!t.plugins.includes('808-drive')){ t.plugins.push('808-drive'); actions.push(`Added 808 Drive to ${t.name} for more punch`); }
+      }
+      if(wantsWarm && !t.plugins.includes('tape-sat')){
+        t.plugins.push('tape-sat'); actions.push(`Added Tape Saturation to ${t.name} for warmth`);
+      }
+      if(wantsLofi && !t.plugins.includes('lofi-crush')){
+        t.plugins.push('lofi-crush'); actions.push(`Added Lo-Fi Crush to ${t.name}`);
+      }
+      if(wantsWide && (isVocal || /synth|chord|lead/i.test(t.name)) && !t.plugins.includes('stereo-widener')){
+        t.plugins.push('stereo-widener'); actions.push(`Added Stereo Widener to ${t.name}`);
+      }
+      if(isDrum && /hat/i.test(t.name) && !t.plugins.includes('trap-hats')){
+        t.plugins.push('trap-hats'); actions.push(`Added Trap Hi-Hat Shaper to ${t.name}`);
+      }
+      if(!t.plugins.includes('dynamics-proc') && t.volume > 0.85){
+        t.plugins.push('dynamics-proc'); actions.push(`Added Dynamics Processor to ${t.name} to control peaks`);
+      }
+    });
+
+    autoMix(proj);
+    actions.push('Ran Automix for level balance across all tracks');
+
+    if(wantsLoud){ proj.master='Loud & Punchy'; actions.push('Set master style to Loud & Punchy'); }
+    else if(wantsWarm){ proj.master='Warm Vintage'; actions.push('Set master style to Warm Vintage'); }
+    else if(wantsBright){ proj.master='Bright Streaming'; actions.push('Set master style to Bright Streaming'); }
+    else { proj.master='Balanced'; actions.push('Set master style to Balanced'); }
+    state.master = proj.master;
+    applyMasterPreset(state.master);
+
+    proj.modified = Date.now();
+    save();
+    renderTracks(); renderPluginsTab(); renderMixTab(); renderMasterTab(); applyLiveMixState();
+
+    $('aiMixResult').innerHTML = `
+      <div class="ai-result">
+        <h4>✓ AI mix generated</h4>
+        <ul>${actions.map(a=>`<li>${escapeHtml(a)}</li>`).join('')}</ul>
+      </div>`;
+    toast('AI producer mix applied');
+  }
+
+  function renderMasterTab(){
+    const container = $('masterPresets');
+    container.innerHTML = MASTER_PRESETS.map(p => `
+      <button class="preset ${state.master===p.id?'selected':''}" data-master="${p.id}">
+        <b>${escapeHtml(p.name)}</b><small>${escapeHtml(p.desc)}</small>
+      </button>
+    `).join('');
+    document.querySelectorAll('[data-master]').forEach(b=>b.onclick = () => {
+      snapshot();
+      state.master = b.dataset.master;
+      applyMasterPreset(state.master);
+      save(); renderMasterTab();
+      toast(state.master + ' master applied');
+    });
+  }
+
+  function openAiSuggestions(){
+    const proj = currentProject();
+    const picks = AI_TIPS.slice().sort(()=>Math.random()-0.5).slice(0,3);
+    openModal(`
+      <div class="handle"></div>
+      <h2>✨ Producer tips</h2>
+      ${picks.map(tip => `
+        <div class="ai-card">
+          <h4>${escapeHtml(tip.title)}</h4>
+          <p>${escapeHtml(tip.body)}</p>
+          <div class="ai-actions">
+            <button class="apply" data-aiapply="${tip.id}">Apply</button>
+            <button class="dismiss" data-aidismiss="${tip.id}">Not now</button>
+          </div>
+        </div>
+      `).join('')}
+      <div class="modal-actions"><button data-close>Close</button></div>
+    `);
+    document.querySelectorAll('[data-aiapply]').forEach(b=>b.onclick = () => {
+      const tip = AI_TIPS.find(t=>t.id===b.dataset.aiapply);
+      snapshot();
+      const applied = tip.action(proj);
+      proj.modified = Date.now();
+      save();
+      renderTracks(); renderPluginsTab(); renderMixTab(); renderMasterTab();
+      toast(applied === false ? 'Already applied' : tip.title + ' — applied');
+      closeModal();
+    });
+    document.querySelectorAll('[data-aidismiss]').forEach(b=>b.onclick = () => {
+      b.closest('.ai-card').remove();
+    });
+  }
+
+  function openExportModal(){
+    const proj = currentProject();
+    if(!proj.tracks.some(t=>audioBuffers[t.id])) return toast('No audio to export yet');
+    openModal(`
+      <div class="handle"></div>
+      <h2>Export mix</h2>
+      <p class="sub">Renders your full mix with current volume, pan, plugins, and master settings applied.</p>
+      <div class="export-row">
+        <button class="option" data-exportfmt="wav">Export as WAV <small>Uncompressed, studio quality</small></button>
+      </div>
+      <div class="export-row" style="margin-top:8px">
+        <button class="option" data-exportfmt="m4a">Export as M4A <small>Compressed, smaller file</small></button>
+      </div>
+      <div class="modal-actions"><button data-close>Cancel</button></div>
+    `);
+    document.querySelectorAll('[data-exportfmt]').forEach(b=>b.onclick = () => renderAndExport(b.dataset.exportfmt));
+  }
+
+  async function renderMixToBuffer(){
+    const proj = currentProject();
+    const playable = proj.tracks.filter(t=>audioBuffers[t.id]);
+    const maxDur = Math.max(1, ...playable.map(t=>audioBuffers[t.id].duration));
+    const sampleRate = 44100;
+    const offlineCtx = new OfflineAudioContext(2, Math.ceil(maxDur*sampleRate), sampleRate);
+    const masterPreset = MASTER_PRESETS.find(p=>p.id===state.master) || MASTER_PRESETS[0];
+    const masterOut = offlineCtx.createGain();
+    masterOut.gain.value = masterPreset.gain;
+    masterOut.connect(offlineCtx.destination);
+    const soloed = proj.tracks.filter(t=>t.solo).map(t=>t.id);
+    playable.forEach(t=>{
+      const source = offlineCtx.createBufferSource();
+      source.buffer = audioBuffers[t.id];
+      const gainNode = offlineCtx.createGain();
+      const audible = !t.muted && (soloed.length===0 || soloed.includes(t.id));
+      gainNode.gain.value = audible ? t.volume : 0;
+      source.connect(gainNode);
+      if(offlineCtx.createStereoPanner){
+        const panNode = offlineCtx.createStereoPanner();
+        panNode.pan.value = t.pan;
+        gainNode.connect(panNode); panNode.connect(masterOut);
+      } else {
+        gainNode.connect(masterOut);
+      }
+      source.start(0);
+    });
+    return await offlineCtx.startRendering();
+  }
+
+  function bufferToWav(buffer){
+    const numCh = buffer.numberOfChannels, len = buffer.length;
+    const sampleRate = buffer.sampleRate;
+    const bytesPerSample = 2;
+    const blockAlign = numCh * bytesPerSample;
+    const dataSize = len * blockAlign;
+    const bufferArr = new ArrayBuffer(44 + dataSize);
+    const view = new DataView(bufferArr);
+    const writeStr = (offset, str) => { for(let i=0;i<str.length;i++) view.setUint8(offset+i, str.charCodeAt(i)); };
+    writeStr(0,'RIFF'); view.setUint32(4, 36+dataSize, true); writeStr(8,'WAVE');
+    writeStr(12,'fmt '); view.setUint32(16,16,true); view.setUint16(20,1,true);
+    view.setUint16(22,numCh,true); view.setUint32(24,sampleRate,true);
+    view.setUint32(28,sampleRate*blockAlign,true); view.setUint16(32,blockAlign,true); view.setUint16(34,16,true);
+    writeStr(36,'data'); view.setUint32(40,dataSize,true);
+    const channels = []; for(let c=0;c<numCh;c++) channels.push(buffer.getChannelData(c));
+    let offset = 44;
+    for(let i=0;i<len;i++){
+      for(let c=0;c<numCh;c++){
+        let sample = Math.max(-1, Math.min(1, channels[c][i]));
+        sample = sample < 0 ? sample*0x8000 : sample*0x7fff;
+        view.setInt16(offset, sample, true); offset += 2;
+      }
+    }
+    return new Blob([view], {type:'audio/wav'});
+  }
+
+  async function renderAndExport(format){
+    closeModal();
+    toast('Rendering mix…');
+    try{
+      const rendered = await renderMixToBuffer();
+      const wavBlob = bufferToWav(rendered);
+      const proj = currentProject();
+      const baseName = proj.name.replace(/[^a-z0-9\-_ ]/gi,'').trim() || 'beat-studio-mix';
+      let finalBlob = wavBlob, ext = 'wav', mime = 'audio/wav';
+      if(format === 'm4a'){
+        const encoded = await encodeCompressed(rendered);
+        finalBlob = encoded.blob; ext = encoded.ext; mime = encoded.mime;
+      }
+      await shareOrDownload(finalBlob, `${baseName}.${ext}`, mime);
+    }catch(err){
+      toast('Export failed: ' + err.message);
+    }
+  }
+
+  function encodeCompressed(buffer){
+    return new Promise((resolve,reject)=>{
+      try{
+        const ctx = new (window.AudioContext||window.webkitAudioContext)();
+        const dest = ctx.createMediaStreamDestination();
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(dest);
+        const mimeCandidates = ['audio/mp4','audio/aac','audio/webm;codecs=opus','audio/webm'];
+        const supported = mimeCandidates.find(m=>MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || '';
+        const recorder = new MediaRecorder(dest.stream, supported ? {mimeType:supported} : undefined);
+        const chunks = [];
+        recorder.ondataavailable = e => { if(e.data.size) chunks.push(e.data); };
+        recorder.onstop = () => {
+          ctx.close();
+          const mime = supported || 'audio/webm';
+          const ext = mime.includes('mp4') ? 'm4a' : (mime.includes('aac') ? 'm4a' : 'webm');
+          resolve({blob: new Blob(chunks, {type:mime}), ext, mime});
+        };
+        recorder.start();
+        source.start();
+        source.onended = () => setTimeout(()=>recorder.stop(), 150);
+      }catch(err){ reject(err); }
+    });
+  }
+
+  async function shareOrDownload(blob, filename, mime){
+    const file = new File([blob], filename, {type: mime});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file], title: filename}); toast('Shared ' + filename); return; }catch(e){}
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 400);
+    toast('Saved ' + filename);
+  }
+
+  function openModal(html){
+    $('modalCard').innerHTML = html;
+    $('modal').classList.add('show');
+    $('modalCard').querySelectorAll('[data-close]').forEach(b=>b.onclick = closeModal);
+  }
+  function closeModal(){ $('modal').classList.remove('show'); }
+  $('modal').addEventListener('click', e => { if(e.target.id === 'modal') closeModal(); });
+
+  function openRenameModal(){
+    const proj = currentProject();
+    openModal(`
+      <div class="handle"></div>
+      <h2>Rename session</h2>
+      <input class="field" id="renameInput" value="${escapeHtml(proj.name)}">
+      <div class="modal-actions">
+        <button data-close>Cancel</button>
+        <button class="confirm" id="renameConfirm">Save</button>
+      </div>
+    `);
+    $('renameConfirm').onclick = () => {
+      const val = $('renameInput').value.trim();
+      if(val){ snapshot(); proj.name = val; proj.modified = Date.now(); save(); renderStudio(); }
+      closeModal();
+    };
+  }
+
+  document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    activeTab = tab.dataset.tab;
+    $('tab-' + activeTab).classList.add('active');
+  }));
+
+  $('newSessionBtn').onclick = newSession;
+  $('projectList').addEventListener('click', e => {
+    const del = e.target.closest('[data-del]');
+    if(del) deleteProject(del.dataset.del);
+  });
+  $('backBtn').onclick = () => { stopMixPlayback(); stopSoloPlayback(); showScreen('screen-home'); renderHome(); };
+  $('renameBtn').onclick = openRenameModal;
+  $('addTrackBtn').onclick = () => {
+    const proj = currentProject();
+    snapshot();
+    proj.tracks.push(makeTrack('Track ' + (proj.tracks.length+1)));
+    proj.modified = Date.now(); save(); renderTracks(); renderPluginsTab(); renderMixTab();
+  };
+  $('uploadTrackBtn').onclick = () => requestUpload(null);
+  $('openPluginPickerBtn').onclick = openPluginPicker;
+  $('automixBtn').onclick = runAutomix;
+  $('aiMixBtn').onclick = generateAiMixFromGoal;
+  $('micBtn').onclick = () => {
+    const proj = currentProject();
+    if(!proj.tracks.some(t=>t.armed) && proj.tracks.length){ proj.tracks[0].armed = true; renderTracks(); }
+    toast('Arm a track, then hit REC to record from mic');
+  };
+  $('fxBtn').onclick = openPluginPicker;
+  $('autoPitchBtn').onclick = () => {
+    autoPitchOn = !autoPitchOn;
+    $('autoPitchBtn').style.background = autoPitchOn ? '#42dc99' : '';
+    $('autoPitchBtn').style.color = autoPitchOn ? '#052' : '';
+    toast('AutoPitch ' + (autoPitchOn ? 'enabled' : 'disabled'));
+  };
+  $('recBtn').onclick = toggleRecording;
+  $('playBtn').onclick = toggleMixPlayback;
+  $('undoBtn').onclick = undo;
+  $('redoBtn').onclick = redo;
+  $('aiBtn').onclick = openAiSuggestions;
+  $('exportBtn').onclick = openExportModal;
+  $('homeSettingsBtn').onclick = () => toast('Beat Studio v3');
+
+  if(!state.current && state.projects.length) state.current = state.projects[0].id;
+  showScreen('screen-home');
+  renderHome();
+})();
+</script>
+</body>
+</html>
