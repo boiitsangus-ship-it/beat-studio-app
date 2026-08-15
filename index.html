@@ -16,8 +16,8 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:radial-gradient(circle at 50% -10%,#1a0808 0%,var(--bg) 45%);color:var(--text);
-  font:15px -apple-system,BlinkMacSystemFont,"SF Pro Display",Segoe UI,Roboto,sans-serif;min-height:100dvh}
-.app{max-width:720px;min-height:100dvh;margin:auto;padding:env(safe-area-inset-top) 14px calc(112px + env(safe-area-inset-bottom))}
+  font:15px -apple-system,BlinkMacSystemFont,"SF Pro Display",Segoe UI,Roboto,sans-serif;min-height:100vh;min-height:100dvh}
+.app{max-width:720px;min-height:100vh;min-height:100dvh;margin:auto;padding:env(safe-area-inset-top) 14px calc(112px + env(safe-area-inset-bottom))}
 button,input,select{font:inherit}
 button{border:0;color:inherit;background:none;cursor:pointer;touch-action:manipulation}
 button:active{transform:scale(.96)}
@@ -51,6 +51,7 @@ h1{margin:20px 0 4px;font-size:32px;font-weight:900;letter-spacing:-.02em}
 @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .track{margin-bottom:12px;padding:14px;border-radius:18px;background:linear-gradient(165deg,var(--card2),var(--card));border:1px solid var(--line);position:relative;overflow:hidden}
 .track.armed{border-color:#ff9d33;box-shadow:0 0 0 1px #ff9d3355,0 0 20px #ff9d3322}
+.track.live-updating{border-color:#42dc99;box-shadow:0 0 0 1px #42dc9955}
 .track-top{display:flex;gap:7px;align-items:center}
 .track-title{flex:1;min-width:0;border:0;background:transparent;color:#fff;font-weight:800;font-size:14px}
 .small-btn{min-width:30px;height:28px;padding:0 8px;border-radius:9px;background:#252525;font-size:11px;font-weight:800;color:#ccc}
@@ -58,7 +59,7 @@ h1{margin:20px 0 4px;font-size:32px;font-weight:900;letter-spacing:-.02em}
 .small-btn.solo-active{background:var(--gold);color:#111}
 .wave-scroll{position:relative;margin:12px 0 8px;border-radius:12px;overflow:hidden;background:#030303}
 canvas{display:block;height:64px;touch-action:none}
-.play-fab{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:#000c;border:1px solid #ff373766;color:var(--red);font-size:12px;display:flex;align-items:center;justify-content:center;z-index:3;backdrop-filter:blur(4px)}
+.play-fab{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:#000c;border:1px solid #ff373766;color:var(--red);font-size:12px;display:flex;align-items:center;justify-content:center;z-index:3;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .zoom-hint{position:absolute;right:6px;bottom:6px;padding:3px 8px;border-radius:20px;background:#0009;color:#999;font-size:9px;font-weight:700;z-index:3;pointer-events:none}
 .control-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;color:var(--muted);font-size:11px}
 .control-row label{display:grid;gap:4px;font-weight:700}
@@ -84,15 +85,17 @@ textarea.field{resize:none;min-height:78px}
 .preset small{display:block;color:var(--muted);font-size:10.5px;line-height:1.35}
 .meter{display:flex;align-items:end;gap:8px;height:110px;margin:16px 0}
 .meter-bar{width:50%;height:16%;border-radius:6px 6px 2px 2px;background:linear-gradient(var(--green),var(--gold),var(--red));transition:height .12s}
-.dock{position:fixed;z-index:10;right:0;bottom:0;left:0;max-width:720px;margin:auto;padding:12px 14px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:linear-gradient(180deg,#0d0d0df0,#000f);backdrop-filter:blur(18px)}
+.dock{position:fixed;z-index:10;right:0;bottom:0;left:0;max-width:720px;margin:auto;padding:12px 14px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:linear-gradient(180deg,#0d0d0df0,#000f);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
 .time{text-align:center;margin-bottom:9px;font-variant-numeric:tabular-nums;font-weight:800;font-size:12.5px;color:#ccc}
 .transport{display:grid;grid-template-columns:36px 36px 36px 1fr 46px 36px 36px 36px 36px;gap:6px}
 .transport button{height:44px;border-radius:14px;background:#1c1c1c;font-weight:800;font-size:14px;color:#ddd}
 .transport .rec-btn{background:#3d0f0f;color:#ff9999}
 .transport .rec-btn.recording{background:var(--red);color:#fff;animation:pulse 1s infinite}
 .transport .play-btn{background:var(--red);font-size:18px;box-shadow:0 4px 16px var(--red-glow)}
+.transport .play-btn.live{animation:livepulse 1.4s infinite}
 .transport .ai-btn{background:linear-gradient(135deg,#3a1c5c,#7d2fbf);color:#fff}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes livepulse{0%,100%{box-shadow:0 4px 16px var(--red-glow)}50%{box-shadow:0 4px 26px #ff373766}}
 .modal{position:fixed;z-index:30;inset:0;display:none;align-items:flex-end;background:#000c}
 .modal.show{display:flex}
 .modal-card{width:100%;max-width:720px;margin:auto;max-height:85vh;overflow-y:auto;padding:14px 16px calc(22px + env(safe-area-inset-bottom));border-radius:26px 26px 0 0;background:#131313;border-top:1px solid #2a2a2a}
@@ -108,6 +111,8 @@ textarea.field{resize:none;min-height:78px}
 .toast.show{transform:translate(-50%,0);opacity:1}
 .rec-badge{display:none;position:fixed;z-index:20;top:78px;right:16px;padding:5px 8px;border-radius:8px;background:#d92929;font-size:10px;font-weight:900}
 .rec-badge.show{display:block}
+.live-badge{display:none;position:fixed;z-index:20;top:78px;left:16px;padding:5px 9px;border-radius:8px;background:#1a4a30;color:#7fe3ab;font-size:10px;font-weight:900}
+.live-badge.show{display:block}
 .ai-card{padding:14px;margin-bottom:10px;border-radius:15px;background:linear-gradient(165deg,#241a33,#160f21);border:1px solid #4c2f77}
 .ai-card h4{margin:0 0 4px;font-size:13.5px;color:#d8b8ff;font-weight:800}
 .ai-card p{margin:0 0 11px;font-size:12px;color:#bbb;line-height:1.4}
@@ -126,9 +131,39 @@ textarea.field{resize:none;min-height:78px}
 .param-row{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
 .param-row .lbl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);font-weight:700}
 .fx-badge{display:inline-block;padding:2px 8px;border-radius:20px;background:#241a33;color:#c9a6ff;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px}
+.convert-choice{display:flex;gap:8px;margin-top:4px}
+.convert-choice button{flex:1}
+.loading-overlay{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;background:#050505ee;gap:18px}
+.loading-overlay.show{display:flex}
+.stickfigure{width:70px;height:100px;position:relative}
+.stickfigure .head{position:absolute;top:0;left:27px;width:16px;height:16px;border-radius:50%;background:none;border:3px solid var(--red)}
+.stickfigure .body{position:absolute;top:15px;left:34px;width:3px;height:32px;background:var(--red);transform-origin:top center;animation:sf-body 0.6s ease-in-out infinite}
+.stickfigure .arm-l{position:absolute;top:20px;left:34px;width:3px;height:22px;background:var(--red);transform-origin:top center;animation:sf-arm-l 0.6s ease-in-out infinite}
+.stickfigure .arm-r{position:absolute;top:20px;left:34px;width:3px;height:22px;background:var(--red);transform-origin:top center;animation:sf-arm-r 0.6s ease-in-out infinite}
+.stickfigure .leg-l{position:absolute;top:46px;left:34px;width:3px;height:26px;background:var(--red);transform-origin:top center;animation:sf-leg-l 0.6s ease-in-out infinite}
+.stickfigure .leg-r{position:absolute;top:46px;left:34px;width:3px;height:26px;background:var(--red);transform-origin:top center;animation:sf-leg-r 0.6s ease-in-out infinite}
+@keyframes sf-body{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes sf-arm-l{0%,100%{transform:rotate(35deg)}50%{transform:rotate(-35deg)}}
+@keyframes sf-arm-r{0%,100%{transform:rotate(-35deg)}50%{transform:rotate(35deg)}}
+@keyframes sf-leg-l{0%,100%{transform:rotate(-30deg)}50%{transform:rotate(30deg)}}
+@keyframes sf-leg-r{0%,100%{transform:rotate(30deg)}50%{transform:rotate(-30deg)}}
+.loading-text{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em}
+.loading-text span{color:var(--red)}
 </style>
 </head>
 <body>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="stickfigure">
+    <div class="head"></div>
+    <div class="body"></div>
+    <div class="arm-l"></div>
+    <div class="arm-r"></div>
+    <div class="leg-l"></div>
+    <div class="leg-r"></div>
+  </div>
+  <div class="loading-text" id="loadingText">Loading<span>...</span></div>
+</div>
+
 <div class="app" id="app">
 
   <div class="screen active" id="screen-home">
@@ -183,7 +218,7 @@ textarea.field{resize:none;min-height:78px}
     <div class="tab-page" id="tab-fx">
       <div class="panel">
         <h3>🎛️ FX Chains</h3>
-        <p>One-tap producer-style chains that combine multiple plugins and settings — inspired by underground trap/melodic production aesthetics. Apply to a track or as a master chain.</p>
+        <p>One-tap producer-style chains that combine multiple plugins and settings. Apply to a track or as a master chain.</p>
         <select class="field" id="fxTrackSelect"></select>
       </div>
       <div class="preset-grid" id="fxChainGrid"></div>
@@ -192,7 +227,7 @@ textarea.field{resize:none;min-height:78px}
     <div class="tab-page" id="tab-mix">
       <div class="panel">
         <h3>🤖 AI Producer Mix</h3>
-        <p>Describe the sound you want. The AI producer builds a custom balance, EQ, and plugin chain to match — not just volume and pan.</p>
+        <p>Describe the sound you want. The AI producer builds a custom balance, EQ, and plugin chain to match.</p>
         <div class="mixgoal-chip-row" id="mixGoalChips"></div>
         <textarea class="field" id="mixGoalInput" placeholder="e.g. 'make the vocals sit on top, warm punchy 808s, radio-ready loud master'"></textarea>
         <button class="primary" id="aiMixBtn">✨ Generate AI Mix</button>
@@ -215,6 +250,7 @@ textarea.field{resize:none;min-height:78px}
     </div>
 
     <div class="rec-badge" id="recBadge">● REC</div>
+    <div class="live-badge" id="liveBadge">● LIVE SYNCED</div>
   </div>
 </div>
 
@@ -240,7 +276,10 @@ textarea.field{resize:none;min-height:78px}
 <script>
 (() => {
   const $ = id => document.getElementById(id);
-  const storageKey = 'beat-studio-v4';
+  const storageKey = 'beat-studio-v5';
+
+  function showLoading(msg){ $('loadingText').innerHTML = (msg||'Loading') + '<span>...</span>'; $('loadingOverlay').classList.add('show'); }
+  function hideLoading(){ $('loadingOverlay').classList.remove('show'); }
 
   const makeTrack = name => ({
     id: String(Date.now()) + Math.random(),
@@ -262,9 +301,10 @@ textarea.field{resize:none;min-height:78px}
   let soloPlayingTrackId = null, soloStartTime = 0, soloElapsed = 0, soloRAF = null;
   let mediaRecorder = null, recordChunks = [], recordingTrackId = null, micStream = null;
   let pendingUploadTrackId = null;
+  let pendingUploadFile = null;
   let autoPitchOn = false;
   let zoomLevels = {};
-  let lastTapTime = {}, lastTapPos = {};
+  let lastTapTime = {};
 
   const PLUGIN_DEFS = {
     'vocal-chain': {name:'Vocal Chain', tag:'Vocal', desc:'EQ + compressor + de-esser + reverb glue.',
@@ -453,6 +493,7 @@ textarea.field{resize:none;min-height:78px}
     const prev = JSON.parse(undoStack.pop());
     Object.assign(proj, prev);
     save(); renderStudio(); toast('Undid last change');
+    rebuildLivePlaybackIfNeeded();
   }
   function redo(){
     const proj = currentProject();
@@ -461,6 +502,7 @@ textarea.field{resize:none;min-height:78px}
     const next = JSON.parse(redoStack.pop());
     Object.assign(proj, next);
     save(); renderStudio(); toast('Redid change');
+    rebuildLivePlaybackIfNeeded();
   }
 
   function toast(msg){
@@ -531,7 +573,13 @@ textarea.field{resize:none;min-height:78px}
 
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-  function openProject(id){ state.current = id; save(); showScreen('screen-studio'); renderStudio(); }
+  function openProject(id){
+    showLoading('Opening session');
+    setTimeout(()=>{
+      state.current = id; save(); showScreen('screen-studio'); renderStudio();
+      hideLoading();
+    }, 350);
+  }
   function newSession(){
     const id = String(Date.now());
     state.projects.push({id, name:'New Session', modified:Date.now(), mixGoal:'', tracks:[]});
@@ -624,12 +672,14 @@ textarea.field{resize:none;min-height:78px}
     document.querySelectorAll('[data-remove]').forEach(b=>b.onclick = () => {
       snapshot(); proj.tracks = proj.tracks.filter(x=>x.id!==b.dataset.remove); delete audioBuffers[b.dataset.remove];
       proj.modified=Date.now(); save(); renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab();
+      rebuildLivePlaybackIfNeeded();
     });
     document.querySelectorAll('[data-play]').forEach(b=>b.onclick = () => toggleSoloPlayback(b.dataset.play));
     document.querySelectorAll('[data-rmplugin]').forEach(b=>b.onclick = () => {
       const [tid, idx] = b.dataset.rmplugin.split('|');
       const t = proj.tracks.find(x=>x.id===tid);
       snapshot(); t.plugins.splice(+idx,1); proj.modified=Date.now(); save(); renderTracks(); renderPluginsTab();
+      rebuildLivePlaybackIfNeeded();
     });
     document.querySelectorAll('[data-editplugin]').forEach(el=>el.onclick = () => {
       const [tid, idx] = el.dataset.editplugin.split('|');
@@ -799,12 +849,23 @@ textarea.field{resize:none;min-height:78px}
   function updatePlayIcons(){
     document.querySelectorAll('[data-play]').forEach(b=>{ b.textContent = (b.dataset.play === soloPlayingTrackId) ? '⏸' : '▶'; });
     $('playBtn').textContent = isPlayingMix ? '⏸' : '▶';
+    $('playBtn').classList.toggle('live', isPlayingMix);
+    $('liveBadge').classList.toggle('show', isPlayingMix);
+  }
+
+  function currentMixElapsed(){
+    if(!isPlayingMix || !audioContext) return mixElapsed;
+    return audioContext.currentTime - mixStartTime;
   }
 
   function toggleMixPlayback(){
     if(isPlayingMix){ stopMixPlayback(); return; }
     stopSoloPlayback();
     ensureAudioContext();
+    startMixPlaybackAt(mixElapsed || 0);
+  }
+
+  function startMixPlaybackAt(position){
     const proj = currentProject();
     const playable = proj.tracks.filter(t => !!audioBuffers[t.id]);
     if(!playable.length){ toast('No audio to play yet'); return; }
@@ -822,16 +883,27 @@ textarea.field{resize:none;min-height:78px}
       source.connect(chain.gainNode);
       chain.finalOutput.connect(masterGain);
       try{
-        source.start(0, Math.min(mixElapsed || 0, buffer.duration - 0.01));
+        const startAt = Math.min(Math.max(0,position), buffer.duration - 0.01);
+        source.start(0, startAt);
         activeSources[t.id] = {source, ...chain};
         startedAny = true;
       }catch(e){}
     });
     if(!startedAny){ toast('Could not start playback'); return; }
-    mixStartTime = audioContext.currentTime - (mixElapsed || 0);
+    mixStartTime = audioContext.currentTime - position;
+    mixElapsed = position;
     isPlayingMix = true;
     updatePlayIcons();
+    if(mixRAF) cancelAnimationFrame(mixRAF);
     mixRAF = requestAnimationFrame(tickMixPlayback);
+  }
+
+  function rebuildLivePlaybackIfNeeded(){
+    if(!isPlayingMix) return;
+    const position = currentMixElapsed();
+    Object.keys(activeSources).forEach(id=>{ try{ activeSources[id].source.stop(); }catch(e){} delete activeSources[id]; });
+    if(mixRAF) cancelAnimationFrame(mixRAF);
+    startMixPlaybackAt(position);
   }
 
   function tickMixPlayback(){
@@ -839,7 +911,7 @@ textarea.field{resize:none;min-height:78px}
     const proj = currentProject();
     const durations = proj.tracks.map(t=>audioBuffers[t.id]?.duration || 0);
     const maxDur = Math.max(1, ...durations);
-    const elapsed = audioContext.currentTime - mixStartTime;
+    const elapsed = currentMixElapsed();
     $('transportTime').textContent = `${fmtTime(elapsed)} / ${fmtTime(maxDur)}`;
     animateMeters();
     if(elapsed >= maxDur){ mixElapsed = 0; stopMixPlayback(); return; }
@@ -847,6 +919,7 @@ textarea.field{resize:none;min-height:78px}
   }
 
   function stopMixPlayback(){
+    mixElapsed = currentMixElapsed();
     Object.keys(activeSources).forEach(id=>{ try{ activeSources[id].source.stop(); }catch(e){} delete activeSources[id]; });
     if(mixRAF) cancelAnimationFrame(mixRAF);
     isPlayingMix = false;
@@ -885,10 +958,13 @@ textarea.field{resize:none;min-height:78px}
     mediaRecorder.ondataavailable = e => { if(e.data.size>0) recordChunks.push(e.data); };
     mediaRecorder.onstop = async () => {
       const blob = new Blob(recordChunks, {type: mediaRecorder.mimeType || 'audio/webm'});
+      showLoading('Processing recording');
       await loadBlobIntoTrack(blob, recordingTrackId);
+      hideLoading();
       micStream.getTracks().forEach(tr=>tr.stop());
       $('recBadge').classList.remove('show'); $('recBtn').classList.remove('recording');
       toast('Recording added to ' + track.name);
+      rebuildLivePlaybackIfNeeded();
     };
     mediaRecorder.start();
     $('recBadge').classList.add('show'); $('recBtn').classList.add('recording');
@@ -910,10 +986,41 @@ textarea.field{resize:none;min-height:78px}
 
   $('audioFileInput').addEventListener('change', async e => {
     const file = e.target.files[0]; if(!file) return;
-    ensureAudioContext();
+    pendingUploadFile = file;
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    openModal(`
+      <div class="handle"></div>
+      <h2>Import "${escapeHtml(file.name)}"</h2>
+      <p class="sub">Detected format: .${escapeHtml(ext || 'unknown')}. Choose how to import it.</p>
+      <div class="convert-choice" style="flex-direction:column">
+        <button class="option" data-importas="keep">Keep original format <small>Fastest — no re-encoding</small></button>
+        <button class="option" data-importas="wav">Convert to WAV <small>Uncompressed, best for further editing</small></button>
+        <button class="option" data-importas="m4a">Convert to M4A <small>Compressed, smaller size</small></button>
+      </div>
+      <div class="modal-actions"><button data-close style="flex:1">Cancel</button></div>
+    `);
+    document.querySelectorAll('[data-importas]').forEach(b=>b.onclick = () => processImport(b.dataset.importas));
+    e.target.value = '';
+  });
+
+  async function processImport(mode){
+    const file = pendingUploadFile;
+    closeModal();
+    if(!file) return;
+    showLoading('Importing audio');
     try{
+      ensureAudioContext();
       const arrayBuffer = await file.arrayBuffer();
-      const decoded = await audioContext.decodeAudioData(arrayBuffer.slice(0));
+      let decoded = await audioContext.decodeAudioData(arrayBuffer.slice(0));
+
+      if(mode === 'wav'){
+        const wavBlob = bufferToWav(decoded);
+        decoded = await audioContext.decodeAudioData(await wavBlob.arrayBuffer());
+      } else if(mode === 'm4a'){
+        const encoded = await encodeCompressed(decoded);
+        decoded = await audioContext.decodeAudioData(await encoded.blob.arrayBuffer());
+      }
+
       const proj = currentProject();
       let track;
       if(pendingUploadTrackId) track = proj.tracks.find(t=>t.id===pendingUploadTrackId);
@@ -922,10 +1029,12 @@ textarea.field{resize:none;min-height:78px}
       audioBuffers[track.id] = decoded; track.duration = decoded.duration; track.waveform = null; track.audioKey = 'mem:' + track.id;
       proj.modified = Date.now();
       save(); renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab();
-      toast('Loaded ' + file.name);
-    }catch(err){ toast('Could not decode that audio file'); }
-    pendingUploadTrackId = null; e.target.value = '';
-  });
+      toast('Loaded ' + file.name + (mode !== 'keep' ? ` (converted to ${mode.toUpperCase()})` : ''));
+      rebuildLivePlaybackIfNeeded();
+    }catch(err){ toast('Could not process that audio file'); }
+    hideLoading();
+    pendingUploadTrackId = null; pendingUploadFile = null;
+  }
 
   function renderPluginsTab(){
     const proj = currentProject();
@@ -952,6 +1061,7 @@ textarea.field{resize:none;min-height:78px}
     container.querySelectorAll('[data-chainremove]').forEach(b=>b.onclick = () => {
       snapshot(); track.plugins.splice(+b.dataset.chainremove, 1);
       currentProject().modified = Date.now(); save(); renderPluginsTab(); renderTracks();
+      rebuildLivePlaybackIfNeeded();
     });
     container.querySelectorAll('[data-editchain]').forEach(b=>b.onclick = () => openPluginEditor(track.id, +b.dataset.editchain));
   }
@@ -980,6 +1090,7 @@ textarea.field{resize:none;min-height:78px}
       snapshot(); track.plugins.push(makePluginInstance(b.dataset.pickplugin));
       proj.modified = Date.now(); save(); closeModal(); renderPluginsTab(); renderTracks();
       toast(PLUGIN_DEFS[b.dataset.pickplugin].name + ' added');
+      rebuildLivePlaybackIfNeeded();
     });
   }
 
@@ -1013,6 +1124,7 @@ textarea.field{resize:none;min-height:78px}
         pinst.params[key] = parseFloat(inp.value);
         $('modalCard').querySelector(`[data-vallabel="${key}"]`).textContent = inp.value;
         proj.modified = Date.now(); save();
+        rebuildLivePlaybackIfNeeded();
       };
     });
     $('resetPluginParams').onclick = () => {
@@ -1020,6 +1132,7 @@ textarea.field{resize:none;min-height:78px}
       proj.modified = Date.now(); save();
       closeModal(); openPluginEditor(trackId, idx);
       toast('Reset to default');
+      rebuildLivePlaybackIfNeeded();
     };
   }
 
@@ -1066,6 +1179,7 @@ textarea.field{resize:none;min-height:78px}
     }
     proj.modified = Date.now();
     save(); renderTracks(); renderPluginsTab(); renderMasterTab();
+    rebuildLivePlaybackIfNeeded();
   }
 
   function renderMixGoalChips(){
@@ -1187,6 +1301,7 @@ textarea.field{resize:none;min-height:78px}
     renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab(); renderMasterTab(); applyLiveMixState();
     $('aiMixResult').innerHTML = `<div class="ai-result"><h4>✓ AI mix generated</h4><ul>${actions.map(a=>`<li>${escapeHtml(a)}</li>`).join('')}</ul></div>`;
     toast('AI producer mix applied');
+    rebuildLivePlaybackIfNeeded();
   }
 
   function renderMasterTab(){
@@ -1228,6 +1343,7 @@ textarea.field{resize:none;min-height:78px}
       renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab(); renderMasterTab();
       toast(applied === false ? 'Try the FX Chains tab for this' : tip.title + ' — applied');
       closeModal();
+      rebuildLivePlaybackIfNeeded();
     });
     document.querySelectorAll('[data-aidismiss]').forEach(b=>b.onclick = () => { b.closest('.ai-card').remove(); });
   }
@@ -1295,7 +1411,7 @@ textarea.field{resize:none;min-height:78px}
   }
 
   async function renderAndExport(format){
-    closeModal(); toast('Rendering mix…');
+    closeModal(); showLoading('Rendering mix');
     try{
       const rendered = await renderMixToBuffer();
       const wavBlob = bufferToWav(rendered);
@@ -1305,6 +1421,7 @@ textarea.field{resize:none;min-height:78px}
       if(format === 'm4a'){ const encoded = await encodeCompressed(rendered); finalBlob = encoded.blob; ext = encoded.ext; mime = encoded.mime; }
       await shareOrDownload(finalBlob, `${baseName}.${ext}`, mime);
     }catch(err){ toast('Export failed: ' + err.message); }
+    hideLoading();
   }
 
   function encodeCompressed(buffer){
@@ -1402,11 +1519,13 @@ textarea.field{resize:none;min-height:78px}
   $('redoBtn').onclick = redo;
   $('aiBtn').onclick = openAiSuggestions;
   $('exportBtn').onclick = openExportModal;
-  $('homeSettingsBtn').onclick = () => toast('Beat Studio v4');
+  $('homeSettingsBtn').onclick = () => toast('Beat Studio v5');
 
   if(!state.current && state.projects.length) state.current = state.projects[0].id;
+  showLoading('Starting Beat Studio');
   showScreen('screen-home');
   renderHome();
+  setTimeout(hideLoading, 700);
 })();
 </script>
 </body>
