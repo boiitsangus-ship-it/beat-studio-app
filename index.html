@@ -1,1 +1,127 @@
-
+Project: Beat Studio — Mobile Music Production DAW
+Overview
+A BandLab-style mobile music production app built as a single-file HTML5 PWA (Progressive Web App). It runs entirely in the browser using the Web Audio API with no external dependencies. Designed for mobile-first with a dark theme, red waveforms, and touch-optimized controls.
+Architecture
+•  Single HTML file (~71KB) containing HTML, CSS, and JavaScript
+•  Web Audio API for real-time audio processing, playback, and recording
+•  LocalStorage for project persistence (save/load sessions)
+•  Vanilla JavaScript — no frameworks, no build step
+•  PWA-ready: apple-mobile-web-app-capable, viewport settings, splash screen, custom app icon
+Screens Implemented
+1.  Home Screen (Project Management)
+•  Grid of saved session cards with waveform thumbnails
+•  Preloaded "Trap Beat Demo" project with 4 tracks (808 Bass, Kick Drum, Hi-Hats, Lead Vocal)
+•  Create New Project via modal input (replaced buggy prompt() with native modal)
+•  Delete projects with confirmation
+•  LocalStorage auto-save on every change
+•  Project metadata: track count, last modified date
+2.  Studio Screen (Main DAW)
+•  Tab bar: Tracks / Plugins / Mix / Master
+•  Bottom transport dock with:
+•  Time display (MM:SS:MS)
+•  Undo / Record / Play-Pause / Redo
+•  Secondary tools: Mic, Add Track, AutoPitch, AI Sparkles
+•  Recording indicator badge (pulsing red "REC" badge)
+•  AI Suggestions panel (slides up from bottom with Apply/Dismiss)
+3.  Tracks Tab
+•  Per-track cards with:
+•  Color-coded header
+•  Editable track name (tap to edit)
+•  Arm / Mute / Solo / Delete buttons
+•  Real waveform rendering via Canvas (red bars on black background)
+•  Touch/drag scrubbing to seek playhead
+•  Per-track Volume and Pan sliders
+•  Per-track Play/Pause button (mutually exclusive with global playback)
+•  Add Track action sheet with 3 options:
+•  Empty Track
+•  Record from Mic
+•  Import Audio File
+4.  Plugins Tab
+•  Per-track plugin chain display
+•  6 Open-Source Rapper Plugins (all using Web Audio API DSP):
+•  Vocal Chain — Preamp, Compression, Presence, De-Ess (highshelf EQ + dynamics compressor + peaking filter)
+•  Rapper EQ — Low Cut, Body, Clarity, Air (highpass + 3 peaking filters + highshelf)
+•  Ad-Lib Doubler — Width, Detune, Delay, Mix (delay + stereo panner + gain blending)
+•  808 Drive — Drive, Tone, Blend, Low Boost (WaveShaper with tanh curve + lowshelf EQ)
+•  Dynamics — Threshold, Ratio, Attack, Release (compressor + limiter cascade)
+•  Tape Saturation — Saturation, Warmth, Hiss, Flutter (waveShaper with rational curve + lowshelf)
+•  Plugin picker modal grouped by category (Rapper, Bass, Utility, Color)
+•  Real-time parameter sliders that update audio nodes live
+•  Add/remove plugins per track
+5.  Mix Tab
+•  Per-track fader view with volume and pan for all tracks
+•  Track color strips and names
+•  AutoMix button — one-tap auto-balances all track volumes to 82%
+6.  Master Tab
+•  4 Master Presets (tappable cards):
+•  Balanced (clean, transparent)
+•  Loud & Punchy (aggressive, club-ready)
+•  Warm Vintage (analog warmth, rolled highs)
+•  Bright Streaming (optimized for Spotify/Apple Music)
+•  Live output meter — stereo L/R level bars with dB readout
+•  Real-time analyzer animation
+----
+Audio Engine Features
+•  Microphone recording via MediaRecorder API → decoded to AudioBuffer
+•  File import — accepts WAV, MP3, M4A, AIFF via file picker
+•  Waveform generation from AudioBuffer channel data
+•  Per-track playback with independent playheads
+•  Global mix playback with mute/solo logic
+•  Plugin signal chain — each plugin creates and connects Web Audio nodes dynamically
+•  Master bus with gain stage and brickwall limiter
+•  Animated playheads during playback
+AI Producer Feature
+•  Sparkles button generates contextual tips from a pool of 7 suggestions
+•  Tips are actionable — tapping "Apply" makes real changes:
+•  Adds specific plugins
+•  Adjusts parameters
+•  Applies master presets
+•  Runs AutoMix
+•  Dismissible without applying
+Export System
+•  Export screen with two options:
+•  WAV (uncompressed, highest quality)
+•  M4A (compressed, share-friendly)
+•  Animated progress ring with percentage counter
+•  Simulated render then triggers browser download
+History / Undo-Redo
+•  Full undo/redo stack (up to 40 states)
+•  Saves complete project state including tracks, plugins, parameters, and master preset
+•  Transport dock undo/redo buttons
+Design System
+•  Dark theme: Pure black #000000 background
+•  Red accent: #ff3333 for waveforms, active states, highlights
+•  Card-based UI: #1a1a1a cards with #2a2a2a borders
+•  Typography: System font stack (SF Pro, Segoe UI, Roboto)
+•  Safe area support: env(safe-area-inset-*) for notched phones
+•  Touch feedback: :active states with scale transforms
+•  Custom app icon: Dark waveform SVG with red stroke
+•  Splash screen: Animated fade-out on load
+Mobile Fixes Applied
+•  Replaced all prompt() calls with native bottom-sheet modals
+•  Replaced all alert() calls with in-app toast notifications
+•  Added touchstart/touchmove/touchend for waveform scrubbing
+•  Added addEventListener bindings for all transport buttons
+•  Fixed tab switching to use data-tab attributes
+•  user-scalable=no, touch-action: none on waveforms
+•  -webkit-overflow-scrolling: touch on scrollable areas
+•  Proper event stopping to prevent double-firing on mobile
+Files Created
+•  beat_studio.html — Main app (71KB)
+•  beat_studio_min.html — Minified version (55KB)
+•  beat_studio.txt — Renamable to .html for download
+•  beat_studio.zip — Zipped version (16KB)
+•  Beat Studio.webloc — Safari bookmark file
+•  Beat Studio.url — Windows URL shortcut
+•  beat_studio_builder.html — 4-chunk assembler (deprecated)
+•  chunk_1.txt through chunk_4.txt — Compressed chunks (deprecated)
+Known Limitations / Next Steps
+•  Sharing/Distribution: The single-file approach works when opened directly in a browser, but iOS Safari's download behavior makes distribution tricky. The .webloc and .url approaches were attempted but iOS security restrictions prevent data-URL bookmarks from working reliably.
+•  Export: Currently simulates export (creates empty blob). Real audio rendering via OfflineAudioContext would be needed for actual WAV/M4A generation.
+•  AutoPitch: UI toggle exists but no actual pitch correction DSP implemented yet.
+•  Master chains: Definitions exist in code (rapper-chain, trap-chain, boom-bap-chain) but UI integration for custom master chains not yet built.
+•  No backend: Everything is client-side. Collaboration or cloud sync would require server infrastructure.
+How to Run
+1.  Open beat_studio.html in Safari (iOS) or Chrome (Android)
+2.  Tap Share → Add to Home Screen for full-screen PWA experience
+3.  The app works offline once loaded
