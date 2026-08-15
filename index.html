@@ -10,7 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23050505'/%3E%3Cg stroke='%23ff3737' stroke-width='6' stroke-linecap='round' fill='none'%3E%3Cpath d='M12 50 h8 v0 M24 50 v-14 M24 50 v14 M36 50 v-24 M36 50 v24 M48 50 v-34 M48 50 v34 M60 50 v-20 M60 50 v20 M72 50 v-30 M72 50 v30 M84 50 v-10 M84 50 v10'/%3E%3C/g%3E%3C/svg%3E">
 <style>
 :root{
-  --bg:#050505;--bg2:#0c0c0c;--card:#161616;--card2:#1c1c1c;--line:#2b2b2b;
+  --bg:#050505;--card:#161616;--card2:#1c1c1c;--line:#2b2b2b;
   --text:#f8f8f8;--muted:#9a9a9a;--red:#ff3737;--red-dark:#3d0f0f;--red-glow:#ff373733;
   --green:#42dc99;--gold:#e6c229
 }
@@ -32,13 +32,10 @@ button:disabled{opacity:.35;pointer-events:none}
 .screen.active{display:block}
 h1{margin:20px 0 4px;font-size:32px;font-weight:900;letter-spacing:-.02em}
 .lead{margin:0 0 20px;color:var(--muted);font-size:14px}
-.primary{width:100%;padding:17px;border-radius:50px;background:var(--red);font-size:15px;font-weight:800;
-  box-shadow:0 8px 24px var(--red-glow)}
+.primary{width:100%;padding:17px;border-radius:50px;background:var(--red);font-size:15px;font-weight:800;box-shadow:0 8px 24px var(--red-glow)}
 .project-list{display:grid;gap:10px;margin-top:20px}
-.project{position:relative;display:flex;align-items:center;gap:13px;padding:13px;border-radius:16px;background:var(--card);
-  border:1px solid var(--line)}
-.project-art{width:54px;height:54px;border-radius:11px;background:linear-gradient(145deg,var(--red-dark),#000);
-  flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.project{position:relative;display:flex;align-items:center;gap:13px;padding:13px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.project-art{width:54px;height:54px;border-radius:11px;background:linear-gradient(145deg,var(--red-dark),#000);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .project-art .bars{display:flex;gap:2px;align-items:center;height:22px}
 .project-art .bars i{width:3px;background:var(--red);border-radius:2px;display:block}
 .project-info{flex:1;min-width:0}
@@ -47,13 +44,12 @@ h1{margin:20px 0 4px;font-size:32px;font-weight:900;letter-spacing:-.02em}
 .delete{width:30px;height:30px;border-radius:50%;background:var(--card2);color:#999;flex-shrink:0}
 .tabs{display:flex;gap:6px;overflow-x:auto;padding:6px 0 16px;-ms-overflow-style:none;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{min-width:72px;flex:1;padding:11px 8px;border-radius:50px;background:var(--card2);color:#999;font-size:12.5px;font-weight:800}
+.tab{min-width:64px;flex:1;padding:11px 6px;border-radius:50px;background:var(--card2);color:#999;font-size:12px;font-weight:800}
 .tab.active{background:var(--red);color:#fff;box-shadow:0 4px 14px var(--red-glow)}
 .tab-page{display:none}
 .tab-page.active{display:block;animation:fadein .18s ease}
 @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-.track{margin-bottom:12px;padding:14px;border-radius:18px;background:linear-gradient(165deg,var(--card2),var(--card));
-  border:1px solid var(--line);position:relative;overflow:hidden}
+.track{margin-bottom:12px;padding:14px;border-radius:18px;background:linear-gradient(165deg,var(--card2),var(--card));border:1px solid var(--line);position:relative;overflow:hidden}
 .track.armed{border-color:#ff9d33;box-shadow:0 0 0 1px #ff9d3355,0 0 20px #ff9d3322}
 .track-top{display:flex;gap:7px;align-items:center}
 .track-title{flex:1;min-width:0;border:0;background:transparent;color:#fff;font-weight:800;font-size:14px}
@@ -62,41 +58,33 @@ h1{margin:20px 0 4px;font-size:32px;font-weight:900;letter-spacing:-.02em}
 .small-btn.solo-active{background:var(--gold);color:#111}
 .wave-scroll{position:relative;margin:12px 0 8px;border-radius:12px;overflow:hidden;background:#030303}
 canvas{display:block;height:64px;touch-action:none}
-.play-fab{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;
-  background:#000c;border:1px solid #ff373766;color:var(--red);font-size:12px;display:flex;align-items:center;
-  justify-content:center;z-index:3;backdrop-filter:blur(4px)}
-.zoom-hint{position:absolute;right:6px;bottom:6px;padding:3px 8px;border-radius:20px;background:#0009;color:#999;
-  font-size:9px;font-weight:700;z-index:3;pointer-events:none}
+.play-fab{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:#000c;border:1px solid #ff373766;color:var(--red);font-size:12px;display:flex;align-items:center;justify-content:center;z-index:3;backdrop-filter:blur(4px)}
+.zoom-hint{position:absolute;right:6px;bottom:6px;padding:3px 8px;border-radius:20px;background:#0009;color:#999;font-size:9px;font-weight:700;z-index:3;pointer-events:none}
 .control-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;color:var(--muted);font-size:11px}
 .control-row label{display:grid;gap:4px;font-weight:700}
 input[type=range]{width:100%;accent-color:var(--red);height:4px}
 .plugin-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.plugin-chip{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:20px;background:#241111;
-  border:1px solid #5b1e1e;font-size:11px;font-weight:800;color:#ffb3b3}
+.plugin-chip{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:20px;background:#241111;border:1px solid #5b1e1e;font-size:11px;font-weight:800;color:#ffb3b3}
 .plugin-chip button{color:#ff9d9d;font-size:13px;line-height:1}
+.plugin-chip .edit-dot{color:#ff9d9d;font-size:11px}
 .empty{padding:40px 16px;border-radius:18px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed #333}
 .secondary{padding:14px;border-radius:14px;background:var(--card2);font-weight:800;font-size:13px}
-.panel{margin-bottom:12px;padding:16px;border-radius:18px;background:linear-gradient(165deg,var(--card2),var(--card));
-  border:1px solid var(--line)}
+.panel{margin-bottom:12px;padding:16px;border-radius:18px;background:linear-gradient(165deg,var(--card2),var(--card));border:1px solid var(--line)}
 .panel h3{margin:0 0 8px;font-size:15px;font-weight:800}
 .panel p{margin:0 0 12px;color:var(--muted);font-size:12.5px}
 .field{width:100%;margin-bottom:10px;padding:13px;border:1px solid #3a3a3a;border-radius:12px;background:#0a0a0a;color:#fff}
 textarea.field{resize:none;min-height:78px}
-.plugin-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #232323}
+.plugin-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #232323;gap:10px}
 .plugin-row:last-child{border-bottom:0}
-.plugin-tag{display:inline-block;margin-top:3px;padding:2px 7px;border-radius:20px;background:#241111;color:#ff9d9d;
-  font-size:9.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
+.plugin-tag{display:inline-block;margin-top:3px;padding:2px 7px;border-radius:20px;background:#241111;color:#ff9d9d;font-size:9.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
 .preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:8px}
 .preset{padding:14px 12px;border:1px solid var(--line);border-radius:15px;background:var(--card2);text-align:left}
 .preset.selected{border-color:var(--red);background:linear-gradient(165deg,#391515,#1c0a0a)}
 .preset b{display:block;font-size:13px;margin-bottom:3px}
 .preset small{display:block;color:var(--muted);font-size:10.5px;line-height:1.35}
 .meter{display:flex;align-items:end;gap:8px;height:110px;margin:16px 0}
-.meter-bar{width:50%;height:16%;border-radius:6px 6px 2px 2px;background:linear-gradient(var(--green),var(--gold),var(--red));
-  transition:height .12s}
-.dock{position:fixed;z-index:10;right:0;bottom:0;left:0;max-width:720px;margin:auto;
-  padding:12px 14px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);
-  background:linear-gradient(180deg,#0d0d0df0,#000f);backdrop-filter:blur(18px)}
+.meter-bar{width:50%;height:16%;border-radius:6px 6px 2px 2px;background:linear-gradient(var(--green),var(--gold),var(--red));transition:height .12s}
+.dock{position:fixed;z-index:10;right:0;bottom:0;left:0;max-width:720px;margin:auto;padding:12px 14px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:linear-gradient(180deg,#0d0d0df0,#000f);backdrop-filter:blur(18px)}
 .time{text-align:center;margin-bottom:9px;font-variant-numeric:tabular-nums;font-weight:800;font-size:12.5px;color:#ccc}
 .transport{display:grid;grid-template-columns:36px 36px 36px 1fr 46px 36px 36px 36px 36px;gap:6px}
 .transport button{height:44px;border-radius:14px;background:#1c1c1c;font-weight:800;font-size:14px;color:#ddd}
@@ -107,9 +95,7 @@ textarea.field{resize:none;min-height:78px}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .modal{position:fixed;z-index:30;inset:0;display:none;align-items:flex-end;background:#000c}
 .modal.show{display:flex}
-.modal-card{width:100%;max-width:720px;margin:auto;max-height:85vh;overflow-y:auto;
-  padding:14px 16px calc(22px + env(safe-area-inset-bottom));border-radius:26px 26px 0 0;background:#131313;
-  border-top:1px solid #2a2a2a}
+.modal-card{width:100%;max-width:720px;margin:auto;max-height:85vh;overflow-y:auto;padding:14px 16px calc(22px + env(safe-area-inset-bottom));border-radius:26px 26px 0 0;background:#131313;border-top:1px solid #2a2a2a}
 .handle{width:36px;height:4px;margin:0 auto 16px;border-radius:5px;background:#555}
 .modal h2{margin:0 0 4px;font-size:20px;font-weight:900}
 .modal .sub{margin:0 0 14px;color:var(--muted);font-size:12.5px}
@@ -118,15 +104,11 @@ textarea.field{resize:none;min-height:78px}
 .modal-actions{display:flex;gap:8px;margin-top:14px}
 .modal-actions button{flex:1;padding:14px;border-radius:14px;background:#2a2a2a;font-weight:800}
 .modal-actions .confirm{background:var(--red)}
-.toast{position:fixed;z-index:50;bottom:120px;left:50%;padding:11px 15px;border-radius:12px;background:#f5f5f5;color:#111;
-  transform:translate(-50%,80px);opacity:0;transition:.22s;white-space:nowrap;font-size:13px;font-weight:800;
-  max-width:88vw;overflow:hidden;text-overflow:ellipsis}
+.toast{position:fixed;z-index:50;bottom:120px;left:50%;padding:11px 15px;border-radius:12px;background:#f5f5f5;color:#111;transform:translate(-50%,80px);opacity:0;transition:.22s;white-space:nowrap;font-size:13px;font-weight:800;max-width:88vw;overflow:hidden;text-overflow:ellipsis}
 .toast.show{transform:translate(-50%,0);opacity:1}
-.rec-badge{display:none;position:fixed;z-index:20;top:78px;right:16px;padding:5px 8px;border-radius:8px;background:#d92929;
-  font-size:10px;font-weight:900}
+.rec-badge{display:none;position:fixed;z-index:20;top:78px;right:16px;padding:5px 8px;border-radius:8px;background:#d92929;font-size:10px;font-weight:900}
 .rec-badge.show{display:block}
-.ai-card{padding:14px;margin-bottom:10px;border-radius:15px;background:linear-gradient(165deg,#241a33,#160f21);
-  border:1px solid #4c2f77}
+.ai-card{padding:14px;margin-bottom:10px;border-radius:15px;background:linear-gradient(165deg,#241a33,#160f21);border:1px solid #4c2f77}
 .ai-card h4{margin:0 0 4px;font-size:13.5px;color:#d8b8ff;font-weight:800}
 .ai-card p{margin:0 0 11px;font-size:12px;color:#bbb;line-height:1.4}
 .ai-actions{display:flex;gap:8px}
@@ -141,6 +123,9 @@ textarea.field{resize:none;min-height:78px}
 .ai-result{padding:13px;margin-top:10px;border-radius:13px;background:#12241a;border:1px solid #2f6b47}
 .ai-result h4{margin:0 0 6px;color:#7fe3ab;font-size:13px}
 .ai-result ul{margin:0;padding-left:18px;color:#bbb;font-size:12px;line-height:1.6}
+.param-row{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.param-row .lbl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);font-weight:700}
+.fx-badge{display:inline-block;padding:2px 8px;border-radius:20px;background:#241a33;color:#c9a6ff;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -172,6 +157,7 @@ textarea.field{resize:none;min-height:78px}
     <div class="tabs">
       <button class="tab active" data-tab="tracks">Tracks</button>
       <button class="tab" data-tab="plugins">Plugins</button>
+      <button class="tab" data-tab="fx">FX Chains</button>
       <button class="tab" data-tab="mix">Mix</button>
       <button class="tab" data-tab="master">Master</button>
     </div>
@@ -187,11 +173,20 @@ textarea.field{resize:none;min-height:78px}
     <div class="tab-page" id="tab-plugins">
       <div class="panel">
         <h3>Effect chain by track</h3>
-        <p>Pick a track, then add studio-style presets.</p>
+        <p>Raw building-block effects. Add them individually and fine-tune every parameter.</p>
         <select class="field" id="pluginTrackSelect"></select>
       </div>
       <div id="pluginTrackChain"></div>
       <button class="secondary" id="openPluginPickerBtn" style="width:100%">+ Add plugin</button>
+    </div>
+
+    <div class="tab-page" id="tab-fx">
+      <div class="panel">
+        <h3>🎛️ FX Chains</h3>
+        <p>One-tap producer-style chains that combine multiple plugins and settings — inspired by underground trap/melodic production aesthetics. Apply to a track or as a master chain.</p>
+        <select class="field" id="fxTrackSelect"></select>
+      </div>
+      <div class="preset-grid" id="fxChainGrid"></div>
     </div>
 
     <div class="tab-page" id="tab-mix">
@@ -245,12 +240,12 @@ textarea.field{resize:none;min-height:78px}
 <script>
 (() => {
   const $ = id => document.getElementById(id);
-  const storageKey = 'beat-studio-v3';
+  const storageKey = 'beat-studio-v4';
 
   const makeTrack = name => ({
     id: String(Date.now()) + Math.random(),
     name, volume:.82, pan:0, muted:false, solo:false, armed:false,
-    plugins:[], audioKey:null, duration:0, waveform:null, eq:{low:0,mid:0,high:0}
+    plugins:[], audioKey:null, duration:0, waveform:null
   });
 
   let state = JSON.parse(localStorage.getItem(storageKey) || 'null') || {
@@ -269,35 +264,73 @@ textarea.field{resize:none;min-height:78px}
   let pendingUploadTrackId = null;
   let autoPitchOn = false;
   let zoomLevels = {};
-  let panOffsets = {};
+  let lastTapTime = {}, lastTapPos = {};
 
-  const PLUGIN_PRESETS = [
-    {id:'vocal-chain', name:'Vocal Chain', tag:'Vocal', desc:'EQ + compressor + de-esser + reverb glue.', build:buildVocalChain},
-    {id:'808-drive', name:'808 Drive', tag:'Bass', desc:'Saturated low-end with harmonic drive & sub boost.', build:build808Drive},
-    {id:'dynamics-proc', name:'Dynamics Processor', tag:'Dynamics', desc:'Multiband-style compression for punch & consistency.', build:buildDynamics},
-    {id:'tape-sat', name:'Tape Saturation', tag:'Color', desc:'Warm analog-style tape saturation & wow/flutter.', build:buildTapeSat},
-    {id:'trap-hats', name:'Trap Hi-Hat Shaper', tag:'Drums', desc:'Bright transient shaping for rolled hi-hats.', build:buildTrapHats},
-    {id:'pitch-fx', name:'Pitch Correct FX', tag:'Vocal', desc:'Robotic pitch-snap character, open-source style.', build:buildPitchFx},
-    {id:'hall-reverb', name:'Hall Reverb', tag:'Space', desc:'Big ambient hall reverb via synthetic IR convolution.', build:buildHallReverb},
-    {id:'stereo-widener', name:'Stereo Widener', tag:'Space', desc:'Mid-side style widening for leads & chords.', build:buildWidener},
-    {id:'lofi-crush', name:'Lo-Fi Crush', tag:'Color', desc:'Bitcrush + sample-rate reduction, boombap texture.', build:buildLofiCrush}
+  const PLUGIN_DEFS = {
+    'vocal-chain': {name:'Vocal Chain', tag:'Vocal', desc:'EQ + compressor + de-esser + reverb glue.',
+      params:{hpFreq:{label:'High-pass Hz', min:20, max:300, def:90}, compAmount:{label:'Compression', min:0, max:1, def:0.6}, presenceGain:{label:'Presence dB', min:0, max:8, def:3}, reverbMix:{label:'Reverb mix', min:0, max:1, def:0.14}},
+      build:buildVocalChain},
+    '808-drive': {name:'808 Drive', tag:'Bass', desc:'Saturated low-end with harmonic drive & sub boost.',
+      params:{subGain:{label:'Sub boost dB', min:0, max:10, def:4}, drive:{label:'Drive amount', min:0, max:1, def:0.35}, compAmount:{label:'Compression', min:0, max:1, def:0.7}},
+      build:build808Drive},
+    'dynamics-proc': {name:'Dynamics Processor', tag:'Dynamics', desc:'Multiband-style compression for punch & consistency.',
+      params:{threshold:{label:'Threshold dB', min:-40, max:0, def:-20}, ratio:{label:'Ratio', min:1, max:12, def:4}},
+      build:buildDynamics},
+    'tape-sat': {name:'Tape Saturation', tag:'Color', desc:'Warm analog-style tape saturation & wow/flutter.',
+      params:{warmth:{label:'Warmth', min:0, max:1, def:0.25}, lpFreq:{label:'Low-pass Hz', min:2000, max:18000, def:12000}},
+      build:buildTapeSat},
+    'trap-hats': {name:'Trap Hi-Hat Shaper', tag:'Drums', desc:'Bright transient shaping for rolled hi-hats.',
+      params:{hpFreq:{label:'High-pass Hz', min:500, max:6000, def:3000}, brightness:{label:'Brightness dB', min:0, max:8, def:3}},
+      build:buildTrapHats},
+    'pitch-fx': {name:'Pitch Correct FX', tag:'Vocal', desc:'Robotic pitch-snap character, open-source style.',
+      params:{quantize:{label:'Quantize steps', min:4, max:20, def:10}, resonance:{label:'Resonance Q', min:1, max:15, def:6}},
+      build:buildPitchFx},
+    'hall-reverb': {name:'Hall Reverb', tag:'Space', desc:'Big ambient hall reverb via synthetic IR convolution.',
+      params:{size:{label:'Room size', min:0.5, max:4, def:2.6}, wetMix:{label:'Wet mix', min:0, max:1, def:0.45}},
+      build:buildHallReverb},
+    'stereo-widener': {name:'Stereo Widener', tag:'Space', desc:'Mid-side style widening for leads & chords.',
+      params:{width:{label:'Width ms', min:2, max:30, def:12}},
+      build:buildWidener},
+    'lofi-crush': {name:'Lo-Fi Crush', tag:'Color', desc:'Bitcrush + sample-rate reduction, boombap texture.',
+      params:{bits:{label:'Bit depth', min:4, max:16, def:16}, lpFreq:{label:'Low-pass Hz', min:1000, max:10000, def:5000}},
+      build:buildLofiCrush}
+  };
+  const PLUGIN_PRESETS = Object.entries(PLUGIN_DEFS).map(([id,def])=>({id,...def}));
+
+  const FX_CHAINS_TRACK = [
+    {id:'slayworld', name:'Slayworld Chain', desc:'Dark, sample-clad atmosphere — inspired by underground melodic-trap production.', plugins:['tape-sat','hall-reverb','pitch-fx']},
+    {id:'moody-melodic', name:'Moody Melodic Chain', desc:'Warm, sub-heavy, atmospheric underground trap texture.', plugins:['808-drive','tape-sat','stereo-widener']},
+    {id:'detroit-bounce', name:'Detroit Bounce Chain', desc:'Bouncy, laid-back pocket with tight drum snap.', plugins:['dynamics-proc','trap-hats']},
+    {id:'raspy-vocal', name:'Raspy Vocal Chain', desc:'Hard-compressed, saturated vocal edge for grit and presence.', plugins:['vocal-chain','808-drive']},
+    {id:'hazy-dreamy', name:'Hazy Dreamy Chain', desc:'Lo-fi, dreamy, warped melodic texture.', plugins:['lofi-crush','hall-reverb','pitch-fx']},
+    {id:'gritty-bass', name:'Gritty Bass Chain', desc:'Distorted, bass-forward SoundCloud-era grit.', plugins:['808-drive','lofi-crush','dynamics-proc']}
+  ];
+  const FX_CHAINS_MASTER = [
+    {id:'radio-master', name:'Radio Master Chain', desc:'Loud, punchy, competitive streaming loudness.', masterPreset:'Loud & Punchy'},
+    {id:'vintage-master', name:'Vintage Master Chain', desc:'Warm, rolled-off, tape-glued master.', masterPreset:'Warm Vintage'}
   ];
 
   const MASTER_PRESETS = [
-    {id:'Balanced', name:'Balanced', desc:'Neutral, transparent loudness.', gain:1.0, eq:{low:0,mid:0,high:0}},
-    {id:'Loud & Punchy', name:'Loud & Punchy', desc:'Aggressive limiting, club/playlist impact.', gain:1.18, eq:{low:2,mid:1,high:1.5}},
-    {id:'Warm Vintage', name:'Warm Vintage', desc:'Rolled-off highs, boosted low-mids, tape glue.', gain:1.05, eq:{low:2.5,mid:1.5,high:-1.5}},
-    {id:'Bright Streaming', name:'Bright Streaming', desc:'Streaming-loudness target, airy top end.', gain:1.1, eq:{low:0.5,mid:0,high:2.5}}
+    {id:'Balanced', name:'Balanced', desc:'Neutral, transparent loudness.', gain:1.0},
+    {id:'Loud & Punchy', name:'Loud & Punchy', desc:'Aggressive limiting, club/playlist impact.', gain:1.18},
+    {id:'Warm Vintage', name:'Warm Vintage', desc:'Rolled-off highs, boosted low-mids, tape glue.', gain:1.05},
+    {id:'Bright Streaming', name:'Bright Streaming', desc:'Streaming-loudness target, airy top end.', gain:1.1}
   ];
 
   const MIX_GOAL_CHIPS = ['Vocals up front','Warm punchy 808s','Radio-ready loud','Warm vintage vibe','Bright & airy','Lo-fi boombap','Wide & spacious'];
 
-  function buildVocalChain(ctx){
-    const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=90;
-    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-18; comp.ratio.value=4; comp.attack.value=0.003; comp.release.value=0.25;
-    const presence = ctx.createBiquadFilter(); presence.type='peaking'; presence.frequency.value=4000; presence.gain.value=3; presence.Q.value=0.8;
+  function getParamValue(pluginInstance, key){
+    const def = PLUGIN_DEFS[pluginInstance.id]?.params?.[key];
+    if(!def) return undefined;
+    return (pluginInstance.params && pluginInstance.params[key] !== undefined) ? pluginInstance.params[key] : def.def;
+  }
+
+  function buildVocalChain(ctx, p){
+    const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=getParamValue(p,'hpFreq');
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-18; comp.ratio.value=1+getParamValue(p,'compAmount')*10; comp.attack.value=0.003; comp.release.value=0.25;
+    const presence = ctx.createBiquadFilter(); presence.type='peaking'; presence.frequency.value=4000; presence.gain.value=getParamValue(p,'presenceGain'); presence.Q.value=0.8;
     const conv = makeSyntheticReverb(ctx, 0.9, 2.0);
-    const wet = ctx.createGain(); wet.gain.value=0.14;
+    const wet = ctx.createGain(); wet.gain.value=getParamValue(p,'reverbMix');
     const dry = ctx.createGain(); dry.gain.value=0.9;
     const out = ctx.createGain();
     hp.connect(comp); comp.connect(presence);
@@ -305,42 +338,42 @@ textarea.field{resize:none;min-height:78px}
     presence.connect(conv); conv.connect(wet); wet.connect(out);
     return {input:hp, output:out};
   }
-  function build808Drive(ctx){
-    const shelf = ctx.createBiquadFilter(); shelf.type='lowshelf'; shelf.frequency.value=80; shelf.gain.value=4;
-    const shaper = ctx.createWaveShaper(); shaper.curve = makeSoftClipCurve(0.35);
-    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-12; comp.ratio.value=6; comp.attack.value=0.01; comp.release.value=0.2;
+  function build808Drive(ctx, p){
+    const shelf = ctx.createBiquadFilter(); shelf.type='lowshelf'; shelf.frequency.value=80; shelf.gain.value=getParamValue(p,'subGain');
+    const shaper = ctx.createWaveShaper(); shaper.curve = makeSoftClipCurve(getParamValue(p,'drive'));
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-12; comp.ratio.value=1+getParamValue(p,'compAmount')*10; comp.attack.value=0.01; comp.release.value=0.2;
     shelf.connect(shaper); shaper.connect(comp);
     return {input:shelf, output:comp};
   }
-  function buildDynamics(ctx){
-    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-20; comp.ratio.value=4; comp.attack.value=0.002; comp.release.value=0.15;
+  function buildDynamics(ctx, p){
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value=getParamValue(p,'threshold'); comp.ratio.value=getParamValue(p,'ratio'); comp.attack.value=0.002; comp.release.value=0.15;
     const makeup = ctx.createGain(); makeup.gain.value=1.15;
     comp.connect(makeup);
     return {input:comp, output:makeup};
   }
-  function buildTapeSat(ctx){
-    const shaper = ctx.createWaveShaper(); shaper.curve = makeTapeCurve(0.25);
-    const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=12000;
+  function buildTapeSat(ctx, p){
+    const shaper = ctx.createWaveShaper(); shaper.curve = makeTapeCurve(getParamValue(p,'warmth'));
+    const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=getParamValue(p,'lpFreq');
     const gain = ctx.createGain(); gain.gain.value=0.97;
     shaper.connect(lp); lp.connect(gain);
     return {input:shaper, output:gain};
   }
-  function buildTrapHats(ctx){
-    const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=3000;
+  function buildTrapHats(ctx, p){
+    const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=getParamValue(p,'hpFreq');
     const comp = ctx.createDynamicsCompressor(); comp.threshold.value=-24; comp.ratio.value=3; comp.attack.value=0.001; comp.release.value=0.08;
-    const shelf = ctx.createBiquadFilter(); shelf.type='highshelf'; shelf.frequency.value=8000; shelf.gain.value=3;
+    const shelf = ctx.createBiquadFilter(); shelf.type='highshelf'; shelf.frequency.value=8000; shelf.gain.value=getParamValue(p,'brightness');
     hp.connect(comp); comp.connect(shelf);
     return {input:hp, output:shelf};
   }
-  function buildPitchFx(ctx){
-    const shaper = ctx.createWaveShaper(); shaper.curve = makeQuantizeCurve();
-    const notch = ctx.createBiquadFilter(); notch.type='notch'; notch.frequency.value=1200; notch.Q.value=6;
+  function buildPitchFx(ctx, p){
+    const shaper = ctx.createWaveShaper(); shaper.curve = makeQuantizeCurve(getParamValue(p,'quantize'));
+    const notch = ctx.createBiquadFilter(); notch.type='notch'; notch.frequency.value=1200; notch.Q.value=getParamValue(p,'resonance');
     shaper.connect(notch);
     return {input:shaper, output:notch};
   }
-  function buildHallReverb(ctx){
-    const conv = makeSyntheticReverb(ctx, 2.6, 3.2);
-    const wet = ctx.createGain(); wet.gain.value=0.45;
+  function buildHallReverb(ctx, p){
+    const conv = makeSyntheticReverb(ctx, getParamValue(p,'size'), getParamValue(p,'size')*1.2);
+    const wet = ctx.createGain(); wet.gain.value=getParamValue(p,'wetMix');
     const dry = ctx.createGain(); dry.gain.value=0.7;
     const input = ctx.createGain();
     const out = ctx.createGain();
@@ -348,10 +381,10 @@ textarea.field{resize:none;min-height:78px}
     input.connect(conv); conv.connect(wet); wet.connect(out);
     return {input, output:out};
   }
-  function buildWidener(ctx){
+  function buildWidener(ctx, p){
     const splitter = ctx.createChannelSplitter(2);
     const merger = ctx.createChannelMerger(2);
-    const delay = ctx.createDelay(0.05); delay.delayTime.value=0.012;
+    const delay = ctx.createDelay(0.05); delay.delayTime.value=getParamValue(p,'width')/1000;
     const input = ctx.createGain();
     input.connect(splitter);
     splitter.connect(merger, 0, 0);
@@ -359,44 +392,23 @@ textarea.field{resize:none;min-height:78px}
     delay.connect(merger, 0, 1);
     return {input, output:merger};
   }
-  function buildLofiCrush(ctx){
-    const shaper = ctx.createWaveShaper(); shaper.curve = makeBitCrushCurve(16);
-    const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=5000;
+  function buildLofiCrush(ctx, p){
+    const shaper = ctx.createWaveShaper(); shaper.curve = makeBitCrushCurve(getParamValue(p,'bits'));
+    const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=getParamValue(p,'lpFreq');
     const gain = ctx.createGain(); gain.gain.value=0.92;
     shaper.connect(lp); lp.connect(gain);
     return {input:shaper, output:gain};
   }
 
-  function makeSoftClipCurve(amount){
-    const n=1024, curve=new Float32Array(n);
-    for(let i=0;i<n;i++){ const x=i*2/n-1; curve[i]=Math.tanh(x*(1+amount*4)); }
-    return curve;
-  }
-  function makeTapeCurve(amount){
-    const n=1024, curve=new Float32Array(n);
-    for(let i=0;i<n;i++){ const x=i*2/n-1; curve[i]=Math.tanh(x*1.5)*(1-amount)+x*amount; }
-    return curve;
-  }
-  function makeQuantizeCurve(){
-    const n=1024, curve=new Float32Array(n), steps=10;
-    for(let i=0;i<n;i++){ const x=i*2/n-1; curve[i]=Math.round(x*steps)/steps; }
-    return curve;
-  }
-  function makeBitCrushCurve(levels){
-    const n=1024, curve=new Float32Array(n);
-    for(let i=0;i<n;i++){ const x=i*2/n-1; curve[i]=Math.round(x*levels)/levels; }
-    return curve;
-  }
+  function makeSoftClipCurve(amount){ const n=1024,c=new Float32Array(n); for(let i=0;i<n;i++){const x=i*2/n-1; c[i]=Math.tanh(x*(1+amount*4));} return c; }
+  function makeTapeCurve(amount){ const n=1024,c=new Float32Array(n); for(let i=0;i<n;i++){const x=i*2/n-1; c[i]=Math.tanh(x*1.5)*(1-amount)+x*amount;} return c; }
+  function makeQuantizeCurve(steps){ const n=1024,c=new Float32Array(n); for(let i=0;i<n;i++){const x=i*2/n-1; c[i]=Math.round(x*steps)/steps;} return c; }
+  function makeBitCrushCurve(levels){ const n=1024,c=new Float32Array(n); for(let i=0;i<n;i++){const x=i*2/n-1; c[i]=Math.round(x*levels)/levels;} return c; }
   function makeSyntheticReverb(ctx, decay, duration){
-    const rate = ctx.sampleRate;
-    const length = Math.floor(rate*duration);
+    const rate = ctx.sampleRate; const length = Math.max(1,Math.floor(rate*duration));
     const impulse = ctx.createBuffer(2, length, rate);
-    for(let c=0;c<2;c++){
-      const data = impulse.getChannelData(c);
-      for(let i=0;i<length;i++){ data[i] = (Math.random()*2-1) * Math.pow(1-i/length, decay*3); }
-    }
-    const conv = ctx.createConvolver(); conv.buffer = impulse;
-    return conv;
+    for(let c=0;c<2;c++){ const data = impulse.getChannelData(c); for(let i=0;i<length;i++){ data[i]=(Math.random()*2-1)*Math.pow(1-i/length, decay*3); } }
+    const conv = ctx.createConvolver(); conv.buffer = impulse; return conv;
   }
 
   const AI_TIPS = [
@@ -407,19 +419,22 @@ textarea.field{resize:none;min-height:78px}
     {id:'tip-tape', title:'Add analog warmth', body:'Add Tape Saturation across your drums for a cohesive, vintage glue.', action:s=>applyPluginToFirstMatching(s,/kick|drum|hat/i,'tape-sat')},
     {id:'tip-dynamics', title:'Control peaks', body:'Add a Dynamics Processor to your loudest track to keep transients from overwhelming the mix.', action:s=>applyPluginToLoudest(s,'dynamics-proc')},
     {id:'tip-hats', title:'Shape the hi-hats', body:'Add a Trap Hi-Hat Shaper for brighter, punchier rolls.', action:s=>applyPluginToFirstMatching(s,/hat/i,'trap-hats')},
-    {id:'tip-widen', title:'Widen your lead', body:'A Stereo Widener will make your lead sit bigger without changing levels.', action:s=>applyPluginToFirstMatching(s,/lead|vocal|synth/i,'stereo-widener')}
+    {id:'tip-widen', title:'Widen your lead', body:'A Stereo Widener will make your lead sit bigger without changing levels.', action:s=>applyPluginToFirstMatching(s,/lead|vocal|synth/i,'stereo-widener')},
+    {id:'tip-fx-chain', title:'Try an FX Chain', body:'Skip manual plugin picking — apply a full producer-style FX Chain in one tap from the FX Chains tab.', action:s=>false}
   ];
 
+  function makePluginInstance(id){ return {id, params:{}}; }
+
   function applyPluginToFirstMatching(session, regex, pluginId){
-    const t = session.tracks.find(tr => regex.test(tr.name) && !tr.plugins.includes(pluginId));
-    if(t){ t.plugins.push(pluginId); return true; }
-    const any = session.tracks.find(tr=>!tr.plugins.includes(pluginId));
-    if(any){ any.plugins.push(pluginId); return true; }
+    const t = session.tracks.find(tr => regex.test(tr.name) && !tr.plugins.some(p=>p.id===pluginId));
+    if(t){ t.plugins.push(makePluginInstance(pluginId)); return true; }
+    const any = session.tracks.find(tr=>!tr.plugins.some(p=>p.id===pluginId));
+    if(any){ any.plugins.push(makePluginInstance(pluginId)); return true; }
     return false;
   }
   function applyPluginToLoudest(session, pluginId){
     const t = [...session.tracks].sort((a,b)=>b.volume-a.volume)[0];
-    if(t && !t.plugins.includes(pluginId)){ t.plugins.push(pluginId); return true; }
+    if(t && !t.plugins.some(p=>p.id===pluginId)){ t.plugins.push(makePluginInstance(pluginId)); return true; }
     return false;
   }
 
@@ -459,12 +474,11 @@ textarea.field{resize:none;min-height:78px}
       masterGain = audioContext.createGain();
       masterGain.connect(audioContext.destination);
       applyMasterPreset(state.master);
-      unlockIOSAudio();
     }
     if(audioContext.state === 'suspended') audioContext.resume();
+    unlockIOSAudio();
     return audioContext;
   }
-
   function unlockIOSAudio(){
     try{
       const buffer = audioContext.createBuffer(1,1,22050);
@@ -472,7 +486,6 @@ textarea.field{resize:none;min-height:78px}
       src.buffer = buffer; src.connect(audioContext.destination); src.start(0);
     }catch(e){}
   }
-
   function applyMasterPreset(id){
     const preset = MASTER_PRESETS.find(p=>p.id===id) || MASTER_PRESETS[0];
     if(masterGain) masterGain.gain.value = preset.gain;
@@ -490,8 +503,7 @@ textarea.field{resize:none;min-height:78px}
     return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
   }
   function fmtRelative(ts){
-    const diff = Date.now() - ts;
-    const mins = Math.floor(diff/60000);
+    const diff = Date.now() - ts; const mins = Math.floor(diff/60000);
     if(mins < 1) return 'Saved just now';
     if(mins < 60) return `Saved ${mins}m ago`;
     const hrs = Math.floor(mins/60);
@@ -500,15 +512,10 @@ textarea.field{resize:none;min-height:78px}
   }
 
   function renderHome(){
-    const list = $('projectList');
-    list.innerHTML = '';
-    if(!state.projects.length){
-      list.innerHTML = '<div class="empty">No sessions yet. Create one to get started.</div>';
-      return;
-    }
+    const list = $('projectList'); list.innerHTML = '';
+    if(!state.projects.length){ list.innerHTML = '<div class="empty">No sessions yet. Create one to get started.</div>'; return; }
     state.projects.slice().sort((a,b)=>b.modified-a.modified).forEach(p=>{
-      const div = document.createElement('div');
-      div.className = 'project';
+      const div = document.createElement('div'); div.className = 'project';
       const bars = Array.from({length:12}, ()=> `<i style="height:${6+Math.random()*16}px"></i>`).join('');
       div.innerHTML = `
         <div class="project-art"><div class="bars">${bars}</div></div>
@@ -517,35 +524,23 @@ textarea.field{resize:none;min-height:78px}
           <div class="project-meta">${p.tracks.length} tracks · ${fmtRelative(p.modified)}</div>
         </div>
         <button class="delete" data-del="${p.id}">✕</button>`;
-      div.addEventListener('click', e => {
-        if(e.target.closest('[data-del]')) return;
-        openProject(p.id);
-      });
+      div.addEventListener('click', e => { if(e.target.closest('[data-del]')) return; openProject(p.id); });
       list.appendChild(div);
     });
   }
 
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-  function openProject(id){
-    state.current = id;
-    save();
-    showScreen('screen-studio');
-    renderStudio();
-  }
-
+  function openProject(id){ state.current = id; save(); showScreen('screen-studio'); renderStudio(); }
   function newSession(){
     const id = String(Date.now());
     state.projects.push({id, name:'New Session', modified:Date.now(), mixGoal:'', tracks:[]});
-    save();
-    openProject(id);
+    save(); openProject(id);
   }
-
   function deleteProject(id){
     state.projects = state.projects.filter(p=>p.id!==id);
     if(state.current === id) state.current = state.projects[0]?.id || null;
-    save(); renderHome();
-    toast('Session deleted');
+    save(); renderHome(); toast('Session deleted');
   }
 
   let activeTab = 'tracks';
@@ -556,11 +551,7 @@ textarea.field{resize:none;min-height:78px}
     if(!proj) { showScreen('screen-home'); renderHome(); return; }
     $('studioProjectName').textContent = proj.name;
     $('studioProjectMeta').textContent = fmtRelative(proj.modified);
-    renderTracks();
-    renderPluginsTab();
-    renderMixTab();
-    renderMasterTab();
-    updateUndoRedoButtons();
+    renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab(); renderMasterTab(); updateUndoRedoButtons();
   }
 
   function updateUndoRedoButtons(){
@@ -570,12 +561,8 @@ textarea.field{resize:none;min-height:78px}
 
   function renderTracks(){
     const proj = currentProject();
-    const list = $('trackList');
-    list.innerHTML = '';
-    if(!proj.tracks.length){
-      list.innerHTML = '<div class="empty">No tracks yet. Add a track to record or upload audio.</div>';
-      return;
-    }
+    const list = $('trackList'); list.innerHTML = '';
+    if(!proj.tracks.length){ list.innerHTML = '<div class="empty">No tracks yet. Add a track to record or upload audio.</div>'; return; }
     proj.tracks.forEach(t=>{
       const div = document.createElement('div');
       div.className = 'track' + (t.armed ? ' armed' : '');
@@ -591,7 +578,7 @@ textarea.field{resize:none;min-height:78px}
         <div class="wave-scroll" data-scroll="${t.id}">
           <button class="play-fab" data-play="${t.id}" ${hasAudio?'':'disabled'}>▶</button>
           <canvas data-canvas="${t.id}" style="padding-left:38px"></canvas>
-          <div class="zoom-hint">pinch to zoom</div>
+          <div class="zoom-hint">pinch to zoom · double-tap to reset</div>
         </div>
         <div class="plugin-chip-row" data-chips="${t.id}"></div>
       `;
@@ -605,12 +592,11 @@ textarea.field{resize:none;min-height:78px}
 
   function renderPluginChips(container, track){
     container.innerHTML = '';
-    track.plugins.forEach((pid, idx)=>{
-      const preset = PLUGIN_PRESETS.find(p=>p.id===pid);
-      if(!preset) return;
-      const chip = document.createElement('div');
-      chip.className = 'plugin-chip';
-      chip.innerHTML = `${escapeHtml(preset.name)} <button data-rmplugin="${track.id}|${idx}">✕</button>`;
+    track.plugins.forEach((pinst, idx)=>{
+      const def = PLUGIN_DEFS[pinst.id];
+      if(!def) return;
+      const chip = document.createElement('div'); chip.className = 'plugin-chip';
+      chip.innerHTML = `<span data-editplugin="${track.id}|${idx}" style="cursor:pointer">${escapeHtml(def.name)} <span class="edit-dot">⚙</span></span> <button data-rmplugin="${track.id}|${idx}">✕</button>`;
       container.appendChild(chip);
     });
   }
@@ -619,15 +605,13 @@ textarea.field{resize:none;min-height:78px}
     const proj = currentProject();
     document.querySelectorAll('[data-arm]').forEach(b=>b.onclick = () => {
       const t = proj.tracks.find(x=>x.id===b.dataset.arm);
-      snapshot();
-      proj.tracks.forEach(x=>x.armed=false);
-      t.armed = true;
+      snapshot(); proj.tracks.forEach(x=>x.armed=false); t.armed = true;
       proj.modified = Date.now(); save(); renderTracks();
     });
     document.querySelectorAll('[data-rename]').forEach(inp=>inp.onchange = () => {
       const t = proj.tracks.find(x=>x.id===inp.dataset.rename);
       snapshot(); t.name = inp.value || 'Track'; proj.modified = Date.now(); save();
-      renderPluginsTab(); renderMixTab();
+      renderPluginsTab(); renderFxTab(); renderMixTab();
     });
     document.querySelectorAll('[data-mute]').forEach(b=>b.onclick = () => {
       const t = proj.tracks.find(x=>x.id===b.dataset.mute);
@@ -638,10 +622,8 @@ textarea.field{resize:none;min-height:78px}
       snapshot(); t.solo = !t.solo; proj.modified=Date.now(); save(); renderTracks(); renderMixTab(); applyLiveMixState();
     });
     document.querySelectorAll('[data-remove]').forEach(b=>b.onclick = () => {
-      snapshot();
-      proj.tracks = proj.tracks.filter(x=>x.id!==b.dataset.remove);
-      delete audioBuffers[b.dataset.remove];
-      proj.modified=Date.now(); save(); renderTracks(); renderPluginsTab(); renderMixTab();
+      snapshot(); proj.tracks = proj.tracks.filter(x=>x.id!==b.dataset.remove); delete audioBuffers[b.dataset.remove];
+      proj.modified=Date.now(); save(); renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab();
     });
     document.querySelectorAll('[data-play]').forEach(b=>b.onclick = () => toggleSoloPlayback(b.dataset.play));
     document.querySelectorAll('[data-rmplugin]').forEach(b=>b.onclick = () => {
@@ -649,8 +631,12 @@ textarea.field{resize:none;min-height:78px}
       const t = proj.tracks.find(x=>x.id===tid);
       snapshot(); t.plugins.splice(+idx,1); proj.modified=Date.now(); save(); renderTracks(); renderPluginsTab();
     });
+    document.querySelectorAll('[data-editplugin]').forEach(el=>el.onclick = () => {
+      const [tid, idx] = el.dataset.editplugin.split('|');
+      openPluginEditor(tid, +idx);
+    });
     document.querySelectorAll('[data-canvas]').forEach(c => bindScrub(c));
-    document.querySelectorAll('[data-scroll]').forEach(el => bindPinchZoom(el));
+    document.querySelectorAll('[data-scroll]').forEach(el => bindZoomGestures(el));
   }
 
   function computePeaks(buffer, targetPoints){
@@ -658,12 +644,8 @@ textarea.field{resize:none;min-height:78px}
     const blockSize = Math.floor(data.length / targetPoints) || 1;
     const peaks = [];
     for(let i=0;i<targetPoints;i++){
-      const start = i*blockSize;
-      let max = 0;
-      for(let j=0;j<blockSize && start+j<data.length;j++){
-        const v = Math.abs(data[start+j]);
-        if(v>max) max=v;
-      }
+      const start = i*blockSize; let max = 0;
+      for(let j=0;j<blockSize && start+j<data.length;j++){ const v = Math.abs(data[start+j]); if(v>max) max=v; }
       peaks.push(max);
     }
     return peaks;
@@ -677,41 +659,43 @@ textarea.field{resize:none;min-height:78px}
     const w = rectW * zoom, h = 64;
     canvas.style.width = w + 'px';
     canvas.width = w*dpr; canvas.height = h*dpr;
-    const ctx = canvas.getContext('2d');
-    ctx.scale(dpr,dpr);
-    ctx.clearRect(0,0,w,h);
-    const buffer = audioBuffers[track.id];
-    const mid = h/2;
+    const ctx = canvas.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,w,h);
+    const buffer = audioBuffers[track.id]; const mid = h/2;
     if(buffer){
       const pointCount = Math.floor(140*zoom);
       if(!track.waveform || track.waveform.length !== pointCount) track.waveform = computePeaks(buffer, pointCount);
-      const peaks = track.waveform;
-      const barW = w/peaks.length;
+      const peaks = track.waveform; const barW = w/peaks.length;
       ctx.fillStyle = '#ff3737';
-      peaks.forEach((p, i)=>{
-        const barH = Math.max(2, p*h*0.85);
-        ctx.fillRect(i*barW, mid-barH/2, Math.max(1,barW-1), barH);
-      });
-      if(playheadRatio != null){
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(playheadRatio*w-1, 0, 2, h);
-      }
+      peaks.forEach((p, i)=>{ const barH = Math.max(2, p*h*0.85); ctx.fillRect(i*barW, mid-barH/2, Math.max(1,barW-1), barH); });
+      if(playheadRatio != null){ ctx.fillStyle = '#ffffff'; ctx.fillRect(playheadRatio*w-1, 0, 2, h); }
     } else {
-      ctx.strokeStyle = '#3a3a3a';
-      ctx.setLineDash([4,5]);
+      ctx.strokeStyle = '#3a3a3a'; ctx.setLineDash([4,5]);
       ctx.beginPath(); ctx.moveTo(0,mid); ctx.lineTo(w,mid); ctx.stroke();
       ctx.fillStyle = '#666'; ctx.font = '11px sans-serif';
       ctx.fillText('No audio — record or upload', 44, mid+4);
     }
   }
 
-  function bindPinchZoom(scrollEl){
+  function bindZoomGestures(scrollEl){
     const trackId = scrollEl.dataset.scroll;
     let startDist = 0, startZoom = 1;
     scrollEl.addEventListener('touchstart', e => {
       if(e.touches.length === 2){
         startDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
         startZoom = zoomLevels[trackId] || 1;
+      } else if(e.touches.length === 1){
+        const now = Date.now();
+        const last = lastTapTime[trackId] || 0;
+        if(now - last < 320){
+          zoomLevels[trackId] = 1;
+          const proj = currentProject();
+          const t = proj.tracks.find(x=>x.id===trackId);
+          t.waveform = null;
+          const canvas = scrollEl.querySelector('[data-canvas]');
+          drawTrackWaveform(canvas, t);
+          toast('Zoom reset');
+        }
+        lastTapTime[trackId] = now;
       }
     }, {passive:true});
     scrollEl.addEventListener('touchmove', e => {
@@ -723,22 +707,29 @@ textarea.field{resize:none;min-height:78px}
         zoomLevels[trackId] = newZoom;
         const proj = currentProject();
         const t = proj.tracks.find(x=>x.id===trackId);
-        const canvas = scrollEl.querySelector('[data-canvas]');
         t.waveform = null;
+        const canvas = scrollEl.querySelector('[data-canvas]');
         drawTrackWaveform(canvas, t);
       }
     }, {passive:false});
+    const canvas = scrollEl.querySelector('[data-canvas]');
+    canvas.addEventListener('dblclick', () => {
+      zoomLevels[trackId] = 1;
+      const proj = currentProject();
+      const t = proj.tracks.find(x=>x.id===trackId);
+      t.waveform = null;
+      drawTrackWaveform(canvas, t);
+      toast('Zoom reset');
+    });
   }
 
   function bindScrub(canvas){
     const trackId = canvas.dataset.canvas;
     const seek = (clientX) => {
-      const buffer = audioBuffers[trackId];
-      if(!buffer) return;
+      const buffer = audioBuffers[trackId]; if(!buffer) return;
       const rect = canvas.getBoundingClientRect();
       const ratio = Math.min(1, Math.max(0, (clientX-rect.left)/rect.width));
-      const proj = currentProject();
-      const t = proj.tracks.find(x=>x.id===trackId);
+      const proj = currentProject(); const t = proj.tracks.find(x=>x.id===trackId);
       stopSoloPlayback();
       soloElapsed = ratio * buffer.duration;
       drawTrackWaveform(canvas, t, ratio);
@@ -753,12 +744,10 @@ textarea.field{resize:none;min-height:78px}
     ensureAudioContext();
     const gainNode = audioContext.createGain();
     let lastOutput = gainNode;
-    t.plugins.forEach(pid=>{
-      const preset = PLUGIN_PRESETS.find(p=>p.id===pid);
-      if(!preset) return;
-      const {input, output} = preset.build(audioContext);
-      lastOutput.connect(input);
-      lastOutput = output;
+    t.plugins.forEach(pinst=>{
+      const def = PLUGIN_DEFS[pinst.id]; if(!def) return;
+      const {input, output} = def.build(audioContext, pinst);
+      lastOutput.connect(input); lastOutput = output;
     });
     const panNode = audioContext.createStereoPanner ? audioContext.createStereoPanner() : null;
     if(panNode){ lastOutput.connect(panNode); lastOutput = panNode; }
@@ -767,15 +756,11 @@ textarea.field{resize:none;min-height:78px}
 
   function toggleSoloPlayback(trackId){
     if(soloPlayingTrackId === trackId){ stopSoloPlayback(); return; }
-    stopSoloPlayback();
-    stopMixPlayback();
-    const buffer = audioBuffers[trackId];
-    if(!buffer) return;
+    stopSoloPlayback(); stopMixPlayback();
+    const buffer = audioBuffers[trackId]; if(!buffer) return;
     ensureAudioContext();
-    const proj = currentProject();
-    const t = proj.tracks.find(x=>x.id===trackId);
-    const source = audioContext.createBufferSource();
-    source.buffer = buffer;
+    const proj = currentProject(); const t = proj.tracks.find(x=>x.id===trackId);
+    const source = audioContext.createBufferSource(); source.buffer = buffer;
     const chain = buildTrackChain(t);
     chain.gainNode.gain.value = t.volume;
     if(chain.panNode) chain.panNode.pan.value = t.pan;
@@ -792,8 +777,7 @@ textarea.field{resize:none;min-height:78px}
 
   function tickSoloPlayback(){
     if(!soloPlayingTrackId) return;
-    const proj = currentProject();
-    const t = proj.tracks.find(x=>x.id===soloPlayingTrackId);
+    const proj = currentProject(); const t = proj.tracks.find(x=>x.id===soloPlayingTrackId);
     const buffer = audioBuffers[soloPlayingTrackId];
     const elapsed = audioContext.currentTime - soloStartTime;
     const ratio = buffer ? Math.min(1, elapsed/buffer.duration) : 0;
@@ -813,22 +797,22 @@ textarea.field{resize:none;min-height:78px}
   }
 
   function updatePlayIcons(){
-    document.querySelectorAll('[data-play]').forEach(b=>{
-      b.textContent = (b.dataset.play === soloPlayingTrackId) ? '⏸' : '▶';
-    });
+    document.querySelectorAll('[data-play]').forEach(b=>{ b.textContent = (b.dataset.play === soloPlayingTrackId) ? '⏸' : '▶'; });
     $('playBtn').textContent = isPlayingMix ? '⏸' : '▶';
   }
 
   function toggleMixPlayback(){
     if(isPlayingMix){ stopMixPlayback(); return; }
     stopSoloPlayback();
-    const proj = currentProject();
-    const playable = proj.tracks.filter(t=>audioBuffers[t.id]);
-    if(!playable.length) return toast('No audio to play yet');
     ensureAudioContext();
+    const proj = currentProject();
+    const playable = proj.tracks.filter(t => !!audioBuffers[t.id]);
+    if(!playable.length){ toast('No audio to play yet'); return; }
     const soloed = proj.tracks.filter(t=>t.solo).map(t=>t.id);
+    let startedAny = false;
     playable.forEach(t=>{
       const buffer = audioBuffers[t.id];
+      if(!buffer || !buffer.duration){ return; }
       const source = audioContext.createBufferSource();
       source.buffer = buffer;
       const chain = buildTrackChain(t);
@@ -837,9 +821,13 @@ textarea.field{resize:none;min-height:78px}
       if(chain.panNode) chain.panNode.pan.value = t.pan;
       source.connect(chain.gainNode);
       chain.finalOutput.connect(masterGain);
-      source.start(0, mixElapsed || 0);
-      activeSources[t.id] = {source, ...chain};
+      try{
+        source.start(0, Math.min(mixElapsed || 0, buffer.duration - 0.01));
+        activeSources[t.id] = {source, ...chain};
+        startedAny = true;
+      }catch(e){}
     });
+    if(!startedAny){ toast('Could not start playback'); return; }
     mixStartTime = audioContext.currentTime - (mixElapsed || 0);
     isPlayingMix = true;
     updatePlayIcons();
@@ -849,7 +837,8 @@ textarea.field{resize:none;min-height:78px}
   function tickMixPlayback(){
     if(!isPlayingMix) return;
     const proj = currentProject();
-    const maxDur = Math.max(1, ...proj.tracks.map(t=>audioBuffers[t.id]?.duration || 0));
+    const durations = proj.tracks.map(t=>audioBuffers[t.id]?.duration || 0);
+    const maxDur = Math.max(1, ...durations);
     const elapsed = audioContext.currentTime - mixStartTime;
     $('transportTime').textContent = `${fmtTime(elapsed)} / ${fmtTime(maxDur)}`;
     animateMeters();
@@ -858,14 +847,10 @@ textarea.field{resize:none;min-height:78px}
   }
 
   function stopMixPlayback(){
-    Object.keys(activeSources).forEach(id=>{
-      try{ activeSources[id].source.stop(); }catch(e){}
-      delete activeSources[id];
-    });
+    Object.keys(activeSources).forEach(id=>{ try{ activeSources[id].source.stop(); }catch(e){} delete activeSources[id]; });
     if(mixRAF) cancelAnimationFrame(mixRAF);
     isPlayingMix = false;
-    resetMeters();
-    updatePlayIcons();
+    resetMeters(); updatePlayIcons();
   }
 
   function applyLiveMixState(){
@@ -873,8 +858,7 @@ textarea.field{resize:none;min-height:78px}
     const proj = currentProject();
     const soloed = proj.tracks.filter(t=>t.solo).map(t=>t.id);
     proj.tracks.forEach(t=>{
-      const node = activeSources[t.id];
-      if(!node) return;
+      const node = activeSources[t.id]; if(!node) return;
       const audible = !t.muted && (soloed.length === 0 || soloed.includes(t.id));
       node.gainNode.gain.value = audible ? t.volume : 0;
       if(node.panNode) node.panNode.pan.value = t.pan;
@@ -892,63 +876,40 @@ textarea.field{resize:none;min-height:78px}
     let track = proj.tracks.find(t=>t.armed);
     if(!track){
       if(!proj.tracks.length) { snapshot(); proj.tracks.push(makeTrack('Recording ' + (proj.tracks.length+1))); }
-      track = proj.tracks[proj.tracks.length-1];
-      track.armed = true;
+      track = proj.tracks[proj.tracks.length-1]; track.armed = true;
     }
-    try{
-      micStream = await navigator.mediaDevices.getUserMedia({audio:true});
-    }catch(err){
-      toast('Microphone permission denied'); return;
-    }
-    recordingTrackId = track.id;
-    recordChunks = [];
+    try{ micStream = await navigator.mediaDevices.getUserMedia({audio:true}); }
+    catch(err){ toast('Microphone permission denied'); return; }
+    recordingTrackId = track.id; recordChunks = [];
     mediaRecorder = new MediaRecorder(micStream);
     mediaRecorder.ondataavailable = e => { if(e.data.size>0) recordChunks.push(e.data); };
     mediaRecorder.onstop = async () => {
       const blob = new Blob(recordChunks, {type: mediaRecorder.mimeType || 'audio/webm'});
       await loadBlobIntoTrack(blob, recordingTrackId);
       micStream.getTracks().forEach(tr=>tr.stop());
-      $('recBadge').classList.remove('show');
-      $('recBtn').classList.remove('recording');
+      $('recBadge').classList.remove('show'); $('recBtn').classList.remove('recording');
       toast('Recording added to ' + track.name);
     };
     mediaRecorder.start();
-    $('recBadge').classList.add('show');
-    $('recBtn').classList.add('recording');
+    $('recBadge').classList.add('show'); $('recBtn').classList.add('recording');
   }
-
-  function stopRecording(){
-    if(mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
-  }
-
-  function toggleRecording(){
-    if(mediaRecorder && mediaRecorder.state === 'recording') stopRecording();
-    else startRecording();
-  }
+  function stopRecording(){ if(mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop(); }
+  function toggleRecording(){ if(mediaRecorder && mediaRecorder.state === 'recording') stopRecording(); else startRecording(); }
 
   async function loadBlobIntoTrack(blob, trackId){
     ensureAudioContext();
     const arrayBuffer = await blob.arrayBuffer();
     const decoded = await audioContext.decodeAudioData(arrayBuffer.slice(0));
-    const proj = currentProject();
-    const track = proj.tracks.find(t=>t.id===trackId);
+    const proj = currentProject(); const track = proj.tracks.find(t=>t.id===trackId);
     snapshot();
-    audioBuffers[trackId] = decoded;
-    track.duration = decoded.duration;
-    track.waveform = null;
-    track.audioKey = 'mem:' + trackId;
-    proj.modified = Date.now();
-    save(); renderTracks();
+    audioBuffers[trackId] = decoded; track.duration = decoded.duration; track.waveform = null; track.audioKey = 'mem:' + trackId;
+    proj.modified = Date.now(); save(); renderTracks();
   }
 
-  function requestUpload(trackId){
-    pendingUploadTrackId = trackId;
-    $('audioFileInput').click();
-  }
+  function requestUpload(trackId){ pendingUploadTrackId = trackId; $('audioFileInput').click(); }
 
   $('audioFileInput').addEventListener('change', async e => {
-    const file = e.target.files[0];
-    if(!file) return;
+    const file = e.target.files[0]; if(!file) return;
     ensureAudioContext();
     try{
       const arrayBuffer = await file.arrayBuffer();
@@ -956,25 +917,14 @@ textarea.field{resize:none;min-height:78px}
       const proj = currentProject();
       let track;
       if(pendingUploadTrackId) track = proj.tracks.find(t=>t.id===pendingUploadTrackId);
-      if(!track){
-        snapshot();
-        track = makeTrack(file.name.replace(/\.[^.]+$/,''));
-        proj.tracks.push(track);
-      } else {
-        snapshot();
-      }
-      audioBuffers[track.id] = decoded;
-      track.duration = decoded.duration;
-      track.waveform = null;
-      track.audioKey = 'mem:' + track.id;
+      if(!track){ snapshot(); track = makeTrack(file.name.replace(/\.[^.]+$/,'')); proj.tracks.push(track); }
+      else { snapshot(); }
+      audioBuffers[track.id] = decoded; track.duration = decoded.duration; track.waveform = null; track.audioKey = 'mem:' + track.id;
       proj.modified = Date.now();
-      save(); renderTracks(); renderPluginsTab(); renderMixTab();
+      save(); renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab();
       toast('Loaded ' + file.name);
-    }catch(err){
-      toast('Could not decode that audio file');
-    }
-    pendingUploadTrackId = null;
-    e.target.value = '';
+    }catch(err){ toast('Could not decode that audio file'); }
+    pendingUploadTrackId = null; e.target.value = '';
   });
 
   function renderPluginsTab(){
@@ -989,25 +939,21 @@ textarea.field{resize:none;min-height:78px}
     const proj = currentProject();
     const select = $('pluginTrackSelect');
     const track = proj.tracks.find(t=>t.id===select.value) || proj.tracks[0];
-    const container = $('pluginTrackChain');
-    container.innerHTML = '';
+    const container = $('pluginTrackChain'); container.innerHTML = '';
     if(!track){ container.innerHTML = '<div class="empty">Add a track first.</div>'; return; }
     if(!track.plugins.length){ container.innerHTML = '<div class="empty">No plugins on this track yet.</div>'; return; }
-    track.plugins.forEach((pid, idx)=>{
-      const preset = PLUGIN_PRESETS.find(p=>p.id===pid);
-      if(!preset) return;
-      const row = document.createElement('div');
-      row.className = 'plugin-row';
-      row.innerHTML = `<div><strong>${escapeHtml(preset.name)}</strong><span class="plugin-tag">${escapeHtml(preset.tag)}</span><br><small style="color:#999">${escapeHtml(preset.desc)}</small></div>
-        <button class="small-btn" data-chainremove="${idx}">✕</button>`;
+    track.plugins.forEach((pinst, idx)=>{
+      const def = PLUGIN_DEFS[pinst.id]; if(!def) return;
+      const row = document.createElement('div'); row.className = 'plugin-row';
+      row.innerHTML = `<div><strong>${escapeHtml(def.name)}</strong><span class="plugin-tag">${escapeHtml(def.tag)}</span><br><small style="color:#999">${escapeHtml(def.desc)}</small></div>
+        <div style="display:flex;gap:6px"><button class="small-btn" data-editchain="${idx}">⚙</button><button class="small-btn" data-chainremove="${idx}">✕</button></div>`;
       container.appendChild(row);
     });
     container.querySelectorAll('[data-chainremove]').forEach(b=>b.onclick = () => {
-      snapshot();
-      track.plugins.splice(+b.dataset.chainremove, 1);
-      currentProject().modified = Date.now();
-      save(); renderPluginsTab(); renderTracks();
+      snapshot(); track.plugins.splice(+b.dataset.chainremove, 1);
+      currentProject().modified = Date.now(); save(); renderPluginsTab(); renderTracks();
     });
+    container.querySelectorAll('[data-editchain]').forEach(b=>b.onclick = () => openPluginEditor(track.id, +b.dataset.editchain));
   }
 
   function openPluginPicker(){
@@ -1021,7 +967,7 @@ textarea.field{resize:none;min-height:78px}
       <p class="sub">To ${escapeHtml(track.name)}</p>
       <div class="preset-grid">
         ${PLUGIN_PRESETS.map(p=>`
-          <button class="option" data-pickplugin="${p.id}" style="grid-column:span 1">
+          <button class="option" data-pickplugin="${p.id}">
             <b style="font-size:12.5px">${escapeHtml(p.name)}</b>
             <span class="plugin-tag">${escapeHtml(p.tag)}</span>
             <small style="display:block;margin-top:5px">${escapeHtml(p.desc)}</small>
@@ -1031,12 +977,95 @@ textarea.field{resize:none;min-height:78px}
       <div class="modal-actions"><button data-close style="flex:1">Cancel</button></div>
     `);
     document.querySelectorAll('[data-pickplugin]').forEach(b=>b.onclick = () => {
-      snapshot();
-      track.plugins.push(b.dataset.pickplugin);
-      proj.modified = Date.now();
-      save(); closeModal(); renderPluginsTab(); renderTracks();
-      toast(PLUGIN_PRESETS.find(p=>p.id===b.dataset.pickplugin).name + ' added');
+      snapshot(); track.plugins.push(makePluginInstance(b.dataset.pickplugin));
+      proj.modified = Date.now(); save(); closeModal(); renderPluginsTab(); renderTracks();
+      toast(PLUGIN_DEFS[b.dataset.pickplugin].name + ' added');
     });
+  }
+
+  function openPluginEditor(trackId, idx){
+    const proj = currentProject();
+    const track = proj.tracks.find(t=>t.id===trackId);
+    const pinst = track.plugins[idx];
+    const def = PLUGIN_DEFS[pinst.id];
+    if(!def) return;
+    const paramHtml = Object.entries(def.params).map(([key, p])=>{
+      const val = getParamValue(pinst, key);
+      return `<div class="param-row">
+        <div class="lbl"><span>${escapeHtml(p.label)}</span><span data-vallabel="${key}">${val}</span></div>
+        <input type="range" min="${p.min}" max="${p.max}" step="${(p.max-p.min)/100}" value="${val}" data-param="${key}">
+      </div>`;
+    }).join('');
+    openModal(`
+      <div class="handle"></div>
+      <h2>${escapeHtml(def.name)}</h2>
+      <p class="sub">${escapeHtml(def.desc)} — fully customizable</p>
+      ${paramHtml}
+      <div class="modal-actions">
+        <button data-close style="flex:1">Done</button>
+        <button class="confirm" id="resetPluginParams" style="flex:1">Reset to default</button>
+      </div>
+    `);
+    $('modalCard').querySelectorAll('[data-param]').forEach(inp=>{
+      inp.oninput = () => {
+        const key = inp.dataset.param;
+        pinst.params = pinst.params || {};
+        pinst.params[key] = parseFloat(inp.value);
+        $('modalCard').querySelector(`[data-vallabel="${key}"]`).textContent = inp.value;
+        proj.modified = Date.now(); save();
+      };
+    });
+    $('resetPluginParams').onclick = () => {
+      pinst.params = {};
+      proj.modified = Date.now(); save();
+      closeModal(); openPluginEditor(trackId, idx);
+      toast('Reset to default');
+    };
+  }
+
+  function renderFxTab(){
+    const proj = currentProject();
+    const select = $('fxTrackSelect');
+    select.innerHTML = proj.tracks.map(t=>`<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('') + '<option value="__master__">— Master Chain —</option>';
+    renderFxChainGrid();
+    select.onchange = renderFxChainGrid;
+  }
+
+  function renderFxChainGrid(){
+    const select = $('fxTrackSelect');
+    const isMaster = select.value === '__master__';
+    const grid = $('fxChainGrid');
+    const chains = isMaster ? FX_CHAINS_MASTER : FX_CHAINS_TRACK;
+    grid.innerHTML = chains.map(fx => `
+      <button class="option" data-applyfx="${fx.id}" style="grid-column:span 1">
+        <span class="fx-badge">FX Chain</span>
+        <b style="display:block;font-size:13px;margin-bottom:3px">${escapeHtml(fx.name)}</b>
+        <small style="display:block;color:#999;font-size:10.5px;line-height:1.35">${escapeHtml(fx.desc)}</small>
+      </button>
+    `).join('');
+    grid.querySelectorAll('[data-applyfx]').forEach(b=>b.onclick = () => applyFxChain(b.dataset.applyfx, isMaster));
+  }
+
+  function applyFxChain(fxId, isMaster){
+    const proj = currentProject();
+    snapshot();
+    if(isMaster){
+      const fx = FX_CHAINS_MASTER.find(f=>f.id===fxId);
+      state.master = fx.masterPreset; proj.master = fx.masterPreset;
+      applyMasterPreset(state.master);
+      toast(fx.name + ' applied to master');
+    } else {
+      const select = $('fxTrackSelect');
+      const track = proj.tracks.find(t=>t.id===select.value);
+      if(!track) return toast('Select a track first');
+      const fx = FX_CHAINS_TRACK.find(f=>f.id===fxId);
+      fx.plugins.forEach(pid => {
+        if(!track.plugins.some(p=>p.id===pid)) track.plugins.push(makePluginInstance(pid));
+      });
+      toast(fx.name + ' applied to ' + track.name);
+    }
+    proj.modified = Date.now();
+    save(); renderTracks(); renderPluginsTab(); renderMasterTab();
   }
 
   function renderMixGoalChips(){
@@ -1046,8 +1075,7 @@ textarea.field{resize:none;min-height:78px}
       const c = b.dataset.chip;
       if(selectedMixGoalChips.has(c)) selectedMixGoalChips.delete(c); else selectedMixGoalChips.add(c);
       renderMixGoalChips();
-      const textarea = $('mixGoalInput');
-      textarea.value = Array.from(selectedMixGoalChips).join(', ');
+      $('mixGoalInput').value = Array.from(selectedMixGoalChips).join(', ');
     });
   }
 
@@ -1056,12 +1084,10 @@ textarea.field{resize:none;min-height:78px}
     const proj = currentProject();
     $('mixGoalInput').value = proj.mixGoal || '';
     $('aiMixResult').innerHTML = '';
-    const list = $('mixList');
-    list.innerHTML = '';
+    const list = $('mixList'); list.innerHTML = '';
     if(!proj.tracks.length){ list.innerHTML = '<div class="empty">No tracks to mix yet.</div>'; return; }
     proj.tracks.forEach(t=>{
-      const div = document.createElement('div');
-      div.className = 'panel';
+      const div = document.createElement('div'); div.className = 'panel';
       div.innerHTML = `
         <h3>${escapeHtml(t.name)}</h3>
         <div class="control-row">
@@ -1113,12 +1139,7 @@ textarea.field{resize:none;min-height:78px}
     proj.modified = Date.now();
   }
 
-  function runAutomix(){
-    snapshot();
-    autoMix();
-    save(); renderMixTab(); applyLiveMixState();
-    toast('Automix balanced your levels');
-  }
+  function runAutomix(){ snapshot(); autoMix(); save(); renderMixTab(); applyLiveMixState(); toast('Automix balanced your levels'); }
 
   function generateAiMixFromGoal(){
     const proj = currentProject();
@@ -1126,7 +1147,6 @@ textarea.field{resize:none;min-height:78px}
     if(!goalText.trim()) return toast('Describe the sound you want first');
     snapshot();
     proj.mixGoal = goalText;
-
     const actions = [];
     const wantsVocalsUp = /vocal|lead up|forward|front/.test(goalText);
     const wants808 = /808|bass|punch/.test(goalText);
@@ -1140,51 +1160,32 @@ textarea.field{resize:none;min-height:78px}
       const isVocal = /vocal|lead/i.test(t.name);
       const isBass = /808|bass/i.test(t.name);
       const isDrum = /kick|drum|hat/i.test(t.name);
-
       if(wantsVocalsUp && isVocal){
         t.volume = Math.min(0.95, 0.9);
-        if(!t.plugins.includes('vocal-chain')){ t.plugins.push('vocal-chain'); actions.push(`Added Vocal Chain to ${t.name} and raised it in the mix`); }
+        if(!t.plugins.some(p=>p.id==='vocal-chain')){ t.plugins.push(makePluginInstance('vocal-chain')); actions.push(`Added Vocal Chain to ${t.name} and raised it in the mix`); }
       }
       if(wants808 && isBass){
         t.volume = Math.max(t.volume, 0.8);
-        if(!t.plugins.includes('808-drive')){ t.plugins.push('808-drive'); actions.push(`Added 808 Drive to ${t.name} for more punch`); }
+        if(!t.plugins.some(p=>p.id==='808-drive')){ t.plugins.push(makePluginInstance('808-drive')); actions.push(`Added 808 Drive to ${t.name} for more punch`); }
       }
-      if(wantsWarm && !t.plugins.includes('tape-sat')){
-        t.plugins.push('tape-sat'); actions.push(`Added Tape Saturation to ${t.name} for warmth`);
-      }
-      if(wantsLofi && !t.plugins.includes('lofi-crush')){
-        t.plugins.push('lofi-crush'); actions.push(`Added Lo-Fi Crush to ${t.name}`);
-      }
-      if(wantsWide && (isVocal || /synth|chord|lead/i.test(t.name)) && !t.plugins.includes('stereo-widener')){
-        t.plugins.push('stereo-widener'); actions.push(`Added Stereo Widener to ${t.name}`);
-      }
-      if(isDrum && /hat/i.test(t.name) && !t.plugins.includes('trap-hats')){
-        t.plugins.push('trap-hats'); actions.push(`Added Trap Hi-Hat Shaper to ${t.name}`);
-      }
-      if(!t.plugins.includes('dynamics-proc') && t.volume > 0.85){
-        t.plugins.push('dynamics-proc'); actions.push(`Added Dynamics Processor to ${t.name} to control peaks`);
-      }
+      if(wantsWarm && !t.plugins.some(p=>p.id==='tape-sat')){ t.plugins.push(makePluginInstance('tape-sat')); actions.push(`Added Tape Saturation to ${t.name} for warmth`); }
+      if(wantsLofi && !t.plugins.some(p=>p.id==='lofi-crush')){ t.plugins.push(makePluginInstance('lofi-crush')); actions.push(`Added Lo-Fi Crush to ${t.name}`); }
+      if(wantsWide && (isVocal || /synth|chord|lead/i.test(t.name)) && !t.plugins.some(p=>p.id==='stereo-widener')){ t.plugins.push(makePluginInstance('stereo-widener')); actions.push(`Added Stereo Widener to ${t.name}`); }
+      if(isDrum && /hat/i.test(t.name) && !t.plugins.some(p=>p.id==='trap-hats')){ t.plugins.push(makePluginInstance('trap-hats')); actions.push(`Added Trap Hi-Hat Shaper to ${t.name}`); }
+      if(!t.plugins.some(p=>p.id==='dynamics-proc') && t.volume > 0.85){ t.plugins.push(makePluginInstance('dynamics-proc')); actions.push(`Added Dynamics Processor to ${t.name} to control peaks`); }
     });
 
     autoMix(proj);
     actions.push('Ran Automix for level balance across all tracks');
-
     if(wantsLoud){ proj.master='Loud & Punchy'; actions.push('Set master style to Loud & Punchy'); }
     else if(wantsWarm){ proj.master='Warm Vintage'; actions.push('Set master style to Warm Vintage'); }
     else if(wantsBright){ proj.master='Bright Streaming'; actions.push('Set master style to Bright Streaming'); }
     else { proj.master='Balanced'; actions.push('Set master style to Balanced'); }
-    state.master = proj.master;
-    applyMasterPreset(state.master);
+    state.master = proj.master; applyMasterPreset(state.master);
 
-    proj.modified = Date.now();
-    save();
-    renderTracks(); renderPluginsTab(); renderMixTab(); renderMasterTab(); applyLiveMixState();
-
-    $('aiMixResult').innerHTML = `
-      <div class="ai-result">
-        <h4>✓ AI mix generated</h4>
-        <ul>${actions.map(a=>`<li>${escapeHtml(a)}</li>`).join('')}</ul>
-      </div>`;
+    proj.modified = Date.now(); save();
+    renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab(); renderMasterTab(); applyLiveMixState();
+    $('aiMixResult').innerHTML = `<div class="ai-result"><h4>✓ AI mix generated</h4><ul>${actions.map(a=>`<li>${escapeHtml(a)}</li>`).join('')}</ul></div>`;
     toast('AI producer mix applied');
   }
 
@@ -1196,11 +1197,8 @@ textarea.field{resize:none;min-height:78px}
       </button>
     `).join('');
     document.querySelectorAll('[data-master]').forEach(b=>b.onclick = () => {
-      snapshot();
-      state.master = b.dataset.master;
-      applyMasterPreset(state.master);
-      save(); renderMasterTab();
-      toast(state.master + ' master applied');
+      snapshot(); state.master = b.dataset.master; applyMasterPreset(state.master);
+      save(); renderMasterTab(); toast(state.master + ' master applied');
     });
   }
 
@@ -1226,15 +1224,12 @@ textarea.field{resize:none;min-height:78px}
       const tip = AI_TIPS.find(t=>t.id===b.dataset.aiapply);
       snapshot();
       const applied = tip.action(proj);
-      proj.modified = Date.now();
-      save();
-      renderTracks(); renderPluginsTab(); renderMixTab(); renderMasterTab();
-      toast(applied === false ? 'Already applied' : tip.title + ' — applied');
+      proj.modified = Date.now(); save();
+      renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab(); renderMasterTab();
+      toast(applied === false ? 'Try the FX Chains tab for this' : tip.title + ' — applied');
       closeModal();
     });
-    document.querySelectorAll('[data-aidismiss]').forEach(b=>b.onclick = () => {
-      b.closest('.ai-card').remove();
-    });
+    document.querySelectorAll('[data-aidismiss]').forEach(b=>b.onclick = () => { b.closest('.ai-card').remove(); });
   }
 
   function openExportModal(){
@@ -1244,12 +1239,8 @@ textarea.field{resize:none;min-height:78px}
       <div class="handle"></div>
       <h2>Export mix</h2>
       <p class="sub">Renders your full mix with current volume, pan, plugins, and master settings applied.</p>
-      <div class="export-row">
-        <button class="option" data-exportfmt="wav">Export as WAV <small>Uncompressed, studio quality</small></button>
-      </div>
-      <div class="export-row" style="margin-top:8px">
-        <button class="option" data-exportfmt="m4a">Export as M4A <small>Compressed, smaller file</small></button>
-      </div>
+      <div class="export-row"><button class="option" data-exportfmt="wav">Export as WAV <small>Uncompressed, studio quality</small></button></div>
+      <div class="export-row" style="margin-top:8px"><button class="option" data-exportfmt="m4a">Export as M4A <small>Compressed, smaller file</small></button></div>
       <div class="modal-actions"><button data-close>Cancel</button></div>
     `);
     document.querySelectorAll('[data-exportfmt]').forEach(b=>b.onclick = () => renderAndExport(b.dataset.exportfmt));
@@ -1262,24 +1253,25 @@ textarea.field{resize:none;min-height:78px}
     const sampleRate = 44100;
     const offlineCtx = new OfflineAudioContext(2, Math.ceil(maxDur*sampleRate), sampleRate);
     const masterPreset = MASTER_PRESETS.find(p=>p.id===state.master) || MASTER_PRESETS[0];
-    const masterOut = offlineCtx.createGain();
-    masterOut.gain.value = masterPreset.gain;
+    const masterOut = offlineCtx.createGain(); masterOut.gain.value = masterPreset.gain;
     masterOut.connect(offlineCtx.destination);
     const soloed = proj.tracks.filter(t=>t.solo).map(t=>t.id);
     playable.forEach(t=>{
-      const source = offlineCtx.createBufferSource();
-      source.buffer = audioBuffers[t.id];
-      const gainNode = offlineCtx.createGain();
+      const source = offlineCtx.createBufferSource(); source.buffer = audioBuffers[t.id];
+      let lastOutput = offlineCtx.createGain();
+      const gainNode = lastOutput;
       const audible = !t.muted && (soloed.length===0 || soloed.includes(t.id));
       gainNode.gain.value = audible ? t.volume : 0;
       source.connect(gainNode);
+      t.plugins.forEach(pinst=>{
+        const def = PLUGIN_DEFS[pinst.id]; if(!def) return;
+        const {input, output} = def.build(offlineCtx, pinst);
+        lastOutput.connect(input); lastOutput = output;
+      });
       if(offlineCtx.createStereoPanner){
-        const panNode = offlineCtx.createStereoPanner();
-        panNode.pan.value = t.pan;
-        gainNode.connect(panNode); panNode.connect(masterOut);
-      } else {
-        gainNode.connect(masterOut);
-      }
+        const panNode = offlineCtx.createStereoPanner(); panNode.pan.value = t.pan;
+        lastOutput.connect(panNode); panNode.connect(masterOut);
+      } else { lastOutput.connect(masterOut); }
       source.start(0);
     });
     return await offlineCtx.startRendering();
@@ -1288,11 +1280,8 @@ textarea.field{resize:none;min-height:78px}
   function bufferToWav(buffer){
     const numCh = buffer.numberOfChannels, len = buffer.length;
     const sampleRate = buffer.sampleRate;
-    const bytesPerSample = 2;
-    const blockAlign = numCh * bytesPerSample;
-    const dataSize = len * blockAlign;
-    const bufferArr = new ArrayBuffer(44 + dataSize);
-    const view = new DataView(bufferArr);
+    const bytesPerSample = 2; const blockAlign = numCh * bytesPerSample; const dataSize = len * blockAlign;
+    const bufferArr = new ArrayBuffer(44 + dataSize); const view = new DataView(bufferArr);
     const writeStr = (offset, str) => { for(let i=0;i<str.length;i++) view.setUint8(offset+i, str.charCodeAt(i)); };
     writeStr(0,'RIFF'); view.setUint32(4, 36+dataSize, true); writeStr(8,'WAVE');
     writeStr(12,'fmt '); view.setUint32(16,16,true); view.setUint16(20,1,true);
@@ -1301,33 +1290,21 @@ textarea.field{resize:none;min-height:78px}
     writeStr(36,'data'); view.setUint32(40,dataSize,true);
     const channels = []; for(let c=0;c<numCh;c++) channels.push(buffer.getChannelData(c));
     let offset = 44;
-    for(let i=0;i<len;i++){
-      for(let c=0;c<numCh;c++){
-        let sample = Math.max(-1, Math.min(1, channels[c][i]));
-        sample = sample < 0 ? sample*0x8000 : sample*0x7fff;
-        view.setInt16(offset, sample, true); offset += 2;
-      }
-    }
+    for(let i=0;i<len;i++){ for(let c=0;c<numCh;c++){ let sample = Math.max(-1, Math.min(1, channels[c][i])); sample = sample < 0 ? sample*0x8000 : sample*0x7fff; view.setInt16(offset, sample, true); offset += 2; } }
     return new Blob([view], {type:'audio/wav'});
   }
 
   async function renderAndExport(format){
-    closeModal();
-    toast('Rendering mix…');
+    closeModal(); toast('Rendering mix…');
     try{
       const rendered = await renderMixToBuffer();
       const wavBlob = bufferToWav(rendered);
       const proj = currentProject();
       const baseName = proj.name.replace(/[^a-z0-9\-_ ]/gi,'').trim() || 'beat-studio-mix';
       let finalBlob = wavBlob, ext = 'wav', mime = 'audio/wav';
-      if(format === 'm4a'){
-        const encoded = await encodeCompressed(rendered);
-        finalBlob = encoded.blob; ext = encoded.ext; mime = encoded.mime;
-      }
+      if(format === 'm4a'){ const encoded = await encodeCompressed(rendered); finalBlob = encoded.blob; ext = encoded.ext; mime = encoded.mime; }
       await shareOrDownload(finalBlob, `${baseName}.${ext}`, mime);
-    }catch(err){
-      toast('Export failed: ' + err.message);
-    }
+    }catch(err){ toast('Export failed: ' + err.message); }
   }
 
   function encodeCompressed(buffer){
@@ -1335,9 +1312,7 @@ textarea.field{resize:none;min-height:78px}
       try{
         const ctx = new (window.AudioContext||window.webkitAudioContext)();
         const dest = ctx.createMediaStreamDestination();
-        const source = ctx.createBufferSource();
-        source.buffer = buffer;
-        source.connect(dest);
+        const source = ctx.createBufferSource(); source.buffer = buffer; source.connect(dest);
         const mimeCandidates = ['audio/mp4','audio/aac','audio/webm;codecs=opus','audio/webm'];
         const supported = mimeCandidates.find(m=>MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || '';
         const recorder = new MediaRecorder(dest.stream, supported ? {mimeType:supported} : undefined);
@@ -1349,8 +1324,7 @@ textarea.field{resize:none;min-height:78px}
           const ext = mime.includes('mp4') ? 'm4a' : (mime.includes('aac') ? 'm4a' : 'webm');
           resolve({blob: new Blob(chunks, {type:mime}), ext, mime});
         };
-        recorder.start();
-        source.start();
+        recorder.start(); source.start();
         source.onended = () => setTimeout(()=>recorder.stop(), 150);
       }catch(err){ reject(err); }
     });
@@ -1362,15 +1336,13 @@ textarea.field{resize:none;min-height:78px}
       try{ await navigator.share({files:[file], title: filename}); toast('Shared ' + filename); return; }catch(e){}
     }
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+    const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click();
     setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 400);
     toast('Saved ' + filename);
   }
 
   function openModal(html){
-    $('modalCard').innerHTML = html;
-    $('modal').classList.add('show');
+    $('modalCard').innerHTML = html; $('modal').classList.add('show');
     $('modalCard').querySelectorAll('[data-close]').forEach(b=>b.onclick = closeModal);
   }
   function closeModal(){ $('modal').classList.remove('show'); }
@@ -1382,10 +1354,7 @@ textarea.field{resize:none;min-height:78px}
       <div class="handle"></div>
       <h2>Rename session</h2>
       <input class="field" id="renameInput" value="${escapeHtml(proj.name)}">
-      <div class="modal-actions">
-        <button data-close>Cancel</button>
-        <button class="confirm" id="renameConfirm">Save</button>
-      </div>
+      <div class="modal-actions"><button data-close>Cancel</button><button class="confirm" id="renameConfirm">Save</button></div>
     `);
     $('renameConfirm').onclick = () => {
       const val = $('renameInput').value.trim();
@@ -1403,17 +1372,13 @@ textarea.field{resize:none;min-height:78px}
   }));
 
   $('newSessionBtn').onclick = newSession;
-  $('projectList').addEventListener('click', e => {
-    const del = e.target.closest('[data-del]');
-    if(del) deleteProject(del.dataset.del);
-  });
+  $('projectList').addEventListener('click', e => { const del = e.target.closest('[data-del]'); if(del) deleteProject(del.dataset.del); });
   $('backBtn').onclick = () => { stopMixPlayback(); stopSoloPlayback(); showScreen('screen-home'); renderHome(); };
   $('renameBtn').onclick = openRenameModal;
   $('addTrackBtn').onclick = () => {
-    const proj = currentProject();
-    snapshot();
+    const proj = currentProject(); snapshot();
     proj.tracks.push(makeTrack('Track ' + (proj.tracks.length+1)));
-    proj.modified = Date.now(); save(); renderTracks(); renderPluginsTab(); renderMixTab();
+    proj.modified = Date.now(); save(); renderTracks(); renderPluginsTab(); renderFxTab(); renderMixTab();
   };
   $('uploadTrackBtn').onclick = () => requestUpload(null);
   $('openPluginPickerBtn').onclick = openPluginPicker;
@@ -1437,7 +1402,7 @@ textarea.field{resize:none;min-height:78px}
   $('redoBtn').onclick = redo;
   $('aiBtn').onclick = openAiSuggestions;
   $('exportBtn').onclick = openExportModal;
-  $('homeSettingsBtn').onclick = () => toast('Beat Studio v3');
+  $('homeSettingsBtn').onclick = () => toast('Beat Studio v4');
 
   if(!state.current && state.projects.length) state.current = state.projects[0].id;
   showScreen('screen-home');
