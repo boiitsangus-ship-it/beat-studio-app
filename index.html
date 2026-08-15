@@ -1,37 +1,149 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <meta name="theme-color" content="#070707">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Beat Studio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23070707'/%3E%3Cg stroke='%23ff3737' stroke-width='6' stroke-linecap='round' fill='none'%3E%3Cpath d='M12 50 h8 v0 M24 50 v-14 M24 50 v14 M36 50 v-24 M36 50 v24 M48 50 v-34 M48 50 v34 M60 50 v-20 M60 50 v20 M72 50 v-30 M72 50 v30 M84 50 v-10 M84 50 v10'/%3E%3C/g%3E%3C/svg%3E">
 <style>
-:root{--bg:#070707;--card:#181818;--line:#363636;--text:#f8f8f8;--muted:#a0a0a0;--red:#ff3737;--red-dark:#511818;--green:#42dc99}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:var(--bg);color:var(--text);font:15px -apple-system,BlinkMacSystemFont,"SF Pro Display",Segoe UI,Roboto,sans-serif;min-height:100dvh}.app{max-width:720px;min-height:100dvh;margin:auto;padding:env(safe-area-inset-top) 14px calc(104px + env(safe-area-inset-bottom))}button,input,select{font:inherit}button{border:0;color:inherit;background:none;cursor:pointer;touch-action:manipulation}button:active{transform:scale(.97)}.header{display:flex;align-items:center;justify-content:space-between;padding:14px 2px}.brand{font-size:21px;font-weight:900;letter-spacing:.05em}.brand span{color:var(--red)}.subtitle{display:block;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px;font-weight:600}.icon-btn{width:42px;height:42px;border-radius:12px;background:#292929;font-size:18px}.screen{display:none}.screen.active{display:block}h1{margin:16px 0 4px;font-size:29px}.lead{margin:0 0 18px;color:var(--muted)}.primary{width:100%;padding:16px;border-radius:15px;background:var(--red);font-size:16px;font-weight:850}.project-list{display:grid;gap:11px;margin-top:18px}.project{position:relative;padding:15px;border:1px solid var(--line);border-radius:15px;background:var(--card)}.project-name{padding-right:35px;font-weight:850}.project-meta{margin-top:5px;color:var(--muted);font-size:12px}.wave-mini{height:28px;margin-top:10px;border-radius:6px;background:repeating-linear-gradient(90deg,transparent 0 4px,#ff494989 4px 6px,transparent 6px 10px)}.delete{position:absolute;top:10px;right:10px;width:31px;height:31px;border-radius:8px;background:#2a2a2a;color:#bbb}.tabs{display:flex;gap:6px;overflow-x:auto;padding:3px 0 14px}.tab{min-width:74px;flex:1;padding:10px;border-radius:10px;background:#202020;color:#aaa;font-size:13px;font-weight:850}.tab.active{background:var(--red-dark);color:#fff}.tab-page{display:none}.tab-page.active{display:block}.track{margin-bottom:11px;padding:12px;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:14px;background:var(--card)}.track-top{display:flex;gap:8px;align-items:center}.track-title{flex:1;min-width:0;border:0;background:transparent;color:#fff;font-weight:850}.small-btn{min-width:32px;height:30px;padding:0 7px;border-radius:8px;background:#2c2c2c;font-size:11px;font-weight:850}.small-btn.active{background:var(--red)}canvas{display:block;width:100%;height:58px;margin:11px 0 8px;border-radius:8px;background:#080808;touch-action:none}.control-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;color:var(--muted);font-size:11px}.control-row label{display:grid;gap:4px}input[type=range]{width:100%;accent-color:var(--red)}.empty{padding:36px 15px;border:1px dashed #484848;border-radius:14px;text-align:center;color:var(--muted)}.secondary{width:100%;padding:13px;border-radius:12px;background:#2d2d2d;font-weight:850}.panel{margin-bottom:11px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}.panel h3{margin:0 0 8px;font-size:15px}.panel p{margin:0 0 11px;color:var(--muted);font-size:13px}.field{width:100%;margin-bottom:10px;padding:12px;border:1px solid #484848;border-radius:10px;background:#0b0b0b;color:#fff}.plugin-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #292929}.preset{width:100%;margin-top:8px;padding:13px;border:1px solid var(--line);border-radius:11px;background:#222;text-align:left}.preset.selected{border-color:var(--red);background:#391515}.preset small{display:block;margin-top:3px;color:var(--muted)}.meter{display:flex;align-items:end;gap:8px;height:100px;margin:14px 0}.meter-bar{width:50%;height:16%;border-radius:5px 5px 0 0;background:linear-gradient(var(--green),var(--red));transition:height .12s}.dock{position:fixed;z-index:10;right:0;bottom:0;left:0;max-width:720px;margin:auto;padding:10px 14px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#111f;backdrop-filter:blur(15px)}.time{text-align:center;margin-bottom:8px;font-variant-numeric:tabular-nums;font-weight:850}.transport{display:grid;grid-template-columns:42px 42px 1fr 42px 42px;gap:9px}.transport button{height:44px;border-radius:12px;background:#2b2b2b;font-weight:850}.transport .rec-btn{background:#5b1717;color:#ff9999}.transport .play-btn{background:var(--red);font-size:18px}.modal{position:fixed;z-index:30;inset:0;display:none;align-items:flex-end;background:#000a}.modal.show{display:flex}.modal-card{width:100%;max-width:720px;margin:auto;padding:12px 15px calc(20px + env(safe-area-inset-bottom));border-radius:22px 22px 0 0;background:#1e1e1e}.handle{width:38px;height:4px;margin:0 auto 17px;border-radius:5px;background:#666}.modal h2{margin:0 0 13px;font-size:19px}.option{width:100%;margin:7px 0;padding:15px;border-radius:11px;background:#2c2c2c;text-align:left;font-weight:850}.option small{display:block;margin-top:3px;color:#aaa;font-weight:500}.modal-actions{display:flex;gap:8px;margin-top:13px}.modal-actions button{flex:1;padding:13px;border-radius:11px;background:#393939;font-weight:850}.modal-actions .confirm{background:var(--red)}.toast{position:fixed;z-index:50;bottom:114px;left:50%;padding:10px 13px;border-radius:10px;background:#f5f5f5;color:#111;transform:translate(-50%,80px);opacity:0;transition:.2s;white-space:nowrap;font-size:13px;font-weight:800}.toast.show{transform:translate(-50%,0);opacity:1}.rec-badge{display:none;position:fixed;z-index:20;top:72px;right:16px;padding:4px 7px;border-radius:6px;background:#d92929;font-size:10px;font-weight:900}.rec-badge.show{display:block}
+:root{--bg:#070707;--card:#181818;--line:#363636;--text:#f8f8f8;--muted:#a0a0a0;--red:#ff3737;--red-dark:#511818;--green:#42dc99}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font:15px -apple-system,BlinkMacSystemFont,"SF Pro Display",Segoe UI,Roboto,sans-serif;min-height:100dvh}
+.app{max-width:720px;min-height:100dvh;margin:auto;padding:env(safe-area-inset-top) 14px calc(104px + env(safe-area-inset-bottom))}
+button,input,select{font:inherit}
+button{border:0;color:inherit;background:none;cursor:pointer;touch-action:manipulation}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.4;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 2px}
+.brand{font-size:21px;font-weight:900;letter-spacing:.05em}
+.brand span{color:var(--red)}
+.subtitle{display:block;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px;font-weight:600}
+.icon-btn{width:42px;height:42px;border-radius:12px;background:#292929;font-size:18px}
+.icon-btn.ghost{background:transparent;border:1px solid var(--line)}
+.screen{display:none}
+.screen.active{display:block}
+h1{margin:16px 0 4px;font-size:29px}
+.lead{margin:0 0 18px;color:var(--muted)}
+.primary{width:100%;padding:16px;border-radius:15px;background:var(--red);font-size:16px;font-weight:850}
+.project-list{display:grid;gap:11px;margin-top:18px}
+.project{position:relative;padding:15px;border:1px solid var(--line);border-radius:15px;background:var(--card)}
+.project-name{padding-right:35px;font-weight:850}
+.project-meta{margin-top:5px;color:var(--muted);font-size:12px}
+.wave-mini{height:28px;margin-top:10px;border-radius:6px;background:repeating-linear-gradient(90deg,transparent 0 4px,#ff494989 4px 6px,transparent 6px 10px)}
+.delete{position:absolute;top:10px;right:10px;width:31px;height:31px;border-radius:8px;background:#2a2a2a;color:#bbb}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:3px 0 14px}
+.tab{min-width:74px;flex:1;padding:10px;border-radius:10px;background:#202020;color:#aaa;font-size:13px;font-weight:850}
+.tab.active{background:var(--red-dark);color:#fff}
+.tab-page{display:none}
+.tab-page.active{display:block}
+.track{margin-bottom:11px;padding:12px;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:14px;background:var(--card)}
+.track.armed{border-left-color:#ff9d33;box-shadow:0 0 0 1px #ff9d3355}
+.track-top{display:flex;gap:8px;align-items:center}
+.track-title{flex:1;min-width:0;border:0;background:transparent;color:#fff;font-weight:850}
+.small-btn{min-width:32px;height:30px;padding:0 7px;border-radius:8px;background:#2c2c2c;font-size:11px;font-weight:850}
+.small-btn.active{background:var(--red)}
+.small-btn.solo-active{background:#e6c229;color:#111}
+canvas{display:block;width:100%;height:58px;margin:11px 0 8px;border-radius:8px;background:#080808;touch-action:none}
+.wave-row{position:relative}
+.play-fab{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#000c;border:1px solid #ff373766;color:var(--red);font-size:13px;display:flex;align-items:center;justify-content:center;z-index:2}
+.control-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;color:var(--muted);font-size:11px}
+.control-row label{display:grid;gap:4px}
+input[type=range]{width:100%;accent-color:var(--red)}
+.plugin-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.plugin-chip{display:flex;align-items:center;gap:6px;padding:6px 9px;border-radius:20px;background:#241111;border:1px solid #5b1e1e;font-size:11px;font-weight:800;color:#ffb3b3}
+.plugin-chip button{color:#ff9d9d;font-size:13px;line-height:1}
+.add-plugin-chip{padding:6px 10px;border-radius:20px;background:#222;border:1px dashed #4a4a4a;font-size:11px;font-weight:800;color:#bbb}
+.empty{padding:36px 15px;border:1px dashed #484848;border-radius:14px;text-align:center;color:var(--muted)}
+.secondary{width:100%;padding:13px;border-radius:12px;background:#2d2d2d;font-weight:850}
+.panel{margin-bottom:11px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.panel h3{margin:0 0 8px;font-size:15px}
+.panel p{margin:0 0 11px;color:var(--muted);font-size:13px}
+.field{width:100%;margin-bottom:10px;padding:12px;border:1px solid #484848;border-radius:10px;background:#0b0b0b;color:#fff}
+.plugin-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #292929}
+.preset{width:100%;margin-top:8px;padding:13px;border:1px solid var(--line);border-radius:11px;background:#222;text-align:left}
+.preset.selected{border-color:var(--red);background:#391515}
+.preset small{display:block;margin-top:3px;color:var(--muted)}
+.meter{display:flex;align-items:end;gap:8px;height:100px;margin:14px 0}
+.meter-bar{width:50%;height:16%;border-radius:5px 5px 0 0;background:linear-gradient(var(--green),var(--red));transition:height .12s}
+.dock{position:fixed;z-index:10;right:0;bottom:0;left:0;max-width:720px;margin:auto;padding:10px 14px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#111f;backdrop-filter:blur(15px)}
+.time{text-align:center;margin-bottom:8px;font-variant-numeric:tabular-nums;font-weight:850}
+.transport{display:grid;grid-template-columns:38px 38px 38px 1fr 44px 38px 38px 38px 38px;gap:6px}
+.transport button{height:44px;border-radius:12px;background:#2b2b2b;font-weight:850;font-size:14px}
+.transport .rec-btn{background:#5b1717;color:#ff9999}
+.transport .rec-btn.recording{background:var(--red);color:#fff;animation:pulse 1s infinite}
+.transport .play-btn{background:var(--red);font-size:18px}
+.transport .ai-btn{background:linear-gradient(135deg,#3a1c5c,#7d2fbf);color:#fff}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.modal{position:fixed;z-index:30;inset:0;display:none;align-items:flex-end;background:#000a}
+.modal.show{display:flex}
+.modal-card{width:100%;max-width:720px;margin:auto;max-height:82vh;overflow-y:auto;padding:12px 15px calc(20px + env(safe-area-inset-bottom));border-radius:22px 22px 0 0;background:#1e1e1e}
+.handle{width:38px;height:4px;margin:0 auto 17px;border-radius:5px;background:#666}
+.modal h2{margin:0 0 13px;font-size:19px}
+.option{width:100%;margin:7px 0;padding:15px;border-radius:11px;background:#2c2c2c;text-align:left;font-weight:850}
+.option small{display:block;margin-top:3px;color:#aaa;font-weight:500}
+.modal-actions{display:flex;gap:8px;margin-top:13px}
+.modal-actions button{flex:1;padding:13px;border-radius:11px;background:#393939;font-weight:850}
+.modal-actions .confirm{background:var(--red)}
+.toast{position:fixed;z-index:50;bottom:114px;left:50%;padding:10px 13px;border-radius:10px;background:#f5f5f5;color:#111;transform:translate(-50%,80px);opacity:0;transition:.2s;white-space:nowrap;font-size:13px;font-weight:800;max-width:88vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.rec-badge{display:none;position:fixed;z-index:20;top:72px;right:16px;padding:4px 7px;border-radius:6px;background:#d92929;font-size:10px;font-weight:900}
+.rec-badge.show{display:block}
+.ai-card{padding:13px;margin-bottom:10px;border-radius:12px;background:#241a33;border:1px solid #4c2f77}
+.ai-card h4{margin:0 0 4px;font-size:13px;color:#d8b8ff}
+.ai-card p{margin:0 0 10px;font-size:12px;color:#bbb}
+.ai-actions{display:flex;gap:8px}
+.ai-actions button{flex:1;padding:9px;border-radius:9px;font-size:12px;font-weight:850}
+.ai-actions .apply{background:#7d2fbf;color:#fff}
+.ai-actions .dismiss{background:#333}
+.export-row{display:flex;gap:8px}
+.export-row button{flex:1}
 </style>
 </head>
 <body>
-<div class="app">
-  <header class="header"><div><div class="brand">BEAT <span>STUDIO</span></div><span class="subtitle" id="subtitle">Mobile Music Production</span></div><button class="icon-btn" id="homeButton" aria-label="Projects">⌂</button></header>
-  <section class="screen active" id="homeScreen"><h1>Your Projects</h1><p class="lead">Create, record, and mix on your iPhone.</p><button class="primary" id="newProjectButton">＋ Create New Project</button><div class="project-list" id="projectList"></div></section>
-  <section class="screen" id="studioScreen">
-    <div class="tabs"><button class="tab active" data-tab="tracks">Tracks</button><button class="tab" data-tab="mix">AutoMix</button><button class="tab" data-tab="plugins">Plugins</button><button class="tab" data-tab="master">Master</button></div>
-    <div class="tab-page active" id="tracksPage"><div id="trackList"></div><button class="secondary" id="addTrackButton">＋ Add Track</button></div>
-    <div class="tab-page" id="mixPage"><div class="panel"><h3>AutoMix</h3><p>Balances every track to a clean starting point.</p><button class="secondary" id="autoMixButton">AutoMix — balance tracks</button></div><div class="panel"><h3>Vocal Styles</h3><p>Artist-inspired starting points, not official or exact replicas.</p><button class="preset" data-style="Detroit Smooth"><b>Detroit Smooth</b><small>Babyface Ray-inspired: warm, relaxed, clean space</small></button><button class="preset" data-style="Melodic Street"><b>Melodic Street</b><small>MLT-inspired: bright presence and wider space</small></button><button class="preset" data-style="Detroit Dry Talk"><b>Detroit Dry Talk</b><small>Veeze-inspired: dry, direct, tight dynamics</small></button></div></div>
-    <div class="tab-page" id="pluginsPage"><div class="panel"><h3>Plugin Chain</h3><p>Add production notes to the selected track.</p><select class="field" id="pluginTrackSelect"></select><div id="pluginList"></div><button class="secondary" id="addPluginButton">＋ Add Plugin</button></div></div>
-    <div class="tab-page" id="masterPage"><div class="panel"><h3>Master Preset</h3><button class="preset" data-master="Balanced"><b>Balanced</b><small>Clean, transparent</small></button><button class="preset" data-master="Loud & Punchy"><b>Loud & Punchy</b><small>Aggressive, club-ready</small></button><button class="preset" data-master="Warm Vintage"><b>Warm Vintage</b><small>Warm lows and softer highs</small></button><button class="preset" data-master="Bright Streaming"><b>Bright Streaming</b><small>Clear modern output</small></button></div><div class="panel"><h3>Output</h3><div class="meter"><i class="meter-bar" id="meterLeft"></i><i class="meter-bar" id="meterRight"></i></div><p id="meterText">−∞ dB</p></div></div>
-  </section>
-</div>
-<div class="rec-badge" id="recordBadge">● REC</div>
-<div class="dock" id="dock" style="display:none"><div class="time" id="time">00:00:00</div><div class="transport"><button id="undoButton">↶</button><button class="rec-btn" id="recordButton">●</button><button class="play-btn" id="playButton">▶</button><button id="redoButton">↷</button><button id="aiButton">✦</button></div></div>
-<div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
-<input type="file" id="audioFileInput" accept="audio/*,.wav,.mp3,.m4a,.aac,.aif,.aiff,.caf" hidden>
-<div class="toast" id="toast"></div>
-<script>
-(() => {
-  const $ = id => document.getElementById(id);
-  const storageKey = 'beat-studio-fixed-v2';
-  const makeTrack = name => ({id: String(Date.now()) + Math.random(), name, volume:.82, pan:0, muted:false, solo:false, plugins:[]});
-  let state = JSON.parse(localStorage.getItem(storageKey) || 'null') || {projects:[{id:'demo',name:'Trap Beat Demo',modified:Date.now(),tracks:[makeTrack('808 Bass'),makeTrack('Kick Drum'),makeTrack('Hi-Hats'),makeTrack('Lead Vocal')]}],current:'demo',master:'Balanced',style:''};
-  let undoStack=[], redoStack=[], audioContext=null, masterGain=null, audioBuffers={}, sources=[], isPlaying=false, playbackStart=0, recorder=null, chunks=[];
+<div class="app" id="app">
+
+  <div class="screen active" id="screen-home">
+    <div class="header">
+      <div><div class="brand">BEAT<span>STUDIO</span></div></div>
+      <button class="icon-btn ghost" id="homeSettingsBtn">⚙️</button>
+    </div>
+    <h1>Your sessions</h1>
+    <p class="lead">Record, mix, and master anywhere.</p>
+    <button class="primary" id="newSessionBtn">+ New session</button>
+    <div class="project-list" id="projectList"></div>
+  </div>
+
+  <div class="screen" id="screen-studio">
+    <div class="header">
+      <div style="display:flex;align-items:center;gap:8px;min-width:0">
+        <button class="icon-btn" id="backBtn">←</button>
+        <div style="min-width:0">
+          <div class="brand" style="font-size:16px" id="studioProjectName">Session</div>
+          <span class="subtitle" id="studioProjectMeta">Saved just now</span>
+        </div>
+      </div>
+      <button class="icon-btn ghost" id="renameBtn">✏️</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="tracks">Tracks</button>
+      <button class="tab" data-tab="plugins">Plugins</button>
+      <button class="tab" data-tab="mix">Mix</button>
+      <button class="tab" data-tab="master">Master</button>
+    </div>
+
+    <div class="tab-page active" id="tab-tracks">
+      <div id="trackList"></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="secondary" id="addTrackBtn" style="flex:1">+ Add track</button>
+        <button class="secondary" id="uploadTrackBtn" style="flex:1">⬆ Upload audio</button>
+      </div>
+    </div>
+
+    <div class="tab-page" id="tab-plugins">
+      <div class="panel">
+        <h3>Effect chain by track</h3>
+        <p>Pick a track, th
