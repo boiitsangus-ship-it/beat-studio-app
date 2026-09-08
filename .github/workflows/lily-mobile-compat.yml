@@ -10,7 +10,10 @@ on:
       - 'continuity-state.js'
       - 'lily-mobile-shell.html'
       - 'jarvis-mobile.html'
+      - 'meta-muse-provider.js'
+      - 'src/**'
       - 'tests/lily-mobile-compat.test.js'
+      - 'tests/lily-secure-runtime.test.mjs'
       - '.github/workflows/lily-mobile-compat.yml'
 
 permissions:
@@ -25,5 +28,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run compatibility contract tests
+      - name: Run mobile compatibility contract tests
         run: node tests/lily-mobile-compat.test.js
+      - name: Run hardened admin and provider security suite
+        run: node --test tests/lily-secure-runtime.test.mjs
