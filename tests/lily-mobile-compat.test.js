@@ -6,7 +6,6 @@ const root = path.resolve(__dirname, '..');
 const contract = require(path.join(root, 'runtime-contract.js'));
 const muse = require(path.join(root, 'meta-muse-provider.js'));
 
-// Provide the minimal browser global expected by continuity-state.js.
 global.window = {};
 require(path.join(root, 'continuity-state.js'));
 const continuity = global.window.JarvisContinuity;
@@ -30,21 +29,22 @@ test('Muse Glimmer 30B is the hardwired LilyASI agent', () => {
   assert.equal(contract.DEFAULT_AGENT.endpoint, 'http://127.0.0.1:8000/v1/chat/completions');
 });
 
+test('browser provider requires exact model identity', () => {
+  const source = fs.readFileSync(path.join(root, 'meta-muse-provider.js'), 'utf8');
+  assert(source.includes('models.includes(MODEL_ID)'));
+  assert(!source.includes('models.includes(MODEL_ID) || models.length > 0'));
+  assert(source.includes('normalizeMaxTokens'));
+});
+
 test('local agent capability is exposed without consequential authority', () => {
   assert(contract.ALLOWED_CAPABILITIES.includes('agent.infer.local'));
   assert(contract.ALLOWED_CAPABILITIES.includes('agent.code.assist'));
   assert(contract.ALLOWED_CAPABILITIES.includes('agent.vision.local'));
-  for (const cap of contract.ALLOWED_CAPABILITIES) {
-    assert(!/(money|credential|secret|device\.control|contract\.sign|identity)/i.test(cap));
-  }
+  for (const cap of contract.ALLOWED_CAPABILITIES) assert(!/(money|credential|secret|device\.control|contract\.sign|identity)/i.test(cap));
 });
 
 test('continuity state round-trips safe mobile state', () => {
-  const backup = continuity.createBackup({
-    mode: 'chat',
-    queue: [{ module: 'jarvis', label: 'mobile compatibility test', time: Date.now(), mode: 'chat' }],
-    lessons: ['verified compatibility lesson']
-  });
+  const backup = continuity.createBackup({ mode: 'chat', queue: [{ module: 'jarvis', label: 'mobile compatibility test', time: Date.now(), mode: 'chat' }], lessons: ['verified compatibility lesson'] });
   assert.equal(continuity.validateBackup(backup).ok, true);
   const restored = continuity.restoreBackup(backup);
   assert.equal(restored.ok, true);
@@ -69,6 +69,14 @@ test('LilyASI shell embeds Jarvis and loads the hardwired Meta provider', () => 
   assert(html.includes('continuity-state.js'));
   assert(html.includes('meta-muse-provider.js'));
   assert(html.includes('Meta Muse Glimmer 30B'));
+});
+
+test('LilyASI shell avoids unsafe dynamic innerHTML and undefined check state', () => {
+  const html = fs.readFileSync(path.join(root, 'lily-mobile-shell.html'), 'utf8');
+  assert(!/checksEl\.innerHTML\s*=/.test(html));
+  assert(!/state\.contract=state\.continuity=state\.privacy=undefined/.test(html));
+  assert(html.includes('textContent'));
+  assert(html.includes('replaceChildren'));
 });
 
 test('Jarvis mobile runtime exists and remains mobile configured', () => {
