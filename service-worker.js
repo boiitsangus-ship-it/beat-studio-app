@@ -1,21 +1,24 @@
-const CACHE = 'jarvis7-v2';
+const CACHE = 'jarvis7-v3';
 const OFFLINE_FALLBACK = './jarvis-mobile.html';
+const PRECACHE = [
+  './jarvis-mobile.html',
+  './index.html',
+  './stubox-v2.html',
+  './manifest.webmanifest',
+  './continuity-backup.html',
+  './continuity-state.js'
+];
 const STATIC_ASSETS = new Set([
   '/jarvis-mobile.html',
   '/index.html',
   '/stubox-v2.html',
-  '/manifest.webmanifest'
+  '/manifest.webmanifest',
+  '/continuity-backup.html',
+  '/continuity-state.js'
 ]);
 
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll([
-      './jarvis-mobile.html',
-      './index.html',
-      './stubox-v2.html',
-      './manifest.webmanifest'
-    ]))
-  );
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(PRECACHE)));
   self.skipWaiting();
 });
 
