@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>LilyASI · Jarvis Mobile Host</title>
+<style>
+body{margin:0;background:#050505;color:#fff;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{max-width:760px;margin:auto;padding:12px}.bar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}.pill{padding:6px 9px;border:1px solid #2a2a2a;border-radius:999px;background:#111;font-size:11px}.ok{color:#71e6a9}.warn{color:#ffd36b}.card{border:1px solid #272727;border-radius:18px;background:#101010;padding:12px;margin-bottom:10px}iframe{width:100%;height:72dvh;border:1px solid #272727;border-radius:18px;background:#000}.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #202020}.row:last-child{border-bottom:0}button{width:100%;padding:12px;border:0;border-radius:12px;background:#222;color:#fff;font-weight:800}
+</style>
+<script src="runtime-contract.js"></script>
+<script src="continuity-state.js"></script>
+</head>
+<body><main class="app">
+<div class="bar"><div><b>LilyASI</b><div style="color:#888;font-size:11px">Jarvis 7 mobile compatibility host</div></div><span class="pill" id="overall">TESTING</span></div>
+<section class="card" id="checks"></section>
+<iframe id="jarvisFrame" src="jarvis-mobile.html" title="Jarvis 7 mobile runtime"></iframe>
+<section class="card"><button id="rerun">Run compatibility test again</button></section>
+</main>
+<script>
+const checksEl=document.getElementById('checks');const overall=document.getElementById('overall');const frame=document.getElementById('jarvisFrame');
+const state={};
+function setCheck(name,ok,detail){state[name]={ok,detail};render()}
+function render(){const entries=Object.entries(state);checksEl.innerHTML=entries.map(([name,v])=>`<div class="row"><span>${name}</span><span class="${v.ok?'ok':'warn'}">${v.ok?'PASS':'FAIL'} · ${v.detail}</span></div>`).join('');const all=entries.length>=6&&entries.every(([,v])=>v.ok);overall.textContent=all?'COMPATIBLE':'CHECKING / BLOCKED';overall.className='pill '+(all?'ok':'warn')}
+function runCore(){state.contract=state.continuity=state.privacy=undefined;setCheck('Runtime contract',!!window.LilyJarvisContract&&LilyJarvisContract.CONTRACT_VERSION===1,'v1');const hello=LilyJarvisContract.makeHello();setCheck('Identity routing',hello.source==='lilyasi'&&hello.target==='jarvis7-mobile','Lily → Jarvis');const backup=JarvisContinuity.createBackup({mode:'chat',queue:[{module:'jarvis',label:'compatibility test',time:Date.now(),mode:'chat'}],lessons:['verified test lesson']});const valid=JarvisContinuity.validateBackup(backup);setCheck('Continuity round-trip',valid.ok&&JarvisContinuity.restoreBackup(backup).ok,'schema v1');const poisoned={...backup,token:'should-not-import'};setCheck('Unwanted-state rejection',!JarvisContinuity.validateBackup(poisoned).ok,'unknown field bounced');setCheck('Capability boundary',LilyJarvisContract.ALLOWED_CAPABILITIES.every(x=>!/(money|credential|device\.control|secret)/i.test(x)),'least privilege')}
+function runFrame(){try{const doc=frame.contentDocument;const title=doc&&doc.title||'';const storage=frame.contentWindow&&frame.contentWindow.localStorage;setCheck('Jarvis mobile embed',/Jarvis 7/i.test(title)&&!!storage,title||'frame unavailable')}catch(e){setCheck('Jarvis mobile embed',false,e.name)}}
+function run(){Object.keys(state).forEach(k=>delete state[k]);runCore();if(frame.contentDocument&&frame.contentDocument.readyState==='complete')runFrame();else setCheck('Jarvis mobile embed',false,'loading')}
+frame.addEventListener('load',runFrame);document.getElementById('rerun').onclick=run;run();
+</script>
+</body></html>
