@@ -2,6 +2,12 @@
   'use strict';
 
   const CONTRACT_VERSION = 1;
+  const DEFAULT_AGENT = Object.freeze({
+    provider: 'meta',
+    model: 'meta-models/Muse-Glimmer-30B',
+    transport: 'openai-compatible-local',
+    endpoint: 'http://127.0.0.1:8000/v1/chat/completions'
+  });
   const MESSAGE_TYPES = Object.freeze({
     LILY_HELLO: 'lilyasi:hello',
     JARVIS_READY: 'jarvis:ready',
@@ -13,7 +19,10 @@
     'task.queue',
     'continuity.export',
     'continuity.import.review',
-    'learning.review'
+    'learning.review',
+    'agent.infer.local',
+    'agent.code.assist',
+    'agent.vision.local'
   ]);
 
   function isObject(value) {
@@ -26,7 +35,8 @@
       contractVersion: CONTRACT_VERSION,
       source: 'lilyasi',
       target: 'jarvis7-mobile',
-      requestedCapabilities: [...ALLOWED_CAPABILITIES]
+      requestedCapabilities: [...ALLOWED_CAPABILITIES],
+      defaultAgent: DEFAULT_AGENT
     };
   }
 
@@ -36,7 +46,8 @@
       contractVersion: CONTRACT_VERSION,
       source: 'jarvis7-mobile',
       target: 'lilyasi',
-      capabilities: [...ALLOWED_CAPABILITIES]
+      capabilities: [...ALLOWED_CAPABILITIES],
+      defaultAgent: DEFAULT_AGENT
     };
   }
 
@@ -58,7 +69,7 @@
     return { ok: true };
   }
 
-  const api = { CONTRACT_VERSION, MESSAGE_TYPES, ALLOWED_CAPABILITIES, makeHello, makeReady, validateMessage, validateReady };
+  const api = { CONTRACT_VERSION, DEFAULT_AGENT, MESSAGE_TYPES, ALLOWED_CAPABILITIES, makeHello, makeReady, validateMessage, validateReady };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window !== 'undefined') window.LilyJarvisContract = api;
 })();
