@@ -1,0 +1,16 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+*.db
+*.db-*
+*.sqlite*
+*.backup
+*.enc
+*.key
+*.token
+.env
+.env.*
+!.env.example
+state/
+backups/
+evals/results/
