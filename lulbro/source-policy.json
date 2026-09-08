@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "private_by_default": true,
+  "public_access_enabled": false,
+  "provenance_required": true,
+  "allowed_sources": [
+    "public_open_data",
+    "public_web",
+    "public_research",
+    "public_government_records",
+    "public_court_records",
+    "public_transparency_records",
+    "open_source_code",
+    "user_owned_data",
+    "user_authorized_private_data",
+    "consented_device_telemetry"
+  ],
+  "blocked_sources": [
+    "stolen_credentials",
+    "unauthorized_private_data",
+    "doxxing_data",
+    "illicit_breach_dumps",
+    "auth_bypass_acquired_data"
+  ],
+  "leak_policy": {
+    "allow_public_reporting_about_leaks": true,
+    "allow_publicly_released_official_documents": true,
+    "allow_stolen_private_records": false
+  },
+  "required_metadata": [
+    "source_uri",
+    "source_type",
+    "permission_or_license",
+    "ingested_at",
+    "content_hash",
+    "confidence"
+  ],
+  "learning_loop": [
+    "observe",
+    "model",
+    "simulate",
+    "debug",
+    "verify",
+    "improve",
+    "repeat",
+    "solve"
+  ]
+}
