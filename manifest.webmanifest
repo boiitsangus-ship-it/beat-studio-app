@@ -1,0 +1,9 @@
+{
+  "name": "Angws ASI · Jarvis 7",
+  "short_name": "Jarvis 7",
+  "start_url": "./jarvis-mobile.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "description": "Mobile-first home for Angws ASI and the Jarvis 7 orchestration runtime."
+}
