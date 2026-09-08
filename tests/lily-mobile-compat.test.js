@@ -4,6 +4,7 @@ const assert = require('assert');
 
 const root = path.resolve(__dirname, '..');
 const contract = require(path.join(root, 'runtime-contract.js'));
+const muse = require(path.join(root, 'meta-muse-provider.js'));
 
 // Provide the minimal browser global expected by continuity-state.js.
 global.window = {};
@@ -22,7 +23,17 @@ test('contract v1 identifies LilyASI to Jarvis mobile', () => {
   assert.equal(hello.contractVersion, 1);
 });
 
-test('capability contract excludes consequential authority', () => {
+test('Muse Glimmer 30B is the hardwired LilyASI agent', () => {
+  assert.equal(muse.MODEL_ID, 'meta-models/Muse-Glimmer-30B');
+  assert.equal(contract.DEFAULT_AGENT.model, muse.MODEL_ID);
+  assert.equal(contract.DEFAULT_AGENT.provider, 'meta');
+  assert.equal(contract.DEFAULT_AGENT.endpoint, 'http://127.0.0.1:8000/v1/chat/completions');
+});
+
+test('local agent capability is exposed without consequential authority', () => {
+  assert(contract.ALLOWED_CAPABILITIES.includes('agent.infer.local'));
+  assert(contract.ALLOWED_CAPABILITIES.includes('agent.code.assist'));
+  assert(contract.ALLOWED_CAPABILITIES.includes('agent.vision.local'));
   for (const cap of contract.ALLOWED_CAPABILITIES) {
     assert(!/(money|credential|secret|device\.control|contract\.sign|identity)/i.test(cap));
   }
@@ -51,11 +62,13 @@ test('continuity filters secret-like text on export', () => {
   assert.deepEqual(backup.lessons, ['safe lesson']);
 });
 
-test('LilyASI shell embeds the actual Jarvis mobile runtime', () => {
+test('LilyASI shell embeds Jarvis and loads the hardwired Meta provider', () => {
   const html = fs.readFileSync(path.join(root, 'lily-mobile-shell.html'), 'utf8');
   assert(/<iframe[^>]+src="jarvis-mobile\.html"/i.test(html));
   assert(html.includes('runtime-contract.js'));
   assert(html.includes('continuity-state.js'));
+  assert(html.includes('meta-muse-provider.js'));
+  assert(html.includes('Meta Muse Glimmer 30B'));
 });
 
 test('Jarvis mobile runtime exists and remains mobile configured', () => {
