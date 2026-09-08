@@ -1,0 +1,34 @@
+name: LilyASI Jarvis Mobile Compatibility
+
+on:
+  push:
+    branches:
+      - 'safety/runtime-continuity-guardrails'
+  pull_request:
+    paths:
+      - 'runtime-contract.js'
+      - 'continuity-state.js'
+      - 'lily-mobile-shell.html'
+      - 'jarvis-mobile.html'
+      - 'meta-muse-provider.js'
+      - 'src/**'
+      - 'tests/lily-mobile-compat.test.js'
+      - 'tests/lily-secure-runtime.test.mjs'
+      - '.github/workflows/lily-mobile-compat.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Run mobile compatibility contract tests
+        run: node tests/lily-mobile-compat.test.js
+      - name: Run hardened admin and provider security suite
+        run: node --test tests/lily-secure-runtime.test.mjs

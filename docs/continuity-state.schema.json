@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://angws.local/schemas/continuity-state-v1.json",
+  "title": "Angws Jarvis Continuity State v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "createdAt", "mode", "queue", "lessons"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "mode": { "enum": ["chat", "work", "learn", "off"] },
+    "queue": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["module", "label", "time", "mode"],
+        "properties": {
+          "module": { "enum": ["jarvis", "astra", "fable", "lulbro", "angws", "phone", "studio", "work", "memory"] },
+          "label": { "type": "string", "minLength": 1, "maxLength": 1000 },
+          "time": { "type": "integer", "minimum": 0 },
+          "mode": { "enum": ["chat", "work", "learn", "off"] }
+        }
+      }
+    },
+    "lessons": {
+      "type": "array",
+      "maxItems": 100,
+      "items": { "type": "string", "minLength": 1, "maxLength": 2000 }
+    }
+  }
+}
